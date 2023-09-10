@@ -70,4 +70,9 @@ public class Node implements Vertice {
     public int degree() {
         return edges.size();
     }
+
+    @Override
+    public List<Edge> edges() {
+        return Collections.unmodifiableList(this.edges);
+    }
 }

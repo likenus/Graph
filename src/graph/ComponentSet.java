@@ -3,15 +3,12 @@ package src.graph;
 import java.util.LinkedList;
 import java.util.List;
 
-import src.graph.interfaces.Tree;
 import src.graph.interfaces.UnionFind;
 import src.vertices.Node;
 
 public class ComponentSet implements UnionFind {
 
     private static final int BASE_CAPACITY = 16;
-
-    private final Tree components;
 
     private UnionFindNode[] nodes;
     private int id = 0;
@@ -20,7 +17,6 @@ public class ComponentSet implements UnionFind {
      * Creates a new empty Component Set with a base capacity of 16.
      */
     public ComponentSet() {
-        this.components = new DirectedTree();
         this.nodes = new UnionFindNode[BASE_CAPACITY];
     }
 
@@ -29,13 +25,11 @@ public class ComponentSet implements UnionFind {
      */
     public ComponentSet(int i) {
         this.id  = i;
-        this.components = new DirectedTree();
         this.nodes = new UnionFindNode[i];
 
         for (int j = 0; j < i; j++) {
             UnionFindNode node = new UnionFindNode(j);
             node.setParent(node);
-            this.components.add(node);
             this.nodes[j] = node;
         }
     }
@@ -51,10 +45,9 @@ public class ComponentSet implements UnionFind {
         UnionFindNode node = new UnionFindNode(id);
         node.setParent(node);
         this.nodes[id] = node;
-        boolean b = components.add(node);
 
         id++;
-        return b;
+        return true;
     }
     
     @Override

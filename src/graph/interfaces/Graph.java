@@ -7,13 +7,9 @@ import src.vertices.Vertice;
 
 public interface Graph {
     
-    List<Vertice> neighbours(Vertice v);
-
     List<Vertice> neighbours(int key);
 
     List<Vertice> vertices();
-
-    boolean add(Vertice v);
 
     boolean add(int key);
 
@@ -22,4 +18,8 @@ public interface Graph {
     Vertice parseVertice(int key);
 
     Edge parseEdge(int a, int b);
+
+    void removeEdge(int a, int b);
+
+    void remove(int key);
 }

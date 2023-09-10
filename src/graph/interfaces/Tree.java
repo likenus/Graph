@@ -18,5 +18,5 @@ public interface Tree extends UnweightedGraph {
      */
     void setRoot(int key);
 
-    List<Vertice> pathToRoot(Vertice vertice);
+    List<Vertice> pathToRoot(int key);
 }

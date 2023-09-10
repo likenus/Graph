@@ -16,13 +16,11 @@ public abstract class SingleGraph implements Graph {
         this.vertices = new LinkedList<>();
     }
     
-    @Override
-    public List<Vertice> neighbours(Vertice v) {
+    protected List<Vertice> neighbours(Vertice v) {
         return v.neighbours();
     }
 
-    @Override
-    public boolean add(Vertice v) {
+    protected boolean add(Vertice v) {
         if (this.vertices.contains(v)) {
             return false;
         }

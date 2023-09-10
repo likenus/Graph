@@ -32,4 +32,25 @@ public class UndirectedGraph extends SingleUnweightedGraph {
 
         return this.edges.add(edge);
     }
+
+    @Override
+    public void remove(int key) {
+        Vertice v = parseVertice(key);
+        for (Edge edge : v.edges()) {
+            removeEdge(edge);
+        }
+
+        this.vertices.remove(v);
+    }
+
+    @Override
+    public void removeEdge(int a, int b) {
+        Edge edge = parseEdge(a, b);
+
+        removeEdge(edge);
+    }
+
+    protected void removeEdge(Edge e) {
+        this.edges.remove(e);
+    }
 }

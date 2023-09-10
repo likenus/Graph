@@ -1,5 +1,6 @@
 package src.graph;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -47,7 +48,40 @@ public class DirectedTree extends DirectedGraph implements Tree {
 
     @Override
     public void setRoot(int key) {
-        // TODO implement
+        Vertice oldRoot = this.root;
+        Vertice newRoot = parseVertice(key);
+
+        List<Vertice> path = pathToRoot(newRoot);
+
+        if (path.isEmpty()) {
+            return;
+        }
+
+        if (path.size() == 1) {
+            swapEdge(oldRoot, newRoot);
+            this.root = newRoot;
+            return;
+        }
+        
+        for (int i = 0; i < path.size() - 1; i++) {
+            Vertice v = path.get(i);
+            Vertice next = path.get(i + 1);
+
+            swapEdge(next, v);
+        }
+
+        this.root = newRoot;
+    }
+
+    private void swapEdge(Vertice a, Vertice b) {
+        for (Edge e : a.edges()) {
+            if (e.getOther(a).equals(b)) {
+                removeEdge(e);
+                break;
+            }
+        }
+
+        addEdgeRaw(b, a);
     }
 
     @Override
@@ -62,19 +96,33 @@ public class DirectedTree extends DirectedGraph implements Tree {
             return false;
         }
 
-        boolean b = false;
+        boolean valid = false;
+
+        if (this.edges.isEmpty()) {
+            valid = true;
+        }
+
         for (Edge e : edges) {
             if (e.second().equals(w)) {
                 return false;
             }
             if (e.second().equals(v)) {
-                b = true;
+                valid = true;
             }
         }
 
-        if (!b) {
+        if (!valid) {
             return false;
         }
+
+        v.connectEdge(edge);
+        w.setParent(v);
+
+        return this.edges.add(edge);
+    }
+
+    private boolean addEdgeRaw(Vertice v, Vertice w) {
+        Edge edge = new DirectedEdge(v, w);
 
         v.connectEdge(edge);
         w.setParent(v);
@@ -90,17 +138,32 @@ public class DirectedTree extends DirectedGraph implements Tree {
         return addEdge(v, w);
     }
 
-    @Override
-    public List<Vertice> pathToRoot(Vertice vertice) {
+    private List<Vertice> pathToRoot(Vertice vertice) {
         List<Vertice> path = new LinkedList<>();
-        path.add(vertice);
-        Vertice v = vertice.getParent();
 
-        while (!v.getParent().equals(this.root)) {
-            path.add(v);
+        if (vertice.equals(root)) {
+            return path;
+        }
+
+        path.add(vertice);
+        Vertice v = vertice;
+
+        while (v.getParent() != null) {
             v = v.getParent();
+            path.add(v);
         }
 
         return path;
+    }
+
+    @Override
+    public List<Vertice> pathToRoot(int key) {
+        return pathToRoot(parseVertice(key));
+    }
+
+    @Override
+    protected void removeEdge(Edge e) {
+        this.edges.remove(e);
+        e.second().setParent(null);
     }
 }

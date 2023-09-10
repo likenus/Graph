@@ -18,6 +18,8 @@ public interface Vertice {
      */
     int getKey();
 
+    List<Edge> edges();
+
     void connectEdge(Edge e);
 
     void mark();

@@ -69,5 +69,11 @@ public class MultiVertice implements Vertice {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'reset'");
     }
+
+    @Override
+    public List<Edge> edges() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'edges'");
+    }
     
 }
