@@ -1,5 +1,6 @@
 package src.vertices;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -24,8 +25,7 @@ public class MultiVertice implements Vertice {
 
     @Override
     public int getKey() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getId'");
+        return this.key;
     }
 
     @Override
@@ -72,8 +72,13 @@ public class MultiVertice implements Vertice {
 
     @Override
     public List<Edge> edges() {
+        return Collections.unmodifiableList(this.edges);
+    }
+
+    @Override
+    public void disconnectEdge(Edge e) {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'edges'");
+        throw new UnsupportedOperationException("Unimplemented method 'disconnectEdge'");
     }
     
 }

@@ -6,8 +6,8 @@ import src.vertices.Vertice;
 
 public class DirectedEdge implements Edge {
     
-    Vertice start;
-    Vertice end;
+    private Vertice start;
+    private Vertice end;
 
     public DirectedEdge(Vertice v, Vertice w) {
         this.start = v;
@@ -25,12 +25,12 @@ public class DirectedEdge implements Edge {
     }
 
     @Override
-    public Vertice first() {
+    public Vertice start() {
         return this.start;
     }
 
     @Override
-    public Vertice second() {
+    public Vertice end() {
         return this.end;
     }
 }

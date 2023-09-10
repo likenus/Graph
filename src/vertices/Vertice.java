@@ -22,6 +22,8 @@ public interface Vertice {
 
     void connectEdge(Edge e);
 
+    void disconnectEdge(Edge e);
+
     void mark();
 
     boolean isMarked();

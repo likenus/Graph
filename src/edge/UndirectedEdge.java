@@ -57,12 +57,12 @@ public class UndirectedEdge implements Edge {
     }
 
     @Override
-    public Vertice first() {
+    public Vertice start() {
         return vertices.a();
     }
 
     @Override
-    public Vertice second() {
+    public Vertice end() {
         return vertices.b();
     }
 }

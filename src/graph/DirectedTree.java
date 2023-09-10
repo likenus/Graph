@@ -64,9 +64,9 @@ public class DirectedTree extends DirectedGraph implements Tree {
         
         for (int i = 0; i < path.size() - 1; i++) {
             Vertice v = path.get(i);
-            Vertice next = path.get(i + 1);
+            Vertice n = path.get(i + 1);
 
-            swapEdge(next, v);
+            swapEdge(n, v);
         }
 
         this.root = newRoot;
@@ -102,10 +102,10 @@ public class DirectedTree extends DirectedGraph implements Tree {
         }
 
         for (Edge e : edges) {
-            if (e.second().equals(w)) {
+            if (e.end().equals(w)) {
                 return false;
             }
-            if (e.second().equals(v)) {
+            if (e.end().equals(v)) {
                 valid = true;
             }
         }
@@ -163,6 +163,11 @@ public class DirectedTree extends DirectedGraph implements Tree {
     @Override
     protected void removeEdge(Edge e) {
         this.edges.remove(e);
-        e.second().setParent(null);
+        for (Vertice v : e.getVertices()) {
+            v.disconnectEdge(e);
+        }
+        if (e.end().getParent().equals(e.start())) {
+            e.end().setParent(null);
+        }
     }
 }

@@ -35,7 +35,7 @@ public class DirectedGraph extends SingleUnweightedGraph {
     @Override
     public Edge parseEdge(int a, int b) {
         for (Edge edge : edges) {
-            if (edge.first().getKey() == a && edge.second().getKey() == b) {
+            if (edge.start().getKey() == a && edge.end().getKey() == b) {
                 return edge;
             }
         }

@@ -38,6 +38,11 @@ public class Node implements Vertice {
     }
 
     @Override
+    public void disconnectEdge(Edge e) {
+        this.edges.remove(e);
+    }
+
+    @Override
     public String toString() {
         return "" + this.key;
     }
