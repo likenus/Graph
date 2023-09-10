@@ -6,7 +6,6 @@ import java.util.List;
 
 import src.edge.interfaces.Edge;
 import src.graph.interfaces.UnweightedGraph;
-import src.vertices.Vertice;
 
 public abstract class SingleUnweightedGraph extends SingleGraph implements UnweightedGraph {
 
@@ -28,7 +27,6 @@ public abstract class SingleUnweightedGraph extends SingleGraph implements Unwei
                 return edge;
             }
         }
-
         return null;
     }
 }
