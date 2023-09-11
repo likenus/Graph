@@ -1,11 +1,14 @@
 package src.graph;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import src.edge.interfaces.WeightedEdge;
 import src.graph.interfaces.Graph;
 import src.vertices.Vertice;
 
@@ -39,6 +42,7 @@ public final class Graphs {
         queue.add(start);
         start.mark();
 
+        // BFS
         while (!queue.isEmpty()) {
             Vertice u = queue.poll();
             for (Vertice v : u.neighbours()) {
@@ -50,6 +54,7 @@ public final class Graphs {
             }
         }
 
+        //Reconstrucing path
         if (target.getParent() == null) {
             return null;
         }
@@ -64,6 +69,22 @@ public final class Graphs {
         path.add(start);
         
         Collections.reverse(path);
+
+        return path;
+    }
+
+    public static List<Vertice> dijkstra(Graph g, int s, int t) {
+        List<Vertice> path = new LinkedList<>();
+
+        Vertice start = g.parseVertice(s);
+        Vertice target = g.parseVertice(t);
+
+        if (start.equals(target)) {
+            return path;
+        }
+
+        PriorityQueue<WeightedEdge> queue = new PriorityQueue<>(Comparator.comparing(WeightedEdge::getWeight));
+        int[] distances = new int[g.vertices().size()];
 
         return path;
     }

@@ -6,7 +6,6 @@ import java.util.List;
 import src.edge.DirectedEdge;
 import src.edge.interfaces.Edge;
 import src.graph.interfaces.Tree;
-import src.vertices.Node;
 import src.vertices.Vertice;
 
 public class DirectedTree extends DirectedGraph implements Tree {
@@ -17,7 +16,7 @@ public class DirectedTree extends DirectedGraph implements Tree {
      * Creates a new empty Directed Tree.
      */
     public DirectedTree() {
-
+        super();
     }
      
     /**
@@ -26,14 +25,7 @@ public class DirectedTree extends DirectedGraph implements Tree {
      * @param i An integer. Must be greater than 0.
      */
     public DirectedTree(int i) {
-        if (i < 0) {
-            throw new IllegalArgumentException();
-        }
-
-        for (int j = 0; j < i; j++) {
-            Vertice v = new Node(j);
-            this.vertices.add(v);
-        }
+        super(i);
 
         if (i > 0) {
             this.root = this.vertices.get(0);

@@ -1,7 +1,7 @@
 package src.graph.abstracts;
 
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 import src.graph.interfaces.Graph;
@@ -11,11 +11,27 @@ import src.vertices.Vertice;
 public abstract class SingleGraph implements Graph {
 
     protected final List<Vertice> vertices;
+    protected int id;
 
     protected SingleGraph() {
-        this.vertices = new LinkedList<>();
+        this.vertices = new ArrayList<>();
     }
-    
+
+    protected SingleGraph(int i) {
+        if (i < 0) {
+            throw new IllegalArgumentException();
+        }
+        
+        this.vertices = new ArrayList<>();
+        this.id  = i;
+
+        for (int j = 0; j < i; j++) {
+            Vertice node = new Node(j);
+            node.setParent(node);
+            this.vertices.add(j, node);
+        }
+    }
+
     protected List<Vertice> neighbours(Vertice v) {
         return v.neighbours();
     }
@@ -49,8 +65,9 @@ public abstract class SingleGraph implements Graph {
     }
 
     @Override
-    public boolean add(int key) {
-        Vertice v = new Node(key);
+    public boolean add() {
+        Vertice v = new Node(this.id);
+        this.id++;
         return add(v);
     }
     

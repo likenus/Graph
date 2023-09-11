@@ -11,7 +11,7 @@ public interface Graph {
 
     List<Vertice> vertices();
 
-    boolean add(int key);
+    boolean add();
 
     boolean isEmpty();
 

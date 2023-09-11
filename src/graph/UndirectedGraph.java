@@ -7,6 +7,14 @@ import src.vertices.Vertice;
 
 public class UndirectedGraph extends SingleUnweightedGraph {
 
+    public UndirectedGraph() {
+        super();
+    }
+
+    public UndirectedGraph(int i) {
+        super(i);
+    }
+
     @Override
     public boolean addEdge(int a, int b) {
         Vertice v = parseVertice(a);

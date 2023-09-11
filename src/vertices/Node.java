@@ -8,17 +8,19 @@ import src.edge.interfaces.Edge;
 
 public class Node implements Vertice {
     
-    private final List<Edge> edges;
+    protected final List<Edge> edges;
 
-    private boolean marked = false;
-    private Vertice parent;
-    private int key;
+    protected boolean marked = false;
+    protected Vertice parent;
+    protected int key;
+    protected int value;
 
     public Node(int key) {
         this.edges = new LinkedList<>();
         this.key = key;
     }
 
+    @Override
     public List<Vertice> neighbours() {
         List<Vertice> neighbours = new LinkedList<>();
         for (Edge edge : this.edges) {
@@ -79,5 +81,15 @@ public class Node implements Vertice {
     @Override
     public List<Edge> edges() {
         return Collections.unmodifiableList(this.edges);
+    }
+
+    @Override
+    public int getValue() {
+        return this.value;
+    }
+
+    @Override
+    public void setValue(int i) {
+        this.value = i;
     }
 }

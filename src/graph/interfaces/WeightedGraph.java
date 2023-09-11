@@ -13,5 +13,9 @@ public interface WeightedGraph extends Graph {
 
     int value(WeightedEdge edge);
 
+    int distance(Vertice v);
+
+    void setDistance(Vertice v, int i);
+
     List<WeightedEdge> edges();
 }

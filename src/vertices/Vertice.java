@@ -35,4 +35,8 @@ public interface Vertice {
     Vertice getParent();
 
     int degree();
+
+    int getValue();
+
+    void setValue(int i);
 }

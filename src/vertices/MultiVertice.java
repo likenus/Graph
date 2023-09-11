@@ -8,9 +8,9 @@ import src.edge.interfaces.Edge;
 
 public class MultiVertice implements Vertice {
 
-    private final List<Edge> edges;
+    protected final List<Edge> edges;
 
-    private int key;
+    protected int key;
 
     public MultiVertice(int key) {
         this.key = key;
@@ -79,6 +79,18 @@ public class MultiVertice implements Vertice {
     public void disconnectEdge(Edge e) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'disconnectEdge'");
+    }
+
+    @Override
+    public int getValue() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getValue'");
+    }
+
+    @Override
+    public void setValue(int i) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setValue'");
     }
     
 }

@@ -15,6 +15,11 @@ public abstract class SingleUnweightedGraph extends SingleGraph implements Unwei
         this.edges = new LinkedList<>();
     }
 
+    protected SingleUnweightedGraph(int i) {
+        super(i);
+        this.edges = new LinkedList<>();
+    }
+
     @Override
     public List<Edge> edges() {
         return Collections.unmodifiableList(this.edges);

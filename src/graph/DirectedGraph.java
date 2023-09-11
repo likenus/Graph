@@ -6,6 +6,14 @@ import src.graph.abstracts.SingleUnweightedGraph;
 import src.vertices.Vertice;
 
 public class DirectedGraph extends SingleUnweightedGraph {
+
+    public DirectedGraph() {
+        super();
+    }
+
+    public DirectedGraph(int i) {
+        super(i);
+    }
     
     @Override
     public boolean addEdge(Vertice v, Vertice w) {

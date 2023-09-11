@@ -1,5 +1,6 @@
 package src.graph;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -8,16 +9,14 @@ import src.vertices.Node;
 
 public class ComponentSet implements UnionFind {
 
-    private static final int BASE_CAPACITY = 16;
-
-    private UnionFindNode[] nodes;
+    private List<UnionFindNode> nodes;
     private int id = 0;
 
     /**
      * Creates a new empty Component Set with a base capacity of 16.
      */
     public ComponentSet() {
-        this.nodes = new UnionFindNode[BASE_CAPACITY];
+        this.nodes = new ArrayList<>();
     }
 
     /**
@@ -25,26 +24,20 @@ public class ComponentSet implements UnionFind {
      */
     public ComponentSet(int i) {
         this.id  = i;
-        this.nodes = new UnionFindNode[i];
+        this.nodes = new ArrayList<>();
 
         for (int j = 0; j < i; j++) {
             UnionFindNode node = new UnionFindNode(j);
             node.setParent(node);
-            this.nodes[j] = node;
+            this.nodes.add(j, node);
         }
     }
 
     @Override
     public boolean add() {
-        if (nodes.length == id) {
-            UnionFindNode[] tmp = new UnionFindNode[nodes.length * 2];
-            for (int i = 0; i < nodes.length; i++) {
-                tmp[i] = nodes[i];
-            }
-        }
         UnionFindNode node = new UnionFindNode(id);
         node.setParent(node);
-        this.nodes[id] = node;
+        this.nodes.add(id, node);
 
         id++;
         return true;
@@ -52,7 +45,7 @@ public class ComponentSet implements UnionFind {
     
     @Override
     public int find(int key) {
-        UnionFindNode v = nodes[key];
+        UnionFindNode v = nodes.get(key);
         return find(v).getKey();
     }
 
@@ -75,8 +68,8 @@ public class ComponentSet implements UnionFind {
 
     @Override
     public void union(int a, int b) {
-        UnionFindNode v = nodes[a];
-        UnionFindNode w = nodes[b];
+        UnionFindNode v = nodes.get(a);
+        UnionFindNode w = nodes.get(b);
 
         union(v, w);
     }
