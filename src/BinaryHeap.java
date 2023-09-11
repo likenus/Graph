@@ -87,7 +87,7 @@ public class BinaryHeap<T> {
                 index = content.indexOf(node);
             }
         }
-        
+
         if (n == null) {
             return;
         }

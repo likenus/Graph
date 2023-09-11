@@ -4,12 +4,13 @@ import java.util.Objects;
 
 import src.Tuple;
 import src.edge.interfaces.Edge;
-import src.vertices.Vertice;
+import src.vertices.interfaces.Vertice;
 
 public class DirectedEdge implements Edge {
     
     protected Vertice start;
     protected Vertice end;
+    protected int value;
 
     /**
      * Creates a new directed edge. Both vertices are required to be non-null.
@@ -23,6 +24,12 @@ public class DirectedEdge implements Edge {
 
         this.start = start;
         this.end = end;
+        this.value = 1;
+    }
+
+    public DirectedEdge(Vertice start, Vertice end, int i) {
+        this(start, end);
+        this.value = i;
     }
 
     @Override
@@ -65,9 +72,10 @@ public class DirectedEdge implements Edge {
         }
 
         if (o.getClass() == this.getClass()) {
-            Edge other = (DirectedEdge) o;
+            Edge other = (Edge) o;
 
-            return other.start().equals(this.start) && other.end().equals(this.end);
+            return other.start().equals(this.start) && other.end().equals(this.end)
+                && other.getWeight() == this.value;
         }
 
         return false;
@@ -75,6 +83,16 @@ public class DirectedEdge implements Edge {
 
     @Override
     public int hashCode() {
-        return Objects.hash(start, end);
+        return Objects.hash(start, end, value);
+    }
+
+    @Override
+    public int getWeight() {
+        return this.value;
+    }
+
+    @Override
+    public void setWeight(int weight) {
+        this.value = weight;
     }
 }

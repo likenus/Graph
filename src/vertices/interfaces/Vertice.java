@@ -1,4 +1,4 @@
-package src.vertices;
+package src.vertices.interfaces;
 
 import java.util.List;
 
@@ -23,12 +23,6 @@ public interface Vertice {
     void connectEdge(Edge e);
 
     void disconnectEdge(Edge e);
-
-    void mark();
-
-    boolean isMarked();
-
-    void reset();
 
     void setParent(Vertice v);
 

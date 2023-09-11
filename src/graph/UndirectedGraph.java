@@ -2,10 +2,10 @@ package src.graph;
 
 import src.edge.UndirectedEdge;
 import src.edge.interfaces.Edge;
-import src.graph.abstracts.SingleUnweightedGraph;
-import src.vertices.Vertice;
+import src.graph.abstracts.SingleGraph;
+import src.vertices.interfaces.Vertice;
 
-public class UndirectedGraph extends SingleUnweightedGraph {
+public class UndirectedGraph extends SingleGraph {
 
     public UndirectedGraph() {
         super();
@@ -23,8 +23,7 @@ public class UndirectedGraph extends SingleUnweightedGraph {
         return addEdge(v, w);
     }
 
-    @Override
-    public boolean addEdge(Vertice v, Vertice w) {
+    protected boolean addEdge(Vertice v, Vertice w) {
         if (v == null || w == null) {
             return false;
         }
@@ -58,7 +57,9 @@ public class UndirectedGraph extends SingleUnweightedGraph {
         removeEdge(edge);
     }
 
-    protected void removeEdge(Edge e) {
-        this.edges.remove(e);
+    @Override
+    public boolean addEdge(int a, int b, int value) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'addEdge'");
     }
 }

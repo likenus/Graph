@@ -2,19 +2,21 @@ package src.graph.abstracts;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
+import src.edge.interfaces.Edge;
 import src.graph.interfaces.Graph;
 import src.vertices.Node;
 import src.vertices.Vertice;
 
 public abstract class SingleGraph implements Graph {
 
-    protected final List<Vertice> vertices;
+    protected final List<Vertice> vertices = new ArrayList<>();
+    protected final List<Edge> edges = new LinkedList<>();
     protected int id;
 
     protected SingleGraph() {
-        this.vertices = new ArrayList<>();
     }
 
     protected SingleGraph(int i) {
@@ -22,7 +24,6 @@ public abstract class SingleGraph implements Graph {
             throw new IllegalArgumentException();
         }
 
-        this.vertices = new ArrayList<>();
         this.id  = i;
 
         for (int j = 0; j < i; j++) {
@@ -40,6 +41,31 @@ public abstract class SingleGraph implements Graph {
             return false;
         }
         return this.vertices.add(v);
+    }
+
+    @Override
+    public void remove(int key) {
+        Vertice v = parseVertice(key);
+        for (Edge edge : v.edges()) {
+            removeEdge(edge);
+        }
+
+        this.vertices.remove(v);
+    }
+
+    @Override
+    public void removeEdge(int a, int b) {
+        Edge edge = parseEdge(a, b);
+
+        if (edge == null) {
+            return;
+        }
+
+        removeEdge(edge);
+    }
+
+    protected void removeEdge(Edge e) {
+        this.edges.remove(e);
     }
 
     @Override
@@ -79,5 +105,34 @@ public abstract class SingleGraph implements Graph {
         }
 
         return null;
+    }
+
+    @Override
+    public List<Edge> edges() {
+        return Collections.unmodifiableList(this.edges);
+    }
+
+    @Override
+    public Edge parseEdge(int a, int b) {
+        Vertice v = parseVertice(a);
+        Vertice w = parseVertice(b);
+
+        for (Edge edge : edges) {
+            if (edge.getVertices().contains(v) && edge.getVertices().contains(w)) {
+                return edge;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public int value(int a, int b) {
+        Edge edge = parseEdge(a, b);
+
+        if (edge == null) {
+            throw new IllegalArgumentException();
+        }
+
+        return edge.getWeight();
     }
 }

@@ -5,12 +5,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 import src.edge.interfaces.Edge;
+import src.vertices.interfaces.Vertice;
 
 public class Node implements Vertice {
     
     protected final List<Edge> edges;
 
-    protected boolean marked = false;
     protected Vertice parent;
     protected int key;
     protected int value;
@@ -47,20 +47,6 @@ public class Node implements Vertice {
     @Override
     public String toString() {
         return "" + this.key;
-    }
-
-    public void mark() {
-        this.marked = true;
-    }
-
-    @Override
-    public boolean isMarked() {
-        return marked;
-    }
-
-    @Override
-    public void reset() {
-        this.marked = false;
     }
 
     @Override

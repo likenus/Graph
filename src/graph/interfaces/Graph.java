@@ -2,6 +2,7 @@ package src.graph.interfaces;
 
 import java.util.List;
 
+import src.edge.interfaces.Edge;
 import src.vertices.Vertice;
 
 public interface Graph {
@@ -21,4 +22,12 @@ public interface Graph {
     void removeEdge(int a, int b);
 
     void remove(int key);
+
+    boolean addEdge(int a, int b, int value);
+
+    int value(int a, int b);
+
+    List<Edge> edges();
+
+    Edge parseEdge(int a, int b);
 }

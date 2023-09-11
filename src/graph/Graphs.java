@@ -8,7 +8,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import src.BinaryHeap;
 import src.graph.interfaces.Graph;
-import src.graph.interfaces.WeightedGraph;
 import src.vertices.Vertice;
 
 public final class Graphs {
@@ -29,6 +28,7 @@ public final class Graphs {
      */
     public static List<Vertice> bfs(Graph g, int s, int t) {
         List<Vertice> path = new LinkedList<>();
+        boolean[] exploredNodes = new boolean[g.vertices().size()];
 
         Vertice start = g.parseVertice(s);
         Vertice target = g.parseVertice(t);
@@ -39,15 +39,15 @@ public final class Graphs {
         
         Queue<Vertice> queue = new ConcurrentLinkedQueue<>();
         queue.add(start);
-        start.mark();
+        exploredNodes[s] = true;
 
         // BFS
         while (!queue.isEmpty()) {
             Vertice u = queue.poll();
             for (Vertice v : u.neighbours()) {
-                if (!v.isMarked()) {
+                if (!exploredNodes[v.getKey()]) {
                     queue.add(v);
-                    v.mark();
+                    exploredNodes[v.getKey()] = true;
                     v.setParent(u);
                 }
             }
@@ -72,8 +72,9 @@ public final class Graphs {
         return path;
     }
 
-    public static List<Vertice> dijkstra(WeightedGraph g, int s, int t) {
+    public static List<Vertice> dijkstra(Graph g, int s, int t) {
         List<Vertice> path = new LinkedList<>();
+        boolean[] exploredNodes = new boolean[g.vertices().size()];
 
         Vertice start = g.parseVertice(s);
         Vertice target = g.parseVertice(t);
@@ -95,11 +96,11 @@ public final class Graphs {
 
         while(!heap.isEmpty()) {
             Vertice u = heap.pop();
-            u.mark();
+            exploredNodes[u.getKey()] = true;
             for (Vertice v : u.neighbours()) {
                 if (distances[v.getKey()] > distances[u.getKey()] + g.parseEdge(u.getKey(), v.getKey()).getWeight()) {
                     distances[v.getKey()] = distances[u.getKey()] + g.parseEdge(u.getKey(), v.getKey()).getWeight();
-                    if (!v.isMarked()) {
+                    if (!exploredNodes[v.getKey()]) {
                         v.setParent(u);
                     }
                     heap.decPrio(v, distances[v.getKey()]);

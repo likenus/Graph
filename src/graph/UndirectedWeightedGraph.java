@@ -1,11 +1,11 @@
 package src.graph;
 
-import src.edge.UndirectedWeightedEdge;
-import src.edge.interfaces.WeightedEdge;
-import src.graph.abstracts.SingleWeightedGraph;
+import src.edge.UndirectedEdge;
+import src.edge.interfaces.Edge;
+import src.graph.abstracts.SingleGraph;
 import src.vertices.Vertice;
 
-public class UndirectedWeightedGraph extends SingleWeightedGraph {
+public class UndirectedWeightedGraph extends SingleGraph {
 
     public UndirectedWeightedGraph() {
         super();
@@ -28,7 +28,7 @@ public class UndirectedWeightedGraph extends SingleWeightedGraph {
             return false;
         }
 
-        WeightedEdge edge = new UndirectedWeightedEdge(v, w, value);
+        Edge edge = new UndirectedEdge(v, w, value);
 
         if (this.edges.contains(edge)) {
             return false;

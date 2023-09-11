@@ -4,7 +4,7 @@ import java.util.List;
 
 import src.vertices.Vertice;
 
-public interface Tree extends UnweightedGraph {
+public interface Tree extends Graph {
     
     /**
      * Returns the current root of the tree.
