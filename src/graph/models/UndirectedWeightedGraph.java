@@ -5,7 +5,7 @@ import src.edge.models.UndirectedEdge;
 import src.graph.abstracts.SingleGraph;
 import src.vertices.interfaces.Vertice;
 
-public class UndirectedWeightedGraph extends SingleGraph {
+public class UndirectedWeightedGraph<T> extends SingleGraph<T> {
 
     public UndirectedWeightedGraph() {
         super();
@@ -17,18 +17,18 @@ public class UndirectedWeightedGraph extends SingleGraph {
 
     @Override
     public boolean addEdge(int a, int b, int value) {
-        Vertice v = parseVertice(a);
-        Vertice w = parseVertice(b);
+        Vertice<T> v = parseVertice(a);
+        Vertice<T> w = parseVertice(b);
 
         return addEdge(v, w, value);
     }
 
-    protected boolean addEdge(Vertice v, Vertice w, int value) {
+    protected boolean addEdge(Vertice<T> v, Vertice<T> w, int value) {
         if (v == null || w == null) {
             return false;
         }
 
-        Edge edge = new UndirectedEdge(v, w, value);
+        Edge<T> edge = new UndirectedEdge<>(v, w, value);
 
         if (this.edges.contains(edge)) {
             return false;

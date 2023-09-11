@@ -5,7 +5,7 @@ import src.edge.models.DirectedEdge;
 import src.graph.abstracts.SingleGraph;
 import src.vertices.interfaces.Vertice;
 
-public class DirectedWeightedGraph extends SingleGraph {
+public class DirectedWeightedGraph<T> extends SingleGraph<T> {
 
     public DirectedWeightedGraph() {
         super();
@@ -17,8 +17,8 @@ public class DirectedWeightedGraph extends SingleGraph {
 
     @Override
     public boolean addEdge(int a, int b, int value) {
-        Vertice v = parseVertice(a);
-        Vertice w = parseVertice(b);
+        Vertice<T> v = parseVertice(a);
+        Vertice<T> w = parseVertice(b);
 
         return addEdge(v, w, value);
     }
@@ -28,12 +28,12 @@ public class DirectedWeightedGraph extends SingleGraph {
         return addEdge(a, b, 1);
     }
 
-    protected boolean addEdge(Vertice v, Vertice w, int value) {
+    protected boolean addEdge(Vertice<T> v, Vertice<T> w, int value) {
         if (v == null || w == null) {
             return false;
         }
 
-        Edge edge = new DirectedEdge(v, w, value);
+        Edge<T> edge = new DirectedEdge<>(v, w, value);
 
         if (this.edges.contains(edge)) {
             return false;
@@ -44,12 +44,12 @@ public class DirectedWeightedGraph extends SingleGraph {
         return this.edges.add(edge);
     }
 
-    protected boolean addEdge(Vertice v, Vertice w) {
+    protected boolean addEdge(Vertice<T> v, Vertice<T> w) {
         return addEdge(v, w, 1);
     }
 
-    protected void swapEdge(Vertice a, Vertice b) {
-        for (Edge e : a.edges()) {
+    protected void swapEdge(Vertice<T> a, Vertice<T> b) {
+        for (Edge<T> e : a.edges()) {
             if (e.getOther(a).equals(b)) {
                 removeEdge(e);
                 break;

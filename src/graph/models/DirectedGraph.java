@@ -2,7 +2,7 @@ package src.graph.models;
 
 import src.vertices.interfaces.Vertice;
 
-public class DirectedGraph extends DirectedWeightedGraph {
+public class DirectedGraph<T> extends DirectedWeightedGraph<T> {
 
     public DirectedGraph() {
         super();
@@ -14,8 +14,8 @@ public class DirectedGraph extends DirectedWeightedGraph {
 
     @Override
     public boolean addEdge(int a, int b) {
-        Vertice v = parseVertice(a);
-        Vertice w = parseVertice(b);
+        Vertice<T> v = parseVertice(a);
+        Vertice<T> w = parseVertice(b);
 
         return addEdge(v, w, 1);
     }

@@ -26,25 +26,25 @@ public final class Graphs {
      * @return The Path from s to t including s and t. Returns an empty list if {@code s.equals(t)} is true.
      * Returns null if no path was found.
      */
-    public static List<Vertice> bfs(Graph g, int s, int t) {
-        List<Vertice> path = new LinkedList<>();
+    public static <T> List<Vertice<T>> bfs(Graph<T> g, int s, int t) {
+        List<Vertice<T>> path = new LinkedList<>();
         boolean[] exploredNodes = new boolean[g.vertices().size()];
 
-        Vertice start = g.parseVertice(s);
-        Vertice target = g.parseVertice(t);
+        Vertice<T> start = g.parseVertice(s);
+        Vertice<T> target = g.parseVertice(t);
 
         if (start.equals(target)) {
             return path;
         }
         
-        Queue<Vertice> queue = new ConcurrentLinkedQueue<>();
+        Queue<Vertice<T>> queue = new ConcurrentLinkedQueue<>();
         queue.add(start);
         exploredNodes[s] = true;
 
         // BFS
         while (!queue.isEmpty()) {
-            Vertice u = queue.poll();
-            for (Vertice v : u.neighbours()) {
+            Vertice<T> u = queue.poll();
+            for (Vertice<T> v : u.neighbours()) {
                 if (!exploredNodes[v.getKey()]) {
                     queue.add(v);
                     exploredNodes[v.getKey()] = true;
@@ -58,7 +58,7 @@ public final class Graphs {
             return null;
         }
 
-        Vertice parent = target;
+        Vertice<T> parent = target;
 
         while (parent.getParent() != null) {
             path.add(parent);
@@ -72,12 +72,12 @@ public final class Graphs {
         return path;
     }
 
-    public static List<Vertice> dijkstra(Graph<?> g, int s, int t) {
-        List<Vertice> path = new LinkedList<>();
+    public static <T> List<Vertice<T>> dijkstra(Graph<T> g, int s, int t) {
+        List<Vertice<T>> path = new LinkedList<>();
         boolean[] exploredNodes = new boolean[g.vertices().size()];
 
-        Vertice start = g.parseVertice(s);
-        Vertice target = g.parseVertice(t);
+        Vertice<T> start = g.parseVertice(s);
+        Vertice<T> target = g.parseVertice(t);
 
         if (start.equals(target)) {
             return path;
@@ -89,15 +89,15 @@ public final class Graphs {
             distances[i] = Integer.MAX_VALUE;
         }
         distances[s] = 0;
-        BinaryHeap<Vertice> heap = new BinaryHeap<>();
-        for (Vertice v : g.vertices()) {
+        BinaryHeap<Vertice<T>> heap = new BinaryHeap<>();
+        for (Vertice<T> v : g.vertices()) {
             heap.push(v, distances[v.getKey()]);
         }
 
         while(!heap.isEmpty()) {
-            Vertice u = heap.pop();
+            Vertice<T> u = heap.pop();
             exploredNodes[u.getKey()] = true;
-            for (Vertice v : u.neighbours()) {
+            for (Vertice<T> v : u.neighbours()) {
                 if (distances[v.getKey()] > distances[u.getKey()] + g.parseEdge(u.getKey(), v.getKey()).getWeight()) {
                     distances[v.getKey()] = distances[u.getKey()] + g.parseEdge(u.getKey(), v.getKey()).getWeight();
                     if (!exploredNodes[v.getKey()]) {
@@ -113,7 +113,7 @@ public final class Graphs {
             return null;
         }
 
-        Vertice parent = target;
+        Vertice<T> parent = target;
 
         while (parent.getParent() != null) {
             path.add(parent);

@@ -9,7 +9,7 @@ import src.vertices.interfaces.Vertice;
 
 public class Node<T> implements Vertice<T> {
     
-    protected final List<Edge> edges;
+    protected final List<Edge<T>> edges;
 
     protected Vertice<T> parent;
     protected int key;
@@ -23,7 +23,7 @@ public class Node<T> implements Vertice<T> {
     @Override
     public List<Vertice<T>> neighbours() {
         List<Vertice<T>> neighbours = new LinkedList<>();
-        for (Edge edge : this.edges) {
+        for (Edge<T> edge : this.edges) {
             neighbours.add(edge.getOther(this));
         }
         return Collections.unmodifiableList(neighbours);
@@ -35,12 +35,12 @@ public class Node<T> implements Vertice<T> {
     }
 
     @Override
-    public void connectEdge(Edge e) {
+    public void connectEdge(Edge<T> e) {
         this.edges.add(e);
     }
 
     @Override
-    public void disconnectEdge(Edge e) {
+    public void disconnectEdge(Edge<T> e) {
         this.edges.remove(e);
     }
 
@@ -65,7 +65,7 @@ public class Node<T> implements Vertice<T> {
     }
 
     @Override
-    public List<Edge> edges() {
+    public List<Edge<T>> edges() {
         return Collections.unmodifiableList(this.edges);
     }
 

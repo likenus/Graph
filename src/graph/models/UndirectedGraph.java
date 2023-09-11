@@ -2,7 +2,7 @@ package src.graph.models;
 
 import src.vertices.interfaces.Vertice;
 
-public class UndirectedGraph extends UndirectedWeightedGraph {
+public class UndirectedGraph<T> extends UndirectedWeightedGraph<T> {
 
     public UndirectedGraph() {
         super();
@@ -14,8 +14,8 @@ public class UndirectedGraph extends UndirectedWeightedGraph {
 
     @Override
     public boolean addEdge(int a, int b) {
-        Vertice v = parseVertice(a);
-        Vertice w = parseVertice(b);
+        Vertice<T> v = parseVertice(a);
+        Vertice<T> w = parseVertice(b);
 
         return addEdge(v, w, 1);
     }
