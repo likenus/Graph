@@ -3,7 +3,7 @@ package src.graph.interfaces;
 import java.util.List;
 
 import src.edge.interfaces.Edge;
-import src.vertices.Vertice;
+import src.vertices.interfaces.Vertice;
 
 public interface Graph {
     

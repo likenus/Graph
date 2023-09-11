@@ -8,7 +8,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import src.BinaryHeap;
 import src.graph.interfaces.Graph;
-import src.vertices.Vertice;
+import src.vertices.interfaces.Vertice;
 
 public final class Graphs {
     

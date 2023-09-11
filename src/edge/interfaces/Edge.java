@@ -1,7 +1,7 @@
 package src.edge.interfaces;
 
 import src.Tuple;
-import src.vertices.Vertice;
+import src.vertices.interfaces.Vertice;
 
 /**
  * Used to connect two vertices in a graph. An edge can be directed or non-directional.

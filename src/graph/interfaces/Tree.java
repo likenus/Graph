@@ -2,7 +2,7 @@ package src.graph.interfaces;
 
 import java.util.List;
 
-import src.vertices.Vertice;
+import src.vertices.interfaces.Vertice;
 
 public interface Tree extends Graph {
     

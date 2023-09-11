@@ -6,7 +6,7 @@ import java.util.List;
 import src.edge.DirectedEdge;
 import src.edge.interfaces.Edge;
 import src.graph.interfaces.Tree;
-import src.vertices.Vertice;
+import src.vertices.interfaces.Vertice;
 
 public class DirectedTree extends DirectedGraph implements Tree {
     
@@ -64,19 +64,16 @@ public class DirectedTree extends DirectedGraph implements Tree {
         this.root = newRoot;
     }
 
-    private void swapEdge(Vertice a, Vertice b) {
-        for (Edge e : a.edges()) {
-            if (e.getOther(a).equals(b)) {
-                removeEdge(e);
-                break;
-            }
-        }
+    @Override
+    public boolean addEdge(int a, int b) {
+        Vertice v = parseVertice(a);
+        Vertice w = parseVertice(b);
 
-        addEdgeRaw(b, a);
+        return addEdge(v, w);
     }
 
     @Override
-    public boolean addEdge(Vertice v, Vertice w) {
+    protected boolean addEdge(Vertice v, Vertice w) {
         if (v == null || w == null || w.equals(this.root)) {
             return false;
         }
@@ -110,23 +107,6 @@ public class DirectedTree extends DirectedGraph implements Tree {
         w.setParent(v);
 
         return this.edges.add(edge);
-    }
-
-    private boolean addEdgeRaw(Vertice v, Vertice w) {
-        Edge edge = new DirectedEdge(v, w);
-
-        v.connectEdge(edge);
-        w.setParent(v);
-
-        return this.edges.add(edge);
-    }
-
-    @Override
-    public boolean addEdge(int a, int b) {
-        Vertice v = parseVertice(a);
-        Vertice w = parseVertice(b);
-
-        return addEdge(v, w);
     }
 
     private List<Vertice> pathToRoot(Vertice vertice) {

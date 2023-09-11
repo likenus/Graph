@@ -3,7 +3,7 @@ package src.graph;
 import src.edge.UndirectedEdge;
 import src.edge.interfaces.Edge;
 import src.graph.abstracts.SingleGraph;
-import src.vertices.Vertice;
+import src.vertices.interfaces.Vertice;
 
 public class UndirectedWeightedGraph extends SingleGraph {
 
