@@ -54,7 +54,13 @@ public abstract class SingleWeightedGraph extends SingleGraph implements Weighte
     }
 
     @Override
-    public int value(WeightedEdge edge) {
+    public int value(int a, int b) {
+        WeightedEdge edge = parseEdge(a, b);
+
+        if (edge == null) {
+            throw new IllegalArgumentException();
+        }
+
         return edge.getWeight();
     }
 
@@ -71,6 +77,10 @@ public abstract class SingleWeightedGraph extends SingleGraph implements Weighte
     @Override
     public void removeEdge(int a, int b) {
         Edge edge = parseEdge(a, b);
+
+        if (edge == null) {
+            return;
+        }
 
         removeEdge(edge);
     }

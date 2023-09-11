@@ -24,7 +24,11 @@ public class DirectedWeightedGraph extends SingleWeightedGraph {
     }
 
     @Override
-    public boolean addEdge(Vertice v, Vertice w, int value) {
+    public boolean addEdge(int a, int b) {
+        return addEdge(a, b, 1);
+    }
+
+    protected boolean addEdge(Vertice v, Vertice w, int value) {
         if (v == null || w == null) {
             return false;
         }

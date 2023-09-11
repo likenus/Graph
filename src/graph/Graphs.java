@@ -1,13 +1,12 @@
 package src.graph;
 
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import src.BinaryHeap;
 import src.graph.interfaces.Graph;
 import src.graph.interfaces.WeightedGraph;
 import src.vertices.Vertice;
@@ -28,7 +27,7 @@ public final class Graphs {
      * @return The Path from s to t including s and t. Returns an empty list if {@code s.equals(t)} is true.
      * Returns null if no path was found.
      */
-    public static List<Vertice> breadthFirstSearch(Graph g, int s, int t) {
+    public static List<Vertice> bfs(Graph g, int s, int t) {
         List<Vertice> path = new LinkedList<>();
 
         Vertice start = g.parseVertice(s);
@@ -89,15 +88,21 @@ public final class Graphs {
             distances[i] = Integer.MAX_VALUE;
         }
         distances[s] = 0;
-        PriorityQueue<Vertice> queue = new PriorityQueue<>(Comparator.comparing(v -> distances[v.getKey()]));
-        queue.addAll(g.vertices());
+        BinaryHeap<Vertice> heap = new BinaryHeap<>();
+        for (Vertice v : g.vertices()) {
+            heap.push(v, distances[v.getKey()]);
+        }
 
-        while(!queue.isEmpty()) {
-            Vertice u = queue.poll();
+        while(!heap.isEmpty()) {
+            Vertice u = heap.pop();
+            u.mark();
             for (Vertice v : u.neighbours()) {
                 if (distances[v.getKey()] > distances[u.getKey()] + g.parseEdge(u.getKey(), v.getKey()).getWeight()) {
                     distances[v.getKey()] = distances[u.getKey()] + g.parseEdge(u.getKey(), v.getKey()).getWeight();
-                    v.setParent(u);
+                    if (!v.isMarked()) {
+                        v.setParent(u);
+                    }
+                    heap.decPrio(v, distances[v.getKey()]);
                 }
             }
         }

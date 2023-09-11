@@ -14,6 +14,8 @@ public interface Graph {
 
     boolean isEmpty();
 
+    boolean addEdge(int a, int b);
+
     Vertice parseVertice(int key);
 
     void removeEdge(int a, int b);
