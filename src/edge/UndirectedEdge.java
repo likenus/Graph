@@ -8,21 +8,31 @@ import src.vertices.Vertice;
 
 public class UndirectedEdge implements Edge {
     
-    Tuple<Vertice> vertices;
+    protected Tuple<Vertice> vertices;
 
+    /**
+     * Creates a new non-directional edge. In undirected edges the connected 
+     * vertices are not required to be in order.
+     * @param v The first vertice
+     * @param w The second vertice
+     */
     public UndirectedEdge(Vertice v, Vertice w) {
         vertices = new Tuple<>(v, w);
     }
 
     @Override
     public Vertice getOther(Vertice v) {
+        if (!vertices.contains(v)) {
+            return null;
+        }
+
         for (Vertice w : this.vertices) {
             if (!v.equals(w)) {
                 return w;
             }
         }
 
-        return null;
+        return v;
     }
 
     @Override

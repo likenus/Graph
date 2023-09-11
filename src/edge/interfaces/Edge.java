@@ -3,12 +3,20 @@ package src.edge.interfaces;
 import src.Tuple;
 import src.vertices.Vertice;
 
+/**
+ * Used to connect two vertices in a graph. An edge can be directed or non-directional.
+ * This interface does not distuinguish from directed or undirected edges thus implimentations must 
+ * take care of that themselves. Every edge must always be connected to two vetices. There cannot be
+ * edges which connect to nothing. 
+ * @version 1.0
+ */
 public interface Edge { 
     
     /**
-     * Returns the other vertice connected to the edge.
-     * @param v
-     * @return
+     * Returns the other vertice connected to the edge. 
+     * Returns {@code null} if the vertice is not connected to this edge and returns v, if this edge is a loop.
+     * @param v The first vertice connected to the edge
+     * @return The other vertice connected to the edge
      */
     Vertice getOther(Vertice v);
 
