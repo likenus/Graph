@@ -21,13 +21,12 @@ public abstract class SingleGraph implements Graph {
         if (i < 0) {
             throw new IllegalArgumentException();
         }
-        
+
         this.vertices = new ArrayList<>();
         this.id  = i;
 
         for (int j = 0; j < i; j++) {
             Vertice node = new Node(j);
-            node.setParent(node);
             this.vertices.add(j, node);
         }
     }

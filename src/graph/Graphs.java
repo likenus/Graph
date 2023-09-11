@@ -8,8 +8,8 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import src.edge.interfaces.WeightedEdge;
 import src.graph.interfaces.Graph;
+import src.graph.interfaces.WeightedGraph;
 import src.vertices.Vertice;
 
 public final class Graphs {
@@ -73,7 +73,7 @@ public final class Graphs {
         return path;
     }
 
-    public static List<Vertice> dijkstra(Graph g, int s, int t) {
+    public static List<Vertice> dijkstra(WeightedGraph g, int s, int t) {
         List<Vertice> path = new LinkedList<>();
 
         Vertice start = g.parseVertice(s);
@@ -83,8 +83,40 @@ public final class Graphs {
             return path;
         }
 
-        PriorityQueue<WeightedEdge> queue = new PriorityQueue<>(Comparator.comparing(WeightedEdge::getWeight));
+
         int[] distances = new int[g.vertices().size()];
+        for (int i = 0; i < distances.length; i++) {
+            distances[i] = Integer.MAX_VALUE;
+        }
+        distances[s] = 0;
+        PriorityQueue<Vertice> queue = new PriorityQueue<>(Comparator.comparing(v -> distances[v.getKey()]));
+        queue.addAll(g.vertices());
+
+        while(!queue.isEmpty()) {
+            Vertice u = queue.poll();
+            for (Vertice v : u.neighbours()) {
+                if (distances[v.getKey()] > distances[u.getKey()] + g.parseEdge(u.getKey(), v.getKey()).getWeight()) {
+                    distances[v.getKey()] = distances[u.getKey()] + g.parseEdge(u.getKey(), v.getKey()).getWeight();
+                    v.setParent(u);
+                }
+            }
+        }
+    
+        //Reconstrucing path
+        if (target.getParent() == null) {
+            return null;
+        }
+
+        Vertice parent = target;
+
+        while (parent.getParent() != null) {
+            path.add(parent);
+            parent = parent.getParent();
+        }
+
+        path.add(start);
+        
+        Collections.reverse(path);
 
         return path;
     }

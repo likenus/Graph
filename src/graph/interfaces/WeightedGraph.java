@@ -11,11 +11,13 @@ public interface WeightedGraph extends Graph {
 
     boolean addEdge(int a, int b, int value);
 
+    WeightedEdge parseEdge(int a, int b);
+
     int value(WeightedEdge edge);
 
-    int distance(Vertice v);
+    int distance(int key);
 
-    void setDistance(Vertice v, int i);
+    void setDistance(int key, int i);
 
     List<WeightedEdge> edges();
 }

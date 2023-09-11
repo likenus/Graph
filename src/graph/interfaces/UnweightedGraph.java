@@ -12,4 +12,6 @@ public interface UnweightedGraph extends Graph {
     boolean addEdge(Vertice v, Vertice w);
 
     boolean addEdge(int a, int b);
+
+    Edge parseEdge(int a, int b);
 }

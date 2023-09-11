@@ -2,7 +2,6 @@ package src.graph.interfaces;
 
 import java.util.List;
 
-import src.edge.interfaces.Edge;
 import src.vertices.Vertice;
 
 public interface Graph {
@@ -16,8 +15,6 @@ public interface Graph {
     boolean isEmpty();
 
     Vertice parseVertice(int key);
-
-    Edge parseEdge(int a, int b);
 
     void removeEdge(int a, int b);
 

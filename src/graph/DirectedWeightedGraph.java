@@ -7,6 +7,14 @@ import src.vertices.Vertice;
 
 public class DirectedWeightedGraph extends SingleWeightedGraph {
 
+    public DirectedWeightedGraph() {
+        super();
+    }
+
+    public DirectedWeightedGraph(int i) {
+        super(i);
+    }
+
     @Override
     public boolean addEdge(int a, int b, int value) {
         Vertice v = parseVertice(a);
@@ -28,7 +36,6 @@ public class DirectedWeightedGraph extends SingleWeightedGraph {
         }
 
         v.connectEdge(edge);
-        w.connectEdge(edge);
 
         return this.edges.add(edge);
     }

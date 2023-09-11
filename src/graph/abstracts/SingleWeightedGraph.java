@@ -1,10 +1,9 @@
 package src.graph.abstracts;
 
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import src.edge.interfaces.Edge;
 import src.edge.interfaces.WeightedEdge;
@@ -14,17 +13,17 @@ import src.vertices.Vertice;
 public abstract class SingleWeightedGraph extends SingleGraph implements WeightedGraph {
     
     protected final List<WeightedEdge> edges;
-    protected final Map<Vertice, Integer> distances;
+    protected final List<Integer> distances;
 
     protected SingleWeightedGraph() {
         this.edges = new LinkedList<>();
-        this.distances = new HashMap<>();
+        this.distances = new ArrayList<>();
     }
 
     protected SingleWeightedGraph(int i) {
         super(i);
         this.edges = new LinkedList<>();
-        this.distances = new HashMap<>();    
+        this.distances = new ArrayList<>();    
     }
 
     @Override
@@ -34,8 +33,11 @@ public abstract class SingleWeightedGraph extends SingleGraph implements Weighte
 
     @Override
     public WeightedEdge parseEdge(int a, int b) {
+        Vertice v = parseVertice(a);
+        Vertice w = parseVertice(b);
+        
         for (WeightedEdge edge : edges) {
-            if (edge.getVertices().contains(a) && edge.getVertices().contains(b)) {
+            if (edge.getVertices().contains(v) && edge.getVertices().contains(w)) {
                 return edge;
             }
         }
@@ -46,7 +48,7 @@ public abstract class SingleWeightedGraph extends SingleGraph implements Weighte
     @Override
     protected boolean add(Vertice v) {
         boolean success = super.add(v);
-        distances.put(v, 0);
+        distances.add(v.getKey(), 0);
 
         return success;
     }
@@ -78,12 +80,12 @@ public abstract class SingleWeightedGraph extends SingleGraph implements Weighte
     }
 
     @Override
-    public int distance(Vertice v) {
-        return distances.get(v);
+    public int distance(int key) {
+        return distances.get(key);
     }
 
     @Override
-    public void setDistance(Vertice v, int i) {
-        distances.replace(v, i);
+    public void setDistance(int key, int i) {
+        distances.set(key, i);
     }
 }
