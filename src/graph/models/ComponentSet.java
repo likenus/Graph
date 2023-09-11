@@ -7,9 +7,9 @@ import java.util.List;
 import src.graph.interfaces.UnionFind;
 import src.vertices.models.Node;
 
-public class ComponentSet implements UnionFind {
+public class ComponentSet<T> implements UnionFind<T> {
 
-    private List<UnionFindNode> nodes;
+    private List<UnionFindNode<T>> nodes;
     private int id = 0;
 
     /**
@@ -27,7 +27,7 @@ public class ComponentSet implements UnionFind {
         this.nodes = new ArrayList<>();
 
         for (int j = 0; j < i; j++) {
-            UnionFindNode node = new UnionFindNode(j);
+            UnionFindNode<T> node = new UnionFindNode<>(j);
             node.setParent(node);
             this.nodes.add(j, node);
         }
@@ -35,7 +35,7 @@ public class ComponentSet implements UnionFind {
 
     @Override
     public boolean add() {
-        UnionFindNode node = new UnionFindNode(id);
+        UnionFindNode<T> node = new UnionFindNode<>(id);
         node.setParent(node);
         this.nodes.add(id, node);
 
@@ -45,21 +45,23 @@ public class ComponentSet implements UnionFind {
     
     @Override
     public int find(int key) {
-        UnionFindNode v = nodes.get(key);
+        UnionFindNode<T> v = nodes.get(key);
         return find(v).getKey();
     }
 
-    private UnionFindNode find(UnionFindNode v) {
-        UnionFindNode p = v;
-        List<UnionFindNode> pathToRoot = new LinkedList<>();
+    private UnionFindNode<?> find(UnionFindNode<?> v) {
+
+        UnionFindNode<?> p = v;
+        List<UnionFindNode<?>> pathToRoot = new LinkedList<>();
 
         while (!p.getParent().equals(p)) {
             pathToRoot.add(p);
-            p = (UnionFindNode) p.getParent();
+
+            p = (UnionFindNode<?>) p.getParent();
         }
 
         // Path compression
-        for (UnionFindNode w : pathToRoot) {
+        for (UnionFindNode<?> w : pathToRoot) {
             w.setParent(p);
         }
 
@@ -68,15 +70,15 @@ public class ComponentSet implements UnionFind {
 
     @Override
     public void union(int a, int b) {
-        UnionFindNode v = nodes.get(a);
-        UnionFindNode w = nodes.get(b);
+        UnionFindNode<T> v = nodes.get(a);
+        UnionFindNode<T> w = nodes.get(b);
 
         union(v, w);
     }
 
-    private void union(UnionFindNode v, UnionFindNode w) {
-        UnionFindNode r = find(v);
-        UnionFindNode s = find(w);
+    private void union(UnionFindNode<T> v, UnionFindNode<T> w) {
+        UnionFindNode<?> r = find(v);
+        UnionFindNode<?> s = find(w);
 
         if (r.getRank() < s.getRank()) {
             r.setParent(s);
@@ -87,7 +89,7 @@ public class ComponentSet implements UnionFind {
         }
     }
 
-    private class UnionFindNode extends Node {
+    private class UnionFindNode<B> extends Node<T> {
 
         private int rank;
 

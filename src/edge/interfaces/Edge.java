@@ -10,7 +10,7 @@ import src.vertices.interfaces.Vertice;
  * edges which connect to nothing. 
  * @version 1.0
  */
-public interface Edge { 
+public interface Edge<T> { 
     
     /**
      * Returns the other vertice connected to the edge. 
@@ -18,28 +18,28 @@ public interface Edge {
      * @param v The first vertice connected to the edge
      * @return The other vertice connected to the edge
      */
-    Vertice getOther(Vertice v);
+    Vertice<T> getOther(Vertice<T> v);
 
     /**
      * Returns a tuple containing both connected vertices. In directed edges, the tuple is ordered. 
      * Undirected edges do not require an order, thus the returned order is the order of insertion.
      * @return The two connected vertices
      */
-    Tuple<Vertice> getVertices();
+    Tuple<Vertice<T>> getVertices();
 
     /**
      * Returns one of the connected vertices. On directed edges always returns the starting vertice. 
      * On undirected edges this does not imply any direction. Use {@link Edge#getVertices} for undirected edges.
      * @return The starting vertice
      */
-    Vertice start();
+    Vertice<T> start();
 
     /**
      * Returns one of the connected vertices. On directed edges always returns the ending vertice. 
      * On undirected edges this does not imply any direction. Use {@link Edge#getVertices} for undirected edges.
      * @return The ending vertice
      */
-    Vertice end();
+    Vertice<T> end();
 
     /**
      * Returns the weight value of this edge. Can be negative.

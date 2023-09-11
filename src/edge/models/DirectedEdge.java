@@ -6,10 +6,10 @@ import src.edge.interfaces.Edge;
 import src.util.Tuple;
 import src.vertices.interfaces.Vertice;
 
-public class DirectedEdge implements Edge {
+public class DirectedEdge<T> implements Edge<T> {
     
-    protected Vertice start;
-    protected Vertice end;
+    protected Vertice<T> start;
+    protected Vertice<T> end;
     protected int value;
 
     /**
@@ -18,7 +18,7 @@ public class DirectedEdge implements Edge {
      * @param start The starting vertice of this edge/The vertice this edge is pointing from
      * @param end The ending vertice of this edge/The vertice this edge is pointing towards
      */
-    public DirectedEdge(Vertice start, Vertice end) {
+    public DirectedEdge(Vertice<T> start, Vertice<T> end) {
         Objects.requireNonNull(start);
         Objects.requireNonNull(end);
 
@@ -27,13 +27,13 @@ public class DirectedEdge implements Edge {
         this.value = 1;
     }
 
-    public DirectedEdge(Vertice start, Vertice end, int i) {
+    public DirectedEdge(Vertice<T> start, Vertice<T> end, int i) {
         this(start, end);
         this.value = i;
     }
 
     @Override
-    public Vertice getOther(Vertice v) {
+    public Vertice<T> getOther(Vertice<T> v) {
         Objects.requireNonNull(v);
 
         if (!(start.equals(v) || end.equals(v))) {
@@ -47,17 +47,17 @@ public class DirectedEdge implements Edge {
     }
 
     @Override
-    public Tuple<Vertice> getVertices() {
+    public Tuple<Vertice<T>> getVertices() {
         return new Tuple<>(start, end);
     }
 
     @Override
-    public Vertice start() {
+    public Vertice<T> start() {
         return this.start;
     }
 
     @Override
-    public Vertice end() {
+    public Vertice<T> end() {
         return this.end;
     }
 
@@ -71,14 +71,14 @@ public class DirectedEdge implements Edge {
             return true;
         }
 
-        if (o.getClass() == this.getClass()) {
-            Edge other = (Edge) o;
-
-            return other.start().equals(this.start) && other.end().equals(this.end)
-                && other.getWeight() == this.value;
+        if (o.getClass() != this.getClass()) {
+            return false;
         }
+        
+        Edge<?> other = (Edge<?>) o;
 
-        return false;
+        return other.start().equals(start) && other.end().equals(end)
+            && other.getWeight() == value;
     }
 
     @Override

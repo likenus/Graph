@@ -1,6 +1,6 @@
 package src.graph.interfaces;
 
-public interface UnionFind {
+public interface UnionFind<T> {
 
     boolean add();
     

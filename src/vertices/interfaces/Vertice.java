@@ -4,13 +4,13 @@ import java.util.List;
 
 import src.edge.interfaces.Edge;
 
-public interface Vertice {
+public interface Vertice<T> {
 
     /**
      * Returns all vertices that can be reached from this vertice.
      * @return A list containing all reachable vertices.
      */
-    List<Vertice> neighbours();
+    List<Vertice<T>> neighbours();
 
     /**
      * Returns the key associated with this vertice.
@@ -18,19 +18,19 @@ public interface Vertice {
      */
     int getKey();
 
-    List<Edge> edges();
+    List<Edge<T>> edges();
 
-    void connectEdge(Edge e);
+    void connectEdge(Edge<T> e);
 
-    void disconnectEdge(Edge e);
+    void disconnectEdge(Edge<T> e);
 
-    void setParent(Vertice v);
+    void setParent(Vertice<T> v);
 
-    Vertice getParent();
+    Vertice<T> getParent();
 
     int degree();
 
-    int getValue();
+    T getValue();
 
-    void setValue(int i);
+    void setValue(T val);
 }

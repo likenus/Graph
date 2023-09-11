@@ -6,9 +6,9 @@ import src.edge.interfaces.Edge;
 import src.util.Tuple;
 import src.vertices.interfaces.Vertice;
 
-public class UndirectedEdge implements Edge {
+public class UndirectedEdge<T> implements Edge<T> {
     
-    protected Tuple<Vertice> vertices;
+    protected Tuple<Vertice<T>> vertices;
     protected int value;
 
     /**
@@ -17,7 +17,7 @@ public class UndirectedEdge implements Edge {
      * @param v The first vertice
      * @param w The second vertice
      */
-    public UndirectedEdge(Vertice v, Vertice w) {
+    public UndirectedEdge(Vertice<T> v, Vertice<T> w) {
         Objects.requireNonNull(v);
         Objects.requireNonNull(w);
         
@@ -25,18 +25,18 @@ public class UndirectedEdge implements Edge {
         this.value = 1;
     }
 
-    public UndirectedEdge(Vertice v, Vertice w, int i) {
+    public UndirectedEdge(Vertice<T> v, Vertice<T> w, int i) {
         this(v, w);
         this.value = i;
     }
 
     @Override
-    public Vertice getOther(Vertice v) {
+    public Vertice<T> getOther(Vertice<T> v) {
         if (!vertices.contains(v)) {
             return null;
         }
 
-        for (Vertice w : this.vertices) {
+        for (Vertice<T> w : this.vertices) {
             if (!v.equals(w)) {
                 return w;
             }
@@ -55,16 +55,15 @@ public class UndirectedEdge implements Edge {
             return true;
         }
 
-        if (o.getClass() == this.getClass()) {
-            Edge other = (Edge) o;
-
-            return (other.getVertices().equals(this.vertices) 
-                || other.getVertices().flip().equals(this.vertices))
-                && other.getWeight() == this.value;
-                
+        if (o.getClass() != this.getClass()) {
+            return false;    
         }
 
-        return false;
+        Edge<?> other = (Edge<?>) o;
+
+        return (other.getVertices().equals(this.vertices) 
+            || other.getVertices().flip().equals(this.vertices))
+            && other.getWeight() == this.value;
     }
 
     @Override
@@ -73,17 +72,17 @@ public class UndirectedEdge implements Edge {
     }
 
     @Override
-    public Tuple<Vertice> getVertices() {
+    public Tuple<Vertice<T>> getVertices() {
         return this.vertices;
     }
 
     @Override
-    public Vertice start() {
+    public Vertice<T> start() {
         return vertices.a();
     }
 
     @Override
-    public Vertice end() {
+    public Vertice<T> end() {
         return vertices.b();
     }
 

@@ -7,13 +7,13 @@ import java.util.List;
 import src.edge.interfaces.Edge;
 import src.vertices.interfaces.Vertice;
 
-public class Node implements Vertice {
+public class Node<T> implements Vertice<T> {
     
     protected final List<Edge> edges;
 
-    protected Vertice parent;
+    protected Vertice<T> parent;
     protected int key;
-    protected int value;
+    protected T value;
 
     public Node(int key) {
         this.edges = new LinkedList<>();
@@ -21,8 +21,8 @@ public class Node implements Vertice {
     }
 
     @Override
-    public List<Vertice> neighbours() {
-        List<Vertice> neighbours = new LinkedList<>();
+    public List<Vertice<T>> neighbours() {
+        List<Vertice<T>> neighbours = new LinkedList<>();
         for (Edge edge : this.edges) {
             neighbours.add(edge.getOther(this));
         }
@@ -50,12 +50,12 @@ public class Node implements Vertice {
     }
 
     @Override
-    public void setParent(Vertice v) {
+    public void setParent(Vertice<T> v) {
         this.parent = v;
     }
 
     @Override
-    public Vertice getParent() {
+    public Vertice<T> getParent() {
         return this.parent;
     }
 
@@ -70,12 +70,12 @@ public class Node implements Vertice {
     }
 
     @Override
-    public int getValue() {
+    public T getValue() {
         return this.value;
     }
 
     @Override
-    public void setValue(int i) {
-        this.value = i;
+    public void setValue(T val) {
+        this.value = val;
     }
 }

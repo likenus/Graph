@@ -5,11 +5,11 @@ import java.util.List;
 import src.edge.interfaces.Edge;
 import src.vertices.interfaces.Vertice;
 
-public interface Graph {
+public interface Graph<T> {
     
-    List<Vertice> neighbours(int key);
+    List<Vertice<T>> neighbours(int key);
 
-    List<Vertice> vertices();
+    List<Vertice<T>> vertices();
 
     boolean add();
 
@@ -17,7 +17,7 @@ public interface Graph {
 
     boolean addEdge(int a, int b);
 
-    Vertice parseVertice(int key);
+    Vertice<T> parseVertice(int key);
 
     void removeEdge(int a, int b);
 
@@ -25,9 +25,9 @@ public interface Graph {
 
     boolean addEdge(int a, int b, int value);
 
-    int value(int a, int b);
+    int weight(int a, int b);
 
-    List<Edge> edges();
+    List<Edge<T>> edges();
 
-    Edge parseEdge(int a, int b);
+    Edge<T> parseEdge(int a, int b);
 }

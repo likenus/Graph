@@ -4,13 +4,13 @@ import java.util.List;
 
 import src.vertices.interfaces.Vertice;
 
-public interface Tree extends Graph {
+public interface Tree<T> extends Graph<T> {
     
     /**
      * Returns the current root of the tree.
      * @return The root
      */
-    Vertice getRoot();
+    Vertice<T> getRoot();
 
     /**
      * Attempts to set the root to the vertice with the associated key. 
@@ -18,5 +18,5 @@ public interface Tree extends Graph {
      */
     void setRoot(int key);
 
-    List<Vertice> pathToRoot(int key);
+    List<Vertice<T>> pathToRoot(int key);
 }

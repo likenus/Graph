@@ -8,9 +8,9 @@ import src.edge.models.DirectedEdge;
 import src.graph.interfaces.Tree;
 import src.vertices.interfaces.Vertice;
 
-public class DirectedTree extends DirectedGraph implements Tree {
+public class DirectedTree<T> extends DirectedGraph<T> implements Tree<T> {
     
-    private Vertice root;
+    private Vertice<T> root;
 
     /**
      * Creates a new empty Directed Tree.
@@ -33,16 +33,16 @@ public class DirectedTree extends DirectedGraph implements Tree {
     }
 
     @Override
-    public Vertice getRoot() {
+    public Vertice<T> getRoot() {
         return this.root;
     }
 
     @Override
     public void setRoot(int key) {
-        Vertice oldRoot = this.root;
-        Vertice newRoot = parseVertice(key);
+        Vertice<T> oldRoot = this.root;
+        Vertice<T> newRoot = parseVertice(key);
 
-        List<Vertice> path = pathToRoot(newRoot);
+        List<Vertice<T>> path = pathToRoot(newRoot);
 
         if (path.isEmpty()) {
             return;
@@ -55,8 +55,8 @@ public class DirectedTree extends DirectedGraph implements Tree {
         }
         
         for (int i = 0; i < path.size() - 1; i++) {
-            Vertice v = path.get(i);
-            Vertice n = path.get(i + 1);
+            Vertice<T> v = path.get(i);
+            Vertice<T> n = path.get(i + 1);
 
             swapEdge(n, v);
         }
@@ -66,19 +66,19 @@ public class DirectedTree extends DirectedGraph implements Tree {
 
     @Override
     public boolean addEdge(int a, int b) {
-        Vertice v = parseVertice(a);
-        Vertice w = parseVertice(b);
+        Vertice<T> v = parseVertice(a);
+        Vertice<T> w = parseVertice(b);
 
         return addEdge(v, w);
     }
 
     @Override
-    protected boolean addEdge(Vertice v, Vertice w) {
+    protected boolean addEdge(Vertice<T> v, Vertice<T> w) {
         if (v == null || w == null || w.equals(this.root)) {
             return false;
         }
 
-        Edge edge = new DirectedEdge(v, w);
+        Edge<T> edge = new DirectedEdge<>(v, w);
 
         if (this.edges.contains(edge)) {
             return false;
@@ -90,7 +90,7 @@ public class DirectedTree extends DirectedGraph implements Tree {
             valid = true;
         }
 
-        for (Edge e : edges) {
+        for (Edge<T> e : edges) {
             if (e.end().equals(w)) {
                 return false;
             }
@@ -109,15 +109,15 @@ public class DirectedTree extends DirectedGraph implements Tree {
         return this.edges.add(edge);
     }
 
-    private List<Vertice> pathToRoot(Vertice vertice) {
-        List<Vertice> path = new LinkedList<>();
+    private List<Vertice<T>> pathToRoot(Vertice<T> vertice) {
+        List<Vertice<T>> path = new LinkedList<>();
 
         if (vertice.equals(root)) {
             return path;
         }
 
         path.add(vertice);
-        Vertice v = vertice;
+        Vertice<T> v = vertice;
 
         while (v.getParent() != null) {
             v = v.getParent();
@@ -128,14 +128,14 @@ public class DirectedTree extends DirectedGraph implements Tree {
     }
 
     @Override
-    public List<Vertice> pathToRoot(int key) {
+    public List<Vertice<T>> pathToRoot(int key) {
         return pathToRoot(parseVertice(key));
     }
 
     @Override
-    protected void removeEdge(Edge e) {
+    protected void removeEdge(Edge<T> e) {
         this.edges.remove(e);
-        for (Vertice v : e.getVertices()) {
+        for (Vertice<T> v : e.getVertices()) {
             v.disconnectEdge(e);
         }
         if (e.end().getParent().equals(e.start())) {

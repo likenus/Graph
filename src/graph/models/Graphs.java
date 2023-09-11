@@ -72,7 +72,7 @@ public final class Graphs {
         return path;
     }
 
-    public static List<Vertice> dijkstra(Graph g, int s, int t) {
+    public static List<Vertice> dijkstra(Graph<?> g, int s, int t) {
         List<Vertice> path = new LinkedList<>();
         boolean[] exploredNodes = new boolean[g.vertices().size()];
 

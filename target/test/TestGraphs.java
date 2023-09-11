@@ -14,8 +14,8 @@ import src.vertices.interfaces.Vertice;
 
 public class TestGraphs {
 
-    private static Graph exampleGraph() {
-        Graph graph = new UndirectedGraph(10);
+    private static <T> Graph<T> exampleGraph() {
+        Graph<T> graph = new UndirectedGraph<>(10);
 
         for (int i = 0; i < 8; i++) {
             graph.addEdge(i, i + 1);
@@ -31,8 +31,8 @@ public class TestGraphs {
         return graph;
     }
     
-    private static Graph weightedExampleGraph() {
-        Graph graph = new UndirectedWeightedGraph(10);
+    private static <T> Graph<T> weightedExampleGraph() {
+        Graph<T> graph = new UndirectedWeightedGraph<>(10);
 
         graph.addEdge(0, 1, 7);
         graph.addEdge(1, 2, 1);
@@ -53,9 +53,9 @@ public class TestGraphs {
 
     @Test
     public void testDijkstra() {
-        Graph graph = weightedExampleGraph();
+        Graph<Object> graph = weightedExampleGraph();
 
-        List<Vertice> path = new LinkedList<>();
+        List<Vertice<Object>> path = new LinkedList<>();
         path.add(graph.parseVertice(0));
         path.add(graph.parseVertice(6));
         path.add(graph.parseVertice(7));
@@ -66,9 +66,9 @@ public class TestGraphs {
 
     @Test
     public void testBFS() {
-        Graph graph = exampleGraph();
+        Graph<Object> graph = exampleGraph();
 
-        List<Vertice> path = new LinkedList<>();
+        List<Vertice<Object>> path = new LinkedList<>();
         path.add(graph.parseVertice(2));
         path.add(graph.parseVertice(1));
         path.add(graph.parseVertice(6));

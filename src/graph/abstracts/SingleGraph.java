@@ -10,13 +10,14 @@ import src.graph.interfaces.Graph;
 import src.vertices.interfaces.Vertice;
 import src.vertices.models.Node;
 
-public abstract class SingleGraph implements Graph {
+public abstract class SingleGraph<T> implements Graph<T> {
 
-    protected final List<Vertice> vertices = new ArrayList<>();
-    protected final List<Edge> edges = new LinkedList<>();
+    protected final List<Vertice<T>> vertices = new ArrayList<>();
+    protected final List<Edge<T>> edges = new LinkedList<>();
     protected int id;
 
     protected SingleGraph() {
+
     }
 
     protected SingleGraph(int i) {
@@ -27,16 +28,16 @@ public abstract class SingleGraph implements Graph {
         this.id  = i;
 
         for (int j = 0; j < i; j++) {
-            Vertice node = new Node(j);
+            Vertice<T> node = new Node<>(j);
             this.vertices.add(j, node);
         }
     }
 
-    protected List<Vertice> neighbours(Vertice v) {
+    protected List<Vertice<T>> neighbours(Vertice<T> v) {
         return v.neighbours();
     }
 
-    protected boolean add(Vertice v) {
+    protected boolean add(Vertice<T> v) {
         if (this.vertices.contains(v)) {
             return false;
         }
@@ -45,8 +46,8 @@ public abstract class SingleGraph implements Graph {
 
     @Override
     public void remove(int key) {
-        Vertice v = parseVertice(key);
-        for (Edge edge : v.edges()) {
+        Vertice<T> v = parseVertice(key);
+        for (Edge<T> edge : v.edges()) {
             removeEdge(edge);
         }
 
@@ -55,7 +56,7 @@ public abstract class SingleGraph implements Graph {
 
     @Override
     public void removeEdge(int a, int b) {
-        Edge edge = parseEdge(a, b);
+        Edge<T> edge = parseEdge(a, b);
 
         if (edge == null) {
             return;
@@ -64,7 +65,7 @@ public abstract class SingleGraph implements Graph {
         removeEdge(edge);
     }
 
-    protected void removeEdge(Edge e) {
+    protected void removeEdge(Edge<T> e) {
         this.edges.remove(e);
     }
 
@@ -74,13 +75,13 @@ public abstract class SingleGraph implements Graph {
     }
 
     @Override
-    public List<Vertice> vertices() {
+    public List<Vertice<T>> vertices() {
         return Collections.unmodifiableList(this.vertices);
     }
 
     @Override
-    public List<Vertice> neighbours(int key) {
-        Vertice v = parseVertice(key);
+    public List<Vertice<T>> neighbours(int key) {
+        Vertice<T> v = parseVertice(key);
 
         if (v != null) {
             return this.neighbours(v);
@@ -91,14 +92,14 @@ public abstract class SingleGraph implements Graph {
 
     @Override
     public boolean add() {
-        Vertice v = new Node(this.id);
+        Vertice<T> v = new Node<>(this.id);
         this.id++;
         return add(v);
     }
     
     @Override
-    public Vertice parseVertice(int key) {
-        for (Vertice vertice : vertices) {
+    public Vertice<T> parseVertice(int key) {
+        for (Vertice<T> vertice : vertices) {
             if (vertice.getKey() == key) {
                 return vertice;
             }
@@ -108,16 +109,16 @@ public abstract class SingleGraph implements Graph {
     }
 
     @Override
-    public List<Edge> edges() {
+    public List<Edge<T>> edges() {
         return Collections.unmodifiableList(this.edges);
     }
 
     @Override
-    public Edge parseEdge(int a, int b) {
-        Vertice v = parseVertice(a);
-        Vertice w = parseVertice(b);
+    public Edge<T> parseEdge(int a, int b) {
+        Vertice<T> v = parseVertice(a);
+        Vertice<T> w = parseVertice(b);
 
-        for (Edge edge : edges) {
+        for (Edge<T> edge : edges) {
             if (edge.getVertices().contains(v) && edge.getVertices().contains(w)) {
                 return edge;
             }
@@ -126,8 +127,8 @@ public abstract class SingleGraph implements Graph {
     }
 
     @Override
-    public int value(int a, int b) {
-        Edge edge = parseEdge(a, b);
+    public int weight(int a, int b) {
+        Edge<T> edge = parseEdge(a, b);
 
         if (edge == null) {
             throw new IllegalArgumentException();
