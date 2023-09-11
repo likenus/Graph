@@ -7,8 +7,8 @@ import java.util.List;
 
 import src.edge.interfaces.Edge;
 import src.graph.interfaces.Graph;
-import src.vertices.Node;
 import src.vertices.interfaces.Vertice;
+import src.vertices.models.Node;
 
 public abstract class SingleGraph implements Graph {
 

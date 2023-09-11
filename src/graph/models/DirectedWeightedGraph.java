@@ -1,7 +1,7 @@
-package src.graph;
+package src.graph.models;
 
-import src.edge.DirectedEdge;
 import src.edge.interfaces.Edge;
+import src.edge.models.DirectedEdge;
 import src.graph.abstracts.SingleGraph;
 import src.vertices.interfaces.Vertice;
 

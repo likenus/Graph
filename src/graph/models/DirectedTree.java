@@ -1,10 +1,10 @@
-package src.graph;
+package src.graph.models;
 
 import java.util.LinkedList;
 import java.util.List;
 
-import src.edge.DirectedEdge;
 import src.edge.interfaces.Edge;
+import src.edge.models.DirectedEdge;
 import src.graph.interfaces.Tree;
 import src.vertices.interfaces.Vertice;
 

@@ -1,9 +1,9 @@
-package src.edge;
+package src.edge.models;
 
 import java.util.Objects;
 
-import src.Tuple;
 import src.edge.interfaces.Edge;
+import src.util.Tuple;
 import src.vertices.interfaces.Vertice;
 
 public class DirectedEdge implements Edge {

@@ -1,6 +1,6 @@
 package src.edge.interfaces;
 
-import src.Tuple;
+import src.util.Tuple;
 import src.vertices.interfaces.Vertice;
 
 /**

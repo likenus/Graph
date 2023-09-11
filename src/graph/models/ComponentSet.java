@@ -1,11 +1,11 @@
-package src.graph;
+package src.graph.models;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 import src.graph.interfaces.UnionFind;
-import src.vertices.Node;
+import src.vertices.models.Node;
 
 public class ComponentSet implements UnionFind {
 
