@@ -38,9 +38,7 @@ public abstract class SingleGraph implements Graph {
     }
 
     protected boolean add(Vertice v) {
-        if (this.vertices.contains(v)) {
-            return false;
-        }
+        // Node is always unique
         return vertices.add(v);
     }
 
@@ -92,7 +90,7 @@ public abstract class SingleGraph implements Graph {
             return this.neighbours(v);
         }
 
-        return Collections.emptyList();
+        return null;
     }
 
     @Override

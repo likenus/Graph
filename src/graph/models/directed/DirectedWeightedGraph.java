@@ -48,13 +48,13 @@ public class DirectedWeightedGraph extends SingleGraph {
         return addEdge(v, w, 1);
     }
 
-    protected void swapEdge(Vertice a, Vertice b) {
+    protected void swapEdge(Vertice a, Vertice b, int value) {
         for (Edge e : a.edges()) {
             if (e.getOther(a).equals(b)) {
                 removeEdge(e);
                 break;
             }
         }
-        this.addEdge(b, a);
+        this.addEdge(b, a, value);
     }
 }

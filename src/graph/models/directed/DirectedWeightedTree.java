@@ -48,7 +48,8 @@ public class DirectedWeightedTree extends DirectedWeightedGraph implements Tree 
         }
 
         if (path.size() == 1) {
-            swapEdge(oldRoot, newRoot);
+            Edge e = parseEdge(oldRoot.getKey(), newRoot.getKey());
+            swapEdge(oldRoot, newRoot, e.getWeight());
             this.root = newRoot;
             return;
         }
@@ -57,7 +58,8 @@ public class DirectedWeightedTree extends DirectedWeightedGraph implements Tree 
             Vertice v = path.get(i);
             Vertice n = path.get(i + 1);
 
-            swapEdge(n, v);
+            Edge e = parseEdge(n.getKey(), v.getKey());
+            swapEdge(n, v, e.getWeight());
         }
 
         this.root = newRoot;
@@ -124,6 +126,10 @@ public class DirectedWeightedTree extends DirectedWeightedGraph implements Tree 
             path.add(v);
         }
 
+        if (!path.get(path.size() - 1).equals(root)) {
+            return null;
+        }
+
         return path;
     }
 
@@ -137,7 +143,12 @@ public class DirectedWeightedTree extends DirectedWeightedGraph implements Tree 
 
     @Override
     public List<Vertice> pathToRoot(int key) {
-        return pathToRoot(parseVertice(key));
+        Vertice v = parseVertice(key);
+        if (v == null) {
+            return null;
+        }
+
+        return pathToRoot(v);
     }
 
     @Override

@@ -72,7 +72,9 @@ public class UndirectedWeightedTree extends UndirectedWeightedGraph implements T
 
     @Override
     public void setRoot(int key) {
-        this.root = this.vertices.get(key);
+        if (uf.find(key) == uf.find(root.getKey())) {
+            this.root = this.vertices.get(key);
+        }
     }
 
     @Override
