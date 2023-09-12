@@ -1,13 +1,10 @@
 package target;
 
 import java.io.IOException;
-import java.util.LinkedList;
 import java.util.List;
 
-import src.edge.interfaces.Edge;
 import src.graph.interfaces.Graph;
 import src.graph.models.directed.DirectedGraph;
-import src.graph.models.directed.DirectedTree;
 import src.graph.models.directed.DirectedWeightedGraph;
 import src.graph.models.directed.DirectedWeightedTree;
 import src.graph.models.undirected.UndirectedGraph;
