@@ -20,10 +20,13 @@ public class Main {
             e.printStackTrace();
         }
 
-        // Graph mst = Graphs.mst(g);
-        // mst.vertices().forEach(v -> System.out.println(v.neighbours()));
+        Graph mst = Graphs.mst(g);
+
+        double t1 = System.currentTimeMillis();
         for (int i = 0; i < 500; i++) {
-            System.out.println(Graphs.dijkstra(g, 0, i));
+            System.out.println(Graphs.bfs(g, 0, i));
         }
+
+        System.out.println((System.currentTimeMillis() - t1) / 1000);
     }
 }

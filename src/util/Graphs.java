@@ -49,6 +49,7 @@ public final class Graphs {
      * Returns null if no path was found.
      */
     public static List<Vertice> bfs(Graph g, int s, int t) {
+        Objects.requireNonNull(g);
 
         List<Vertice> path = new LinkedList<>();
         Vertice[] parents = new Vertice[g.vertices().size()];
@@ -78,26 +79,13 @@ public final class Graphs {
                     exploredNodes[v.getKey()] = true;
                     setParent(parents, v, u);
                 }
+                if (v.equals(target)) {
+                    queue.clear();
+                }
             }
         }
 
-        //Reconstrucing path
-        if (parent(parents, target) == null) {
-            return null;
-        }
-
-        Vertice p = target;
-
-        while (parent(parents, p) != null) {
-            path.add(p);
-            p = parent(parents, p);
-        }
-
-        path.add(start);
-        
-        Collections.reverse(path);
-
-        return path;
+        return reconstructPath(parents, start, target);
     }
 
     /**
@@ -114,6 +102,7 @@ public final class Graphs {
      * Returns null if no path was found.
      */
     public static List<Vertice> dijkstra(Graph g, int s, int t) {
+        Objects.requireNonNull(g);
         
         List<Vertice> path = new LinkedList<>();
         Vertice[] parents = new Vertice[g.vertices().size()];
@@ -122,10 +111,13 @@ public final class Graphs {
         Vertice start = g.parseVertice(s);
         Vertice target = g.parseVertice(t);
 
+        if (start == null || target == null) {
+            return null;
+        }
+
         if (start.equals(target)) {
             return path;
         }
-
 
         double[] distances = new double[g.vertices().size()];
         for (int i = 0; i < distances.length; i++) {
@@ -151,7 +143,12 @@ public final class Graphs {
             }
         }
     
-        //Reconstrucing path
+        return reconstructPath(parents, start, target);
+    }
+
+    private static List<Vertice> reconstructPath(Vertice[] parents, Vertice start, Vertice target) {
+        List<Vertice> path = new LinkedList<>();
+
         if (parent(parents, target) == null) {
             return null;
         }
