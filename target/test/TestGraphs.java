@@ -6,8 +6,8 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
+import src.graph.Graphs;
 import src.graph.interfaces.Graph;
-import src.graph.models.Graphs;
 import src.graph.models.UndirectedGraph;
 import src.graph.models.UndirectedWeightedGraph;
 import src.vertices.interfaces.Vertice;

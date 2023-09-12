@@ -1,4 +1,4 @@
-package src.graph.models;
+package src.graph;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -10,6 +10,10 @@ import src.graph.interfaces.Graph;
 import src.util.BinaryHeap;
 import src.vertices.interfaces.Vertice;
 
+/**
+ * Static utility class for Graphs. This class provides several way finding algorithms and more.
+ * @version 1.0
+ */
 public final class Graphs {
     
     private Graphs() {
