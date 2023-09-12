@@ -6,6 +6,7 @@ import src.edge.interfaces.Edge;
 import src.edge.models.UndirectedEdge;
 import src.graph.interfaces.Tree;
 import src.graph.interfaces.UnionFind;
+import src.util.Graphs;
 import src.vertices.interfaces.Vertice;
 
 public class UndirectedWeightedTree extends UndirectedWeightedGraph implements Tree {

@@ -1,9 +1,10 @@
-package src.graph.models;
+package src.util;
 
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -11,9 +12,14 @@ import src.edge.interfaces.Edge;
 import src.edge.models.UndirectedEdge;
 import src.graph.interfaces.Graph;
 import src.graph.interfaces.UnionFind;
-import src.util.BinaryHeap;
+import src.graph.models.ComponentSet;
+import src.graph.models.DirectedWeightedGraph;
+import src.graph.models.UndirectedWeightedGraph;
 import src.vertices.interfaces.Vertice;
 
+/**
+ * This class consists of static utility methods operating on graphs.
+ */
 public final class Graphs {
     
     private Graphs() {
@@ -156,10 +162,17 @@ public final class Graphs {
      * then all components will be turned into MSTs independently.     
      * </p>
      * This runs in quasi-linear time.
-     * @param g The graph to calculate the mst from
+     * @param g The graph to calculate the mst from, may not be null
      * @return A copy of the original graph as a MST
+     * @throws ClassCastException When input graph is a directed graph
      */
     public static Graph mst(Graph g) {
+        Objects.requireNonNull(g);
+
+        if (g instanceof DirectedWeightedGraph) {
+            throw new ClassCastException();
+        }
+
         Graph copy = new UndirectedWeightedGraph(g.vertices().size());
 
         List<Edge> edges = new LinkedList<>(g.edges());

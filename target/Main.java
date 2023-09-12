@@ -1,14 +1,13 @@
 package target;
 
 import src.graph.interfaces.Graph;
-import src.graph.models.Graphs;
-import src.graph.models.UndirectedTree;
-import src.graph.models.UndirectedWeightedTree;
+import src.graph.models.DirectedWeightedGraph;
+import src.util.Graphs;
 
 public class Main {
     
     public static void main(String[] args) {
-        Graph graph = new UndirectedTree(10);
+        Graph graph = new DirectedWeightedGraph();
 
         graph.addEdge(0, 1, 7);
         graph.addEdge(1, 2, 1);

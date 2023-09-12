@@ -7,9 +7,9 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import src.graph.interfaces.Graph;
-import src.graph.models.Graphs;
 import src.graph.models.UndirectedGraph;
 import src.graph.models.UndirectedWeightedGraph;
+import src.util.Graphs;
 import src.vertices.interfaces.Vertice;
 
 public class TestGraphs {
