@@ -9,6 +9,7 @@ import src.vertices.interfaces.Vertice;
  * This implementation does not fully satsify all criteria of a tree, as this allows for disconnected 
  * tree-components. A more precise definition of the graph would be a forest.
  * This tree does not permit any circles and directed versions always have exactly one defined root.
+ * @see Graph
  * @version 1.2
  */
 public interface Tree extends Graph {

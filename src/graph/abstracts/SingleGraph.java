@@ -102,7 +102,7 @@ public abstract class SingleGraph implements Graph {
     
     @Override
     public Vertice parseVertice(int key) {
-        if (key > vertices.size()) {
+        if (key >= vertices.size()) {
             return null;
         }
         return vertices.get(key);

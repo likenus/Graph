@@ -11,10 +11,11 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import src.edge.interfaces.Edge;
 import src.edge.models.UndirectedEdge;
 import src.graph.interfaces.Graph;
+import src.graph.interfaces.Tree;
 import src.graph.interfaces.UnionFind;
 import src.graph.models.directed.ComponentSet;
 import src.graph.models.directed.DirectedWeightedGraph;
-import src.graph.models.undirected.UndirectedWeightedGraph;
+import src.graph.models.undirected.UndirectedWeightedTree;
 import src.vertices.interfaces.Vertice;
 
 /**
@@ -55,6 +56,10 @@ public final class Graphs {
 
         Vertice start = g.parseVertice(s);
         Vertice target = g.parseVertice(t);
+
+        if (start == null || target == null) {
+            return null;
+        }
 
         if (start.equals(target)) {
             return path;
@@ -122,14 +127,14 @@ public final class Graphs {
         }
 
 
-        int[] distances = new int[g.vertices().size()];
+        double[] distances = new double[g.vertices().size()];
         for (int i = 0; i < distances.length; i++) {
-            distances[i] = Integer.MAX_VALUE;
+            distances[i] = Double.POSITIVE_INFINITY;
         }
         distances[s] = 0;
         BinaryHeap<Vertice> heap = new BinaryHeap<>();
         for (Vertice v : g.vertices()) {
-            heap.push(v, distances[v.getKey()]);
+            heap.push(v, (int) distances[v.getKey()]);
         }
 
         while(!heap.isEmpty()) {
@@ -141,7 +146,7 @@ public final class Graphs {
                     if (!exploredNodes[v.getKey()]) {
                         setParent(parents, v, u);
                     }
-                    heap.decPrio(v, distances[v.getKey()]);
+                    heap.decPrio(v, (int) distances[v.getKey()]);
                 }
             }
         }
@@ -178,14 +183,14 @@ public final class Graphs {
      * @return A copy of the original graph as a MST
      * @throws ClassCastException When input graph is a directed graph
      */
-    public static Graph mst(Graph g) {
+    public static Tree mst(Graph g) {
         Objects.requireNonNull(g);
 
         if (g instanceof DirectedWeightedGraph) {
             throw new ClassCastException();
         }
 
-        Graph copy = new UndirectedWeightedGraph(g.vertices().size());
+        Tree copy = new UndirectedWeightedTree(g.vertices().size());
 
         List<Edge> edges = new LinkedList<>(g.edges());
         for (Edge e : g.edges()) {
@@ -209,5 +214,33 @@ public final class Graphs {
         }
 
         return copy;
+    }
+
+    public static boolean isOneComponent(Graph g) {
+        boolean[] exploredNodes = new boolean[g.vertices().size()];
+
+        Vertice start = g.parseVertice(0);
+        Queue<Vertice> queue = new ConcurrentLinkedQueue<>();
+        queue.add(start);
+        exploredNodes[0] = true;
+
+        // BFS
+        while (!queue.isEmpty()) {
+            Vertice u = queue.poll();
+            for (Vertice v : u.neighbours()) {
+                if (!exploredNodes[v.getKey()]) {
+                    queue.add(v);
+                    exploredNodes[v.getKey()] = true;
+                }
+            }
+        }
+
+        for (boolean explored : exploredNodes) {
+            if(!explored) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

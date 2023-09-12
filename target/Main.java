@@ -1,14 +1,25 @@
 package target;
 
-import src.graph.interfaces.Tree;
-import src.graph.models.directed.DirectedTree;
+import java.io.IOException;
+
+import src.graph.interfaces.Graph;
+import src.util.Graphs;
+
 
 public class Main {
     
     public static void main(String[] args) {
-        Tree tree = new DirectedTree(5);
 
-        tree.addEdge(0, 1, 0);
-        tree.addEdge(1, 2);
+        GraphLoader graphLoader = new GraphLoader();
+        Graph g = null;
+
+        try {
+            g = graphLoader.loadFromFile("Graph2.dat");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println(Graphs.bfs(g, 0, 1));
     }
 }

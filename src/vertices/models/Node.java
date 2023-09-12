@@ -12,7 +12,6 @@ public class Node implements Vertice {
     
     protected final List<Edge> edges;
 
-    protected Vertice parent;
     protected int key;
     protected int value;
 
