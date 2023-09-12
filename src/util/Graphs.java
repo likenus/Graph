@@ -1,4 +1,4 @@
-package src.graph;
+package src.util;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -7,7 +7,6 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import src.graph.interfaces.Graph;
-import src.util.BinaryHeap;
 import src.vertices.interfaces.Vertice;
 
 /**
