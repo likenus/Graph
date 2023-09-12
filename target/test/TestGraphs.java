@@ -31,7 +31,7 @@ public class TestGraphs {
         return graph;
     }
     
-    private static Graph weightedExampleGraph() {
+    public static Graph weightedExampleGraph() {
         Graph graph = new UndirectedWeightedGraph(10);
 
         graph.addEdge(0, 1, 7);

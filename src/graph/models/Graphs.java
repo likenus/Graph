@@ -1,12 +1,16 @@
 package src.graph.models;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import src.edge.interfaces.Edge;
+import src.edge.models.UndirectedEdge;
 import src.graph.interfaces.Graph;
+import src.graph.interfaces.UnionFind;
 import src.util.BinaryHeap;
 import src.vertices.interfaces.Vertice;
 
@@ -18,8 +22,11 @@ public final class Graphs {
 
     /**
      * Uses Breadth First Search to calculate the shortest Path. 
+     * </p>
      * Note: The shortest Path is considered the path with the least amount of edges and
-     * does not account for weighted Graphs.
+     * does not account for weighted Graphs. 
+     * </p>
+     * This runs in linear time. 
      * @param g The Graph to execute the BFS on.
      * @param s The key of the start node.
      * @param t The key of the target node.
@@ -72,6 +79,19 @@ public final class Graphs {
         return path;
     }
 
+    /**
+     * Uses Dijkstras Algorithm to calculate the shortest path from s to t taking weighted edges into account.
+     * </p>
+     * Note: The shortest path is therefore the path with the lowest sum of weights.
+     * </p>
+     * This runs in quasi-linear time.
+     * @param g The Graph to execute the algorithm on.
+     * @param s The key of the start node.
+     * @param t The key of the target node.
+     * @return The shortes Path from s to t with respect to weighted edges including s and t. 
+     * Returns an empty list if {@code s.equals(t)} is true.
+     * Returns null if no path was found.
+     */
     public static List<Vertice> dijkstra(Graph g, int s, int t) {
         List<Vertice> path = new LinkedList<>();
         boolean[] exploredNodes = new boolean[g.vertices().size()];
@@ -125,5 +145,44 @@ public final class Graphs {
         Collections.reverse(path);
 
         return path;
+    }
+
+    /**
+     * Calculates a minimal spanning tree using Kruskal's Algorithm. 
+     * A MST is considered a graph that connects all vertices with the minimal amount of edges (i.e n - 1)
+     * and the lowest total sum of the weight from all edges.
+     * </p>
+     * Note: If the input graph does not form a single component, 
+     * then all components will be turned into MSTs independently.     
+     * </p>
+     * This runs in quasi-linear time.
+     * @param g The graph to calculate the mst from
+     * @return A copy of the original graph as a MST
+     */
+    public static Graph mst(Graph g) {
+        Graph copy = new UndirectedWeightedGraph(g.vertices().size());
+
+        List<Edge> edges = new LinkedList<>(g.edges());
+        for (Edge e : g.edges()) {
+            edges.add(new UndirectedEdge(copy.parseVertice(e.start().getKey())
+                , copy.parseVertice(e.end().getKey()), e.getWeight()));
+        }
+
+        edges.sort(Comparator.comparing(Edge::getWeight));
+        UnionFind uf = new ComponentSet(edges.size());
+
+        Edge edge = edges.get(0);
+        copy.addEdge(edge.start().getKey(), edge.end().getKey(), edge.getWeight());
+
+        for (int i = 1; i < edges.size() - 1; i++) {
+                Edge e = edges.get(i);
+                if (uf.find(e.start().getKey()) != uf.find(e.end().getKey())) {
+                    uf.union(e.start().getKey(), e.end().getKey());
+                    copy.addEdge(e.start().getKey(), e.end().getKey(), e.getWeight());
+                }
+                
+        }
+
+        return copy;
     }
 }
