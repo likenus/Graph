@@ -17,7 +17,7 @@ public abstract class SingleGraph implements Graph {
     protected int id;
 
     protected SingleGraph() {
-        
+
     }
 
     protected SingleGraph(int i) {

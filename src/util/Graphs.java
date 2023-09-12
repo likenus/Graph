@@ -98,7 +98,8 @@ public final class Graphs {
      * @param s The key of the start node.
      * @param t The key of the target node.
      * @return The shortes Path from s to t with respect to weighted edges including s and t. 
-     * Returns an empty list if {@code s.equals(t)} is true.
+     * </p>
+     * Returns an empty list if {@code s == t} is true.
      * Returns null if no path was found.
      */
     public static List<Vertice> dijkstra(Graph g, int s, int t) {
@@ -119,10 +120,8 @@ public final class Graphs {
             return path;
         }
 
-        double[] distances = new double[g.vertices().size()];
-        for (int i = 0; i < distances.length; i++) {
-            distances[i] = Double.POSITIVE_INFINITY;
-        }
+        double[] distances = infinityArray(g.vertices().size());
+
         distances[s] = 0;
         BinaryHeap<Vertice> heap = new BinaryHeap<>();
         for (Vertice v : g.vertices()) {
@@ -131,14 +130,16 @@ public final class Graphs {
 
         while(!heap.isEmpty()) {
             Vertice u = heap.pop();
-            exploredNodes[u.getKey()] = true;
+            int j = u.getKey();
+            exploredNodes[j] = true;
             for (Vertice v : u.neighbours()) {
-                if (distances[v.getKey()] > distances[u.getKey()] + g.parseEdge(u.getKey(), v.getKey()).getWeight()) {
-                    distances[v.getKey()] = distances[u.getKey()] + g.parseEdge(u.getKey(), v.getKey()).getWeight();
-                    if (!exploredNodes[v.getKey()]) {
+                int i = v.getKey();
+                if (distances[i] > distances[j] + g.parseEdge(j, i).getWeight()) {
+                    distances[i] = distances[j] + g.parseEdge(j, i).getWeight();
+                    if (!exploredNodes[i]) {
                         setParent(parents, v, u);
                     }
-                    heap.decPrio(v, (int) distances[v.getKey()]);
+                    heap.decPrio(v, (int) distances[i]);
                 }
             }
         }
@@ -211,6 +212,15 @@ public final class Graphs {
         }
 
         return copy;
+    }
+
+    private static double[] infinityArray(int size) {
+        double[] array = new double[size];
+        for (int i = 0; i < array.length; i++) {
+            array[i] = Double.POSITIVE_INFINITY;
+        }
+
+        return array;
     }
 
     public static boolean isOneComponent(Graph g) {
