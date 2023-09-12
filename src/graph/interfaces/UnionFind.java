@@ -7,4 +7,6 @@ public interface UnionFind {
     void union(int a, int b);
 
     int find(int key);
+
+    int size();
 }

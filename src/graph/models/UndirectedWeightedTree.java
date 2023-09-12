@@ -12,7 +12,7 @@ import src.vertices.interfaces.Vertice;
 public class UndirectedWeightedTree extends UndirectedWeightedGraph implements Tree {
 
     private Vertice root;
-    private final UnionFind uf = new ComponentSet();
+    private UnionFind uf = new ComponentSet();
 
     public UndirectedWeightedTree() {
         super();
@@ -44,6 +44,14 @@ public class UndirectedWeightedTree extends UndirectedWeightedGraph implements T
             return false;
         }
 
+        if (edges.size() < uf.size()) {
+            this.uf = new ComponentSet(vertices.size());
+
+            for (Edge edge : edges) {
+                uf.union(edge.start().getKey(), edge.end().getKey());
+            }
+        }
+
         if (uf.find(v.getKey()) == uf.find(w.getKey())) {
             return false;
         }
@@ -70,5 +78,4 @@ public class UndirectedWeightedTree extends UndirectedWeightedGraph implements T
     public List<Vertice> pathToRoot(int key) {
         return Graphs.bfs(this, this.root.getKey(), key);
     }
-    
 }

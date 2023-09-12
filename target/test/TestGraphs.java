@@ -6,8 +6,11 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
+import src.edge.interfaces.Edge;
 import src.graph.interfaces.Graph;
+import src.graph.interfaces.Tree;
 import src.graph.models.UndirectedGraph;
+import src.graph.models.UndirectedTree;
 import src.graph.models.UndirectedWeightedGraph;
 import src.util.Graphs;
 import src.vertices.interfaces.Vertice;
@@ -75,5 +78,30 @@ public class TestGraphs {
         path.add(graph.parseVertice(9));
 
         Assert.assertEquals(path, Graphs.bfs(graph, 2, 9));
+    }
+
+    @Test
+    public void testTree() {
+        Tree tree = new UndirectedTree(10);
+        tree.addEdge(0, 1);
+        tree.addEdge(1, 2);
+        tree.addEdge(3, 4);
+        tree.addEdge(0, 5);
+        tree.addEdge(5, 6);
+        tree.addEdge(5, 7);
+
+        List<Edge> edges = new LinkedList<>(tree.edges());
+        tree.addEdge(6, 7);
+
+        Assert.assertEquals(edges, tree.edges());
+        
+        System.out.println(tree.edges());
+
+        tree.removeEdge(5, 7);
+        tree.removeEdge(0, 5);
+        tree.addEdge(5, 7);
+        tree.addEdge(0, 5);
+
+        System.out.println(tree.edges());
     }
 }

@@ -73,6 +73,11 @@ public class UndirectedEdge implements Edge {
     }
 
     @Override
+    public String toString() {
+        return "[%s %s, %s]".formatted(vertices.a(), vertices.b(), value);
+    }
+
+    @Override
     public Tuple<Vertice> getVertices() {
         return this.vertices;
     }

@@ -1,36 +1,67 @@
 package src.util;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class BinaryHeap<T> {
 
     private final List<HeapNode> content = new ArrayList<>();
+    private final Map<T, Integer> index = new HashMap<>();
 
+    /**
+     * Adds an element to the heap.
+     * </p> 
+     * This runs in log(n) time.
+     * @param x The element to be added
+     * @param priority The priority of the element
+     */
     public void push(T x, int priority) {
         content.add(new HeapNode(x, priority));
+        index.put(x, size() - 1);
         bubbleUp(size() - 1);
     }
 
+    /**
+     * Removes and retrieves the head of the heap.
+     * </p>
+     * This runs in log(n) time.
+     * @return The elements with the smalles priority from this queue.
+     */
     public T pop() {
         T tmp = content.get(0).getValue();
 
         swap(0, size() - 1);
         content.remove(size() - 1);
+        index.remove(tmp);
         sinkDown(0);
 
         return tmp;
     }
 
+    /**
+     * Returns whether the heap is empty.
+     * @return True if heap is empty
+     */
     public boolean isEmpty() {
         return content.isEmpty();
     }
 
+    /**
+     * Returns the head of the queue without removing it. This will not affect
+     * the internal order of the heap.
+     * @return The element with the lowest priority
+     */
     public T peek() {
         return content.get(0).getValue();
     }
 
+    /**
+     * Returns the current amount of elements inside the heap.
+     * @return the size of the heap
+     */
     public int size() {
         return content.size();
     }
@@ -51,6 +82,8 @@ public class BinaryHeap<T> {
         HeapNode tmp = content.get(v);
         content.set(v, content.get(w));
         content.set(w, tmp);
+        index.replace(content.get(v).getValue(), w);
+        index.replace(content.get(w).getValue(), v);
     }
 
     private void bubbleUp(int v) {
@@ -78,27 +111,27 @@ public class BinaryHeap<T> {
         }
     }
 
+    /**
+     * Decreases the priority of the given element in the queue.
+     * </p>
+     * This runs in expected log(n) time.
+     * @param v The element to reduce the priority of.
+     * @param prio The priority
+     */
     public void decPrio(T v, int prio) {
-        HeapNode n = null;
-        int index = -1;
-        for (HeapNode node : content) {
-            if (node.getValue().equals(v)) {
-                n = node;
-                index = content.indexOf(node);
-            }
-        }
-
-        if (n == null) {
+        Integer i = index.get(v);
+        if (i == null) {
             return;
         }
+        HeapNode n = content.get(i);
 
         int oldPrio = n.getPrio();
         n.setPrio(prio);
 
         if (prio < oldPrio) {
-            bubbleUp(index);
+            bubbleUp(i);
         } else {
-            sinkDown(index);
+            sinkDown(i);
         }
     }
 

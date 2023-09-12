@@ -9,7 +9,7 @@ import src.vertices.models.Node;
 
 public class ComponentSet implements UnionFind {
 
-    private List<UnionFindNode> nodes;
+    private final List<UnionFindNode> nodes;
     private int id = 0;
 
     /**
@@ -41,6 +41,10 @@ public class ComponentSet implements UnionFind {
 
         id++;
         return true;
+    }
+
+    public int size() {
+        return nodes.size();
     }
     
     @Override

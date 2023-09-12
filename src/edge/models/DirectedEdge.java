@@ -87,6 +87,11 @@ public class DirectedEdge implements Edge {
     }
 
     @Override
+    public String toString() {
+        return "[%s %s, %s]".formatted(start, end, value);
+    }
+
+    @Override
     public int getWeight() {
         return this.value;
     }
