@@ -20,6 +20,10 @@ public class Main {
             e.printStackTrace();
         }
 
-        System.out.println(Graphs.bfs(g, 0, 1));
+        // Graph mst = Graphs.mst(g);
+        // mst.vertices().forEach(v -> System.out.println(v.neighbours()));
+        for (int i = 0; i < 500; i++) {
+            System.out.println(Graphs.dijkstra(g, 0, i));
+        }
     }
 }

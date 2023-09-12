@@ -80,10 +80,10 @@ public class BinaryHeap<T> {
 
     private void swap(int v, int w) {
         HeapNode tmp = content.get(v);
-        content.set(v, content.get(w));
-        content.set(w, tmp);
         index.replace(content.get(v).getValue(), w);
         index.replace(content.get(w).getValue(), v);
+        content.set(v, content.get(w));
+        content.set(w, tmp);
     }
 
     private void bubbleUp(int v) {
