@@ -1,4 +1,4 @@
-package src.graph.models;
+package src.graph.models.undirected;
 
 import java.util.List;
 
@@ -6,6 +6,7 @@ import src.edge.interfaces.Edge;
 import src.edge.models.UndirectedEdge;
 import src.graph.interfaces.Tree;
 import src.graph.interfaces.UnionFind;
+import src.graph.models.directed.ComponentSet;
 import src.util.Graphs;
 import src.vertices.interfaces.Vertice;
 

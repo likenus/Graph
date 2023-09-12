@@ -1,7 +1,7 @@
 package target;
 
 import src.graph.interfaces.Tree;
-import src.graph.models.DirectedTree;
+import src.graph.models.directed.DirectedTree;
 
 public class Main {
     

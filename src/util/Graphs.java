@@ -12,9 +12,9 @@ import src.edge.interfaces.Edge;
 import src.edge.models.UndirectedEdge;
 import src.graph.interfaces.Graph;
 import src.graph.interfaces.UnionFind;
-import src.graph.models.ComponentSet;
-import src.graph.models.DirectedWeightedGraph;
-import src.graph.models.UndirectedWeightedGraph;
+import src.graph.models.directed.ComponentSet;
+import src.graph.models.directed.DirectedWeightedGraph;
+import src.graph.models.undirected.UndirectedWeightedGraph;
 import src.vertices.interfaces.Vertice;
 
 /**

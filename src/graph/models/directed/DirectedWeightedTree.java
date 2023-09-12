@@ -1,4 +1,4 @@
-package src.graph.models;
+package src.graph.models.directed;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

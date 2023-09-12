@@ -1,8 +1,9 @@
-package src.graph.models;
+package src.graph.models.directed;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 import src.graph.interfaces.UnionFind;
 import src.vertices.models.Node;
@@ -59,7 +60,7 @@ public class ComponentSet implements UnionFind {
 
         while (!p.getParent().equals(p)) {
             pathToRoot.add(p);
-            p = (UnionFindNode) p.getParent();
+            p = p.getParent();
         }
 
         // Path compression
@@ -115,6 +116,30 @@ public class ComponentSet implements UnionFind {
 
         public void setRank(int i) {
             this.rank = i;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (o == null) {
+                return false;
+            }
+
+            if (o == this) {
+                return true;
+            }
+
+            if (o.getClass() != this.getClass()) {
+                return false;
+            }
+
+            UnionFindNode other = (UnionFindNode) o;
+
+            return other.key == this.key && other.value == this.value && other.rank == this.rank;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(key, value, rank);
         }
     }
 }

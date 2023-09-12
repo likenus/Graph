@@ -9,9 +9,9 @@ import org.junit.Test;
 import src.edge.interfaces.Edge;
 import src.graph.interfaces.Graph;
 import src.graph.interfaces.Tree;
-import src.graph.models.UndirectedGraph;
-import src.graph.models.UndirectedTree;
-import src.graph.models.UndirectedWeightedGraph;
+import src.graph.models.undirected.UndirectedGraph;
+import src.graph.models.undirected.UndirectedTree;
+import src.graph.models.undirected.UndirectedWeightedGraph;
 import src.util.Graphs;
 import src.vertices.interfaces.Vertice;
 

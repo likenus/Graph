@@ -1,4 +1,4 @@
-package src.graph.models;
+package src.graph.models.directed;
 
 import src.edge.interfaces.Edge;
 import src.edge.models.DirectedEdge;

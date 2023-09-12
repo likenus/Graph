@@ -1,4 +1,4 @@
-package src.graph.models;
+package src.graph.models.undirected;
 
 import src.vertices.interfaces.Vertice;
 
