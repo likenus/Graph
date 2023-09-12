@@ -35,6 +35,10 @@ public class Node implements Vertice {
         return this.key;
     }
 
+    public void setKey(int key) {
+        this.key = key;
+    }
+
     @Override
     public void connectEdge(Edge e) {
         this.edges.add(e);
@@ -48,16 +52,6 @@ public class Node implements Vertice {
     @Override
     public String toString() {
         return "" + this.key;
-    }
-
-    @Override
-    public void setParent(Vertice v) {
-        this.parent = v;
-    }
-
-    @Override
-    public Vertice getParent() {
-        return this.parent;
     }
 
     @Override

@@ -18,15 +18,13 @@ public interface Vertice {
      */
     int getKey();
 
+    void setKey(int key);
+
     List<Edge> edges();
 
     void connectEdge(Edge e);
 
     void disconnectEdge(Edge e);
-
-    void setParent(Vertice v);
-
-    Vertice getParent();
 
     int degree();
 

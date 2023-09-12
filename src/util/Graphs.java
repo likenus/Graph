@@ -26,13 +26,21 @@ public final class Graphs {
         throw new UnsupportedOperationException();
     }
 
+    private static Vertice parent(Vertice[] parents, Vertice v) {
+        return parents[v.getKey()];
+    }
+
+    private static void setParent(Vertice[] parents, Vertice v, Vertice w) {
+        parents[v.getKey()] = w;
+    }
+
     /**
      * Uses Breadth First Search to calculate the shortest Path. 
      * </p>
      * Note: The shortest Path is considered the path with the least amount of edges and
-     * does not account for weighted Graphs. 
+     * does not account for weighted Graphs.
      * </p>
-     * This runs in linear time. 
+     * This runs in linear time.
      * @param g The Graph to execute the BFS on.
      * @param s The key of the start node.
      * @param t The key of the target node.
@@ -40,7 +48,9 @@ public final class Graphs {
      * Returns null if no path was found.
      */
     public static List<Vertice> bfs(Graph g, int s, int t) {
+
         List<Vertice> path = new LinkedList<>();
+        Vertice[] parents = new Vertice[g.vertices().size()];
         boolean[] exploredNodes = new boolean[g.vertices().size()];
 
         Vertice start = g.parseVertice(s);
@@ -61,21 +71,21 @@ public final class Graphs {
                 if (!exploredNodes[v.getKey()]) {
                     queue.add(v);
                     exploredNodes[v.getKey()] = true;
-                    v.setParent(u);
+                    setParent(parents, v, u);
                 }
             }
         }
 
         //Reconstrucing path
-        if (target.getParent() == null) {
+        if (parent(parents, target) == null) {
             return null;
         }
 
-        Vertice parent = target;
+        Vertice p = target;
 
-        while (parent.getParent() != null) {
-            path.add(parent);
-            parent = parent.getParent();
+        while (parent(parents, p) != null) {
+            path.add(p);
+            p = parent(parents, p);
         }
 
         path.add(start);
@@ -99,7 +109,9 @@ public final class Graphs {
      * Returns null if no path was found.
      */
     public static List<Vertice> dijkstra(Graph g, int s, int t) {
+        
         List<Vertice> path = new LinkedList<>();
+        Vertice[] parents = new Vertice[g.vertices().size()];
         boolean[] exploredNodes = new boolean[g.vertices().size()];
 
         Vertice start = g.parseVertice(s);
@@ -127,7 +139,7 @@ public final class Graphs {
                 if (distances[v.getKey()] > distances[u.getKey()] + g.parseEdge(u.getKey(), v.getKey()).getWeight()) {
                     distances[v.getKey()] = distances[u.getKey()] + g.parseEdge(u.getKey(), v.getKey()).getWeight();
                     if (!exploredNodes[v.getKey()]) {
-                        v.setParent(u);
+                        setParent(parents, v, u);
                     }
                     heap.decPrio(v, distances[v.getKey()]);
                 }
@@ -135,15 +147,15 @@ public final class Graphs {
         }
     
         //Reconstrucing path
-        if (target.getParent() == null) {
+        if (parent(parents, target) == null) {
             return null;
         }
 
         Vertice parent = target;
 
-        while (parent.getParent() != null) {
+        while (parent(parents, parent) != null) {
             path.add(parent);
-            parent = parent.getParent();
+            parent = parent(parents, parent);
         }
 
         path.add(start);
@@ -162,7 +174,7 @@ public final class Graphs {
      * then all components will be turned into MSTs independently.     
      * </p>
      * This runs in quasi-linear time.
-     * @param g The graph to calculate the mst from, may not be null
+     * @param g The graph to calculate the mst from, may not be null and must be non diretional
      * @return A copy of the original graph as a MST
      * @throws ClassCastException When input graph is a directed graph
      */

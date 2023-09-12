@@ -13,7 +13,7 @@ public class BinaryHeap<T> {
 
     /**
      * Adds an element to the heap.
-     * </p> 
+     * </p>
      * This runs in log(n) time.
      * @param x The element to be added
      * @param priority The priority of the element

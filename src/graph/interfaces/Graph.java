@@ -21,9 +21,11 @@ public interface Graph {
 
     void removeEdge(int a, int b);
 
-    void remove(int key);
-
     boolean addEdge(int a, int b, int value);
+
+    int get(int key);
+
+    void set(int key, int value);
 
     int value(int a, int b);
 

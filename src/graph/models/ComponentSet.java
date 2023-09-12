@@ -94,10 +94,19 @@ public class ComponentSet implements UnionFind {
     private class UnionFindNode extends Node {
 
         private int rank;
+        private UnionFindNode parent;
 
         public UnionFindNode(int key) {
             super(key);
             this.rank = 1;
+        }
+
+        public UnionFindNode getParent() {
+            return parent;
+        }
+
+        public void setParent(UnionFindNode node) {
+            parent = node;
         }
 
         public int getRank() {

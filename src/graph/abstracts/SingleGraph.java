@@ -17,6 +17,7 @@ public abstract class SingleGraph implements Graph {
     protected int id;
 
     protected SingleGraph() {
+        
     }
 
     protected SingleGraph(int i) {
@@ -40,17 +41,22 @@ public abstract class SingleGraph implements Graph {
         if (this.vertices.contains(v)) {
             return false;
         }
-        return this.vertices.add(v);
+        return vertices.add(v);
+    }
+
+    protected void remove(int key) {
+        // To be implemented
+        throw new UnsupportedOperationException();
     }
 
     @Override
-    public void remove(int key) {
-        Vertice v = parseVertice(key);
-        for (Edge edge : v.edges()) {
-            removeEdge(edge);
-        }
+    public int get(int key) {
+        return parseVertice(key).getValue();
+    }
 
-        this.vertices.remove(v);
+    @Override
+    public void set(int key, int value) {
+        parseVertice(key).setValue(value);
     }
 
     @Override
@@ -98,13 +104,10 @@ public abstract class SingleGraph implements Graph {
     
     @Override
     public Vertice parseVertice(int key) {
-        for (Vertice vertice : vertices) {
-            if (vertice.getKey() == key) {
-                return vertice;
-            }
+        if (key > vertices.size()) {
+            return null;
         }
-
-        return null;
+        return vertices.get(key);
     }
 
     @Override
