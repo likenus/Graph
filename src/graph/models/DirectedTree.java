@@ -1,11 +1,5 @@
 package src.graph.models;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
-import src.edge.interfaces.Edge;
-import src.edge.models.DirectedEdge;
 import src.vertices.interfaces.Vertice;
 
 public class DirectedTree extends DirectedWeightedTree {    
