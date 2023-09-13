@@ -55,20 +55,27 @@ public class ComponentSet implements UnionFind {
     }
 
     private UnionFindNode find(UnionFindNode v) {
-        UnionFindNode p = v;
-        List<UnionFindNode> pathToRoot = new LinkedList<>();
-
-        while (!p.getParent().equals(p)) {
-            pathToRoot.add(p);
-            p = p.getParent();
+        if (v.getParent().equals(v)) {
+            return v;
         }
-
-        // Path compression
-        for (UnionFindNode w : pathToRoot) {
-            w.setParent(p);
-        }
-
+        
+        UnionFindNode p = find(v.getParent());
+        v.setParent(p);
         return p;
+
+        // List<UnionFindNode> pathToRoot = new LinkedList<>();
+
+        // while (!p.getParent().equals(p)) {
+        //     pathToRoot.add(p);
+        //     p = p.getParent();
+        // }
+
+        // // Path compression
+        // for (UnionFindNode w : pathToRoot) {
+        //     w.setParent(p);
+        // }
+
+        // return p;
     }
 
     @Override
@@ -100,6 +107,7 @@ public class ComponentSet implements UnionFind {
         public UnionFindNode(int key) {
             super(key);
             this.rank = 1;
+            this.parent = this;
         }
 
         public UnionFindNode getParent() {
