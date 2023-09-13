@@ -109,6 +109,15 @@ public abstract class SingleGraph implements Graph {
     }
 
     @Override
+    public int sizeVertices() {
+        return this.vertices.size();
+    }
+
+    public int sizeEdges() {
+        return this.edges.size();
+    }
+
+    @Override
     public List<Edge> edges() {
         return Collections.unmodifiableList(this.edges);
     }

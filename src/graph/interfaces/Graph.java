@@ -32,4 +32,8 @@ public interface Graph {
     List<Edge> edges();
 
     Edge parseEdge(int a, int b);
+
+    int sizeVertices();
+
+    int sizeEdges();
 }

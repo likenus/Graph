@@ -52,8 +52,8 @@ public final class Graphs {
         Objects.requireNonNull(g);
 
         List<Vertice> path = new LinkedList<>();
-        Vertice[] parents = new Vertice[g.vertices().size()];
-        boolean[] exploredNodes = new boolean[g.vertices().size()];
+        Vertice[] parents = new Vertice[g.sizeVertices()];
+        boolean[] exploredNodes = new boolean[g.sizeVertices()];
 
         Vertice start = g.parseVertice(s);
         Vertice target = g.parseVertice(t);
@@ -106,8 +106,8 @@ public final class Graphs {
         Objects.requireNonNull(g);
         
         List<Vertice> path = new LinkedList<>();
-        Vertice[] parents = new Vertice[g.vertices().size()];
-        boolean[] exploredNodes = new boolean[g.vertices().size()];
+        Vertice[] parents = new Vertice[g.sizeVertices()];
+        boolean[] exploredNodes = new boolean[g.sizeVertices()];
 
         Vertice start = g.parseVertice(s);
         Vertice target = g.parseVertice(t);
@@ -120,7 +120,7 @@ public final class Graphs {
             return path;
         }
 
-        double[] distances = infinityArray(g.vertices().size());
+        double[] distances = infinityArray(g.sizeVertices());
 
         distances[s] = 0;
         BinaryHeap<Vertice> heap = new BinaryHeap<>();
@@ -188,7 +188,7 @@ public final class Graphs {
             throw new ClassCastException();
         }
 
-        Tree copy = new UndirectedWeightedTree(g.vertices().size());
+        Tree copy = new UndirectedWeightedTree(g.sizeVertices());
 
         List<Edge> edges = new LinkedList<>(g.edges());
         for (Edge e : g.edges()) {
@@ -224,7 +224,7 @@ public final class Graphs {
     }
 
     public static boolean isOneComponent(Graph g) {
-        boolean[] exploredNodes = new boolean[g.vertices().size()];
+        boolean[] exploredNodes = new boolean[g.sizeVertices()];
 
         Vertice start = g.parseVertice(0);
         Queue<Vertice> queue = new ConcurrentLinkedQueue<>();

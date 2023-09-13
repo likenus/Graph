@@ -1,7 +1,6 @@
 package src.graph.models.directed;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
@@ -14,7 +13,7 @@ public class ComponentSet implements UnionFind {
     private int id = 0;
 
     /**
-     * Creates a new empty Component Set with a base capacity of 16.
+     * Creates a new empty Component Set.
      */
     public ComponentSet() {
         this.nodes = new ArrayList<>();
@@ -58,24 +57,10 @@ public class ComponentSet implements UnionFind {
         if (v.getParent().equals(v)) {
             return v;
         }
-        
+
         UnionFindNode p = find(v.getParent());
         v.setParent(p);
         return p;
-
-        // List<UnionFindNode> pathToRoot = new LinkedList<>();
-
-        // while (!p.getParent().equals(p)) {
-        //     pathToRoot.add(p);
-        //     p = p.getParent();
-        // }
-
-        // // Path compression
-        // for (UnionFindNode w : pathToRoot) {
-        //     w.setParent(p);
-        // }
-
-        // return p;
     }
 
     @Override
