@@ -46,7 +46,7 @@ public class ComponentSet implements UnionFind {
     public int size() {
         return nodes.size();
     }
-    
+
     @Override
     public int find(int key) {
         UnionFindNode v = nodes.get(key);
