@@ -65,4 +65,27 @@ public class GraphLoader {
 
         return graph;
     }
+
+    /**
+     * Returns a quadratic mesh where adjacent vertices are connected
+     * @param size The length of one side of the quadrat
+     * @return An undirected graph
+     */
+    public UndirectedGraph mesh2D(int size) {
+        UndirectedGraph graph = new UndirectedGraph(size * size);
+
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size - 1; j++) {
+                graph.addEdge(i * size + j, i * size + j + 1);
+            }
+        }
+
+        for (int i = 0; i < size - 1; i++) {
+            for (int j = 0; j < size; j++) {
+                graph.addEdge(size * i + j, size * i + j + size);
+            }
+        }
+
+        return graph;
+    }
 }

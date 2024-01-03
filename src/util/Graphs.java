@@ -14,8 +14,9 @@ import src.graph.interfaces.Graph;
 import src.graph.interfaces.Tree;
 import src.graph.interfaces.UnionFind;
 import src.graph.models.directed.ComponentSet;
-import src.graph.models.directed.DirectedTree;
+import src.graph.models.directed.DirectedGraph;
 import src.graph.models.directed.DirectedWeightedGraph;
+import src.graph.models.undirected.UndirectedGraph;
 import src.graph.models.undirected.UndirectedWeightedTree;
 import src.vertices.interfaces.Vertice;
 
@@ -89,25 +90,35 @@ public final class Graphs {
         return reconstructPath(parents, start, target);
     }
 
+    public static Graph clone(Graph graph) {
+        Graph clone = new UndirectedGraph(graph.sizeVertices());
+        for (Vertice vertice : graph.vertices()) {
+            clone.set(vertice.getKey(), vertice.getValue());
+        }
+        for (Edge edge : graph.edges()) {
+            clone.addEdge(edge.start().getKey(), edge.end().getKey());
+        }
+
+        return clone;
+    }
+
     /**
      * Will calculate the search tree of a breadth first search
      * @param g
      * @param s
      * @return
      */
-    public static DirectedTree bfsTree(Graph g, int s) {
+    public static DirectedGraph bfsTree(Graph g, int s) {
         Objects.requireNonNull(g);
 
         boolean[] exploredNodes = new boolean[g.sizeVertices()];
         
-        DirectedTree tree = new DirectedTree(g.sizeVertices());
+        DirectedGraph tree = new DirectedGraph(g.sizeVertices());
         Vertice start = g.parseVertice(s);
 
         if (start == null) {
             throw new IllegalArgumentException("Start does not exist");
         }
-
-        tree.setRoot(s);
 
         Queue<Vertice> queue = new ConcurrentLinkedQueue<>();
         queue.add(start);
