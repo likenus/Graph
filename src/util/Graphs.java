@@ -14,6 +14,7 @@ import src.graph.interfaces.Graph;
 import src.graph.interfaces.Tree;
 import src.graph.interfaces.UnionFind;
 import src.graph.models.directed.ComponentSet;
+import src.graph.models.directed.DirectedTree;
 import src.graph.models.directed.DirectedWeightedGraph;
 import src.graph.models.undirected.UndirectedWeightedTree;
 import src.vertices.interfaces.Vertice;
@@ -59,7 +60,7 @@ public final class Graphs {
         Vertice target = g.parseVertice(t);
 
         if (start == null || target == null) {
-            return null;
+            throw new IllegalArgumentException("Start or target vertice dont exist.");
         }
 
         if (start.equals(target)) {
@@ -89,6 +90,45 @@ public final class Graphs {
     }
 
     /**
+     * Will calculate the search tree of a breadth first search
+     * @param g
+     * @param s
+     * @return
+     */
+    public static DirectedTree bfsTree(Graph g, int s) {
+        Objects.requireNonNull(g);
+
+        boolean[] exploredNodes = new boolean[g.sizeVertices()];
+        
+        DirectedTree tree = new DirectedTree(g.sizeVertices());
+        Vertice start = g.parseVertice(s);
+
+        if (start == null) {
+            throw new IllegalArgumentException("Start does not exist");
+        }
+
+        tree.setRoot(s);
+
+        Queue<Vertice> queue = new ConcurrentLinkedQueue<>();
+        queue.add(start);
+        exploredNodes[s] = true;
+
+        // BFS
+        while (!queue.isEmpty()) {
+            Vertice u = queue.poll();
+            for (Vertice v : u.neighbours()) {
+                if (!exploredNodes[v.getKey()]) {
+                    queue.add(v);
+                    tree.addEdge(u.getKey(), v.getKey());
+                    exploredNodes[v.getKey()] = true;
+                }
+            }
+        }
+
+        return tree;
+    }
+
+    /**
      * Uses Dijkstras Algorithm to calculate the shortest path from s to t taking weighted edges into account.
      * </p>
      * Note: The shortest path is therefore the path with the lowest sum of weights.
@@ -113,7 +153,7 @@ public final class Graphs {
         Vertice target = g.parseVertice(t);
 
         if (start == null || target == null) {
-            return null;
+            throw new IllegalArgumentException();
         }
 
         if (start.equals(target)) {
@@ -151,7 +191,7 @@ public final class Graphs {
         List<Vertice> path = new LinkedList<>();
 
         if (parent(parents, target) == null) {
-            return null;
+            throw new IllegalArgumentException();
         }
 
         Vertice parent = target;

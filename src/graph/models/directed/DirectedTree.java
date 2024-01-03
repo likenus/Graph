@@ -2,6 +2,9 @@ package src.graph.models.directed;
 
 import src.vertices.interfaces.Vertice;
 
+/**
+ * Undirected unweighted Tree.
+ */
 public class DirectedTree extends DirectedWeightedTree {    
 
     /**

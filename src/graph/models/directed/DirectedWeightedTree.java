@@ -43,7 +43,7 @@ public class DirectedWeightedTree extends DirectedWeightedGraph implements Tree 
 
         List<Vertice> path = pathToRoot(newRoot);
 
-        if (path.isEmpty()) {
+        if (path.isEmpty() && !edges.isEmpty()) {
             return;
         }
 
@@ -88,7 +88,7 @@ public class DirectedWeightedTree extends DirectedWeightedGraph implements Tree 
 
         boolean valid = false;
 
-        if (this.edges.isEmpty()) {
+        if (v.equals(this.root)) {
             valid = true;
         }
 
@@ -127,7 +127,7 @@ public class DirectedWeightedTree extends DirectedWeightedGraph implements Tree 
         }
 
         if (!path.get(path.size() - 1).equals(root)) {
-            return null;
+            return new LinkedList<>();
         }
 
         return path;
@@ -145,7 +145,7 @@ public class DirectedWeightedTree extends DirectedWeightedGraph implements Tree 
     public List<Vertice> pathToRoot(int key) {
         Vertice v = parseVertice(key);
         if (v == null) {
-            return null;
+            throw new IllegalArgumentException("Vertice does not exist");
         }
 
         return pathToRoot(v);
