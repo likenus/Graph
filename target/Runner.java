@@ -56,7 +56,7 @@ public class Runner {
         System.out.println("%.3fs elapsed.".formatted((t2 - t1) / 1000f));
 
         for (WaveCollapseAlgorithm wca : algorithms) {
-            // printGraph(wca.getGraph());
+            printGraph(wca.getGraph());
         }
     }
 

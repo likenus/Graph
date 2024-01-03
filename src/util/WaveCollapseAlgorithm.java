@@ -252,8 +252,8 @@ public class WaveCollapseAlgorithm implements Runnable {
         while (!queue.isEmpty()) {
             Vertice u = queue.poll();
             for (Vertice v : u.neighbours()) {
-                if (isCollapsed.get(u.getKey()).booleanValue()) {
-                    exploredNodes[u.getKey()] = true;
+                if (isCollapsed.get(v.getKey()).booleanValue()) {
+                    exploredNodes[v.getKey()] = true;
                     continue;
                 }
                 if (!exploredNodes[v.getKey()]) {
