@@ -21,7 +21,7 @@ public class Runner {
     public void run() {
         GraphLoader graphLoader = new GraphLoader();
 
-        int[] numbers = {50};
+        int[] numbers = {100};
 
         List<Thread> threads = new ArrayList<>();
         List<WaveCollapseAlgorithm> algorithms = new ArrayList<>();
