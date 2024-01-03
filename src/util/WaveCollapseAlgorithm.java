@@ -3,8 +3,11 @@ package src.util;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
+import java.util.Queue;
 import java.util.Random;
 import java.util.Set;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import src.graph.interfaces.Graph;
 import src.graph.models.directed.DirectedGraph;
@@ -32,7 +35,8 @@ public class WaveCollapseAlgorithm implements Runnable {
         for (int i = 0; i < graph.sizeVertices(); i++) {
             possibilities.add(new HashSet<>());
         }
-        this.graph = Graphs.clone(graph);
+        this.graph = graph;
+        // this.graph = Graphs.clone(graph);
         this.n = graph.sizeVertices();
 
         this.startVertice = this.graph.parseVertice(rnd.nextInt(n));
@@ -72,7 +76,7 @@ public class WaveCollapseAlgorithm implements Runnable {
         finishedCounter++;
         isCollapsed.set(v.getKey(), true);
         
-        DirectedGraph searchTree = Graphs.bfsTree(graph, v.getKey());
+        DirectedGraph searchTree = bfsTree(graph, v.getKey());
 
         for (Vertice w : searchTree.neighbours(v.getKey())) {
             if (isCollapsed.get(w.getKey()).booleanValue()) {
@@ -226,5 +230,40 @@ public class WaveCollapseAlgorithm implements Runnable {
 
     public Graph getGraph() {
         return graph;
+    }
+
+    public DirectedGraph bfsTree(Graph g, int s) {
+        Objects.requireNonNull(g);
+
+        boolean[] exploredNodes = new boolean[g.sizeVertices()];
+        
+        DirectedGraph tree = new DirectedGraph(g.sizeVertices());
+        Vertice start = g.parseVertice(s);
+
+        if (start == null) {
+            throw new IllegalArgumentException("Start does not exist");
+        }
+
+        Queue<Vertice> queue = new ConcurrentLinkedQueue<>();
+        queue.add(start);
+        exploredNodes[s] = true;
+
+        // BFS
+        while (!queue.isEmpty()) {
+            Vertice u = queue.poll();
+            for (Vertice v : u.neighbours()) {
+                if (isCollapsed.get(u.getKey()).booleanValue()) {
+                    exploredNodes[u.getKey()] = true;
+                    continue;
+                }
+                if (!exploredNodes[v.getKey()]) {
+                    queue.add(v);
+                    tree.addEdge(u.getKey(), v.getKey());
+                    exploredNodes[v.getKey()] = true;
+                }
+            }
+        }
+
+        return tree;
     }
 }
