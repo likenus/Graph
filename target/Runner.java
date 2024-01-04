@@ -22,7 +22,7 @@ public class Runner {
     public void run() {
         GraphLoader graphLoader = new GraphLoader();
 
-        int[] numbers = {100};
+        int[] numbers = {5};
 
         List<Thread> threads = new ArrayList<>();
         List<WaveCollapseAlgorithm> algorithms = new ArrayList<>();
@@ -30,7 +30,7 @@ public class Runner {
         System.out.println("Initializing...");
 
         for (int n : numbers) {
-            WaveCollapseAlgorithm wca = new WaveCollapseAlgorithm(graphLoader.plane(200, 100));
+            WaveCollapseAlgorithm wca = new WaveCollapseAlgorithm(graphLoader.zylinder(n));
             algorithms.add(wca);
             threads.add(new Thread(wca));
         }
@@ -59,6 +59,7 @@ public class Runner {
             } catch (InterruptedException exception) {
                 exception.printStackTrace();
             }
+            printGraph(algorithms.get(0).getGraph());
         }
 
         long t2 = System.currentTimeMillis();
@@ -71,8 +72,8 @@ public class Runner {
 
     public static void printGraph(Graph g) {
 
-        int width = 200;
-        int height = 100;
+        int width = 5;
+        int height = 5;
 
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < height; i++) {

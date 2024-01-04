@@ -109,7 +109,7 @@ public class GraphLoader {
         return zylinder(size, size);
     }
 
-    public UndirectedGraph plane(int width, int height) {
+    public UndirectedGraph donut(int width, int height) {
         UndirectedGraph graph = zylinder(width, height);
 
         for (int i = 0; i < width; i++) {
@@ -119,7 +119,32 @@ public class GraphLoader {
         return graph;
     }
 
-    public UndirectedGraph plane(int size) {
-        return plane(size, size);
+    public UndirectedGraph donut(int size) {
+        return donut(size, size);
+    }
+
+    public UndirectedGraph rnd(int size) {
+        UndirectedGraph graph = new UndirectedGraph(size * size);
+
+        // for (int i = 0; i < size; i++) {
+        //     for (int j = 0; j < size - 2; j++) {
+        //         graph.addEdge(i * size + j, i * size + j + 2);
+        //     }
+        // }
+
+        // for (int i = 0; i < size - 2; i++) {
+        //     for (int j = 0; j < size; j++) {
+        //         graph.addEdge(size * i + j, size * i + j + 2 * size);
+        //     }
+        // }
+
+        for (int i = 0; i < size - 1; i++) {
+            for (int j = 1; j < size - 1; j++) {
+                graph.addEdge(size * i + j, size * (i + 1) + j - 1);
+                graph.addEdge(size * i + j, size * (i + 1) + j + 1);
+            }
+        }
+
+        return graph;
     }
 }

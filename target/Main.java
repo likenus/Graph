@@ -14,15 +14,7 @@ public class Main {
     private static void foo() {
         GraphLoader graphLoader = new GraphLoader();
         Graph g = graphLoader.mesh2D(3);
-
-        // try {
-        //     g = graphLoader.loadFromFile("Graph.dat");
-
-        // } catch (IOException e) {
-        //     e.printStackTrace();
-        // }
         
-
         g.vertices().forEach(v -> System.out.println("[%d]".formatted(v.getKey()) + v.neighbours()));
     }
 }
