@@ -2,6 +2,7 @@ package src.util;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -64,11 +65,6 @@ public class WaveCollapseAlgorithm implements Runnable {
         collapse(startVertice);
         while (!finished) {
             Vertice v = findLowestEntropy();
-            for (Vertice vertice : graph.vertices()) {
-                if (vertice.getValue() == -1 ) {
-                    vertice.setValue(0);
-                }
-            }
             collapse(v);
         }
     }
@@ -278,6 +274,14 @@ public class WaveCollapseAlgorithm implements Runnable {
 
     public Graph getGraph() {
         return graph;
+    }
+
+    public List<Boolean> getIsCollapsed() {
+        return Collections.unmodifiableList(isCollapsed);
+    }
+
+    public List<Set<Integer>> getPossibilities() {
+        return Collections.unmodifiableList(possibilities);
     }
 
     private DirectedGraph bfsTree(Graph g, int s) {

@@ -2,9 +2,12 @@ package target;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 import src.graph.models.undirected.Mesh2D;
 import src.util.WaveCollapseAlgorithm;
+import src.vertices.interfaces.Vertice;
 
 public class Runner {
 
@@ -120,5 +123,36 @@ public class Runner {
         }
         System.out.println(sb.toString() + ANSI_RESET);
         System.out.println();
+    }
+
+    private void foo(WaveCollapseAlgorithm wca) {
+
+        Graph graph = wca.getGraph();
+        List<Boolean> isCollapsed = wca.getIsCollapsed();
+        List<Set<Integer>> possibilities = wca.getPossibilities();
+
+        List<Vertice> notEvaluated = graph.vertices().stream()
+            .filter(v -> !isCollapsed.get(v.getKey()))
+            .toList();
+        
+        Optional<Integer> min = notEvaluated.stream()
+            .map(v -> possibilities.get(v.getKey()).size())
+            .min(Integer::compare);
+
+        if (!min.isPresent()) {
+            return;
+        }
+
+        notEvaluated.stream()
+            .filter(v -> possibilities.get(v.getKey()).size() == min.get())
+            .forEach(v -> v.setValue(-1));
+           
+        printGraph(graph);
+
+        for (Vertice vertice : graph.vertices()) {
+            if (vertice.getValue() == -1 ) {
+                vertice.setValue(0);
+            }
+        }
     }
 }

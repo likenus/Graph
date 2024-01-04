@@ -94,6 +94,6 @@ public class Node implements Vertice {
 
     @Override
     public int hashCode() {
-        return Objects.hash(key, value);
+        return Objects.hash(key);
     }
 }
