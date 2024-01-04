@@ -9,12 +9,13 @@ import src.graph.interfaces.Graph;
 import src.vertices.interfaces.Vertice;
 
 /**
- * Adjacent integers amy only have a value-difference of exaclty 1
+ * In this ruleset integers in adjacent tiles may only have a difference of exaclty 1.
  */
 public class NumbersRuleset implements Ruleset {
 
     private static final Set<Integer> NUMBERS = Set.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
     
+    @Override
     public Set<Integer> ruleset(Graph graph, Vertice v, List<Set<Integer>> possibilities) {
         List<Set<Integer>> allPossibleInts = new ArrayList<>();
     

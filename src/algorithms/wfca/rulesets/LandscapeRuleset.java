@@ -9,6 +9,10 @@ import java.util.Set;
 import src.graph.interfaces.Graph;
 import src.vertices.interfaces.Vertice;
 
+/**
+ * This ruleset attempts to paint a landscape like image. Its rules say that water and land
+ * may not be adjacent and must be connected via a beach.
+ */
 public class LandscapeRuleset implements Ruleset {
 
     public static final String ANSI_RESET = "\u001B[0m";
