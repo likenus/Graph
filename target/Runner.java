@@ -17,6 +17,7 @@ public class Runner {
     public static final String ANSI_PURPLE = "\u001B[35m";
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_WHITE = "\u001B[37m";
+    public static final String TILE_SYMBOL = "■";
 
     public void run() {
         GraphLoader graphLoader = new GraphLoader();
@@ -26,11 +27,15 @@ public class Runner {
         List<Thread> threads = new ArrayList<>();
         List<WaveCollapseAlgorithm> algorithms = new ArrayList<>();
 
+        System.out.println("Initializing...");
+
         for (int n : numbers) {
-            WaveCollapseAlgorithm wca = new WaveCollapseAlgorithm(graphLoader.mesh2D(n));
+            WaveCollapseAlgorithm wca = new WaveCollapseAlgorithm(graphLoader.plane(200, 100));
             algorithms.add(wca);
             threads.add(new Thread(wca));
         }
+
+        System.out.println("Starting Threads...");
 
         long t1 = System.currentTimeMillis();
 
@@ -41,10 +46,14 @@ public class Runner {
         while (threads.stream().anyMatch(Thread::isAlive)) {
             long t2 = System.currentTimeMillis();
             System.out.print("Calculating... ");
+            double progressAvg = 1e-20;
             for (WaveCollapseAlgorithm wca : algorithms) {
-                System.out.print("| %.2f%% |".formatted(wca.getProgress() * 100));
+                double progress = wca.getProgress();
+                System.out.print("| %.2f%% |".formatted(progress * 100));
+                progressAvg += progress;
             }
-            System.out.println(" %.3fs elapsed.".formatted((t2 - t1) / 1000f));
+            progressAvg /= algorithms.size();
+            System.out.println(" %.3fs elapsed | Estimated time remaining: %.3fs.".formatted((t2 - t1) / 1000f, ((t2 - t1) / 1000f) / progressAvg - (t2 - t1) / 1000f));
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException exception) {
@@ -62,36 +71,36 @@ public class Runner {
 
     public static void printGraph(Graph g) {
 
-        int n = (int) Math.sqrt(g.sizeVertices());
+        int width = 200;
+        int height = 100;
 
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                int x = g.get(n * i + j);
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                int x = g.get(width * i + j);
                 String c;
                 switch(x) {
-                    case 1:  c = ANSI_GREEN + "X" + ANSI_RESET;
+                    case 1:  c = ANSI_GREEN + TILE_SYMBOL;
                         break;
-                    case 2:  c = ANSI_YELLOW + "X" + ANSI_RESET;
+                    case 2:  c = ANSI_YELLOW + TILE_SYMBOL;
                         break;
-                    case 3:  c = ANSI_CYAN + "X" + ANSI_RESET;
+                    case 3:  c = ANSI_CYAN + TILE_SYMBOL;
                         break;
-                    case 4:  c = ANSI_BLACK + "X" + ANSI_RESET;
+                    case 4:  c = ANSI_BLACK + TILE_SYMBOL;
                         break;
-                    case 5:  c = ANSI_BLUE + "X" + ANSI_RESET;
+                    case 5:  c = ANSI_BLUE + TILE_SYMBOL;
                         break;
-                    case -1: c = ANSI_RED + "X" + ANSI_RESET;
+                    case -1: c = ANSI_RED + TILE_SYMBOL;
                         break;
                     default: c = " ";
                 }
                 sb.append(c + " ");
             }
-            if (i < n - 1) {
+            if (i < height - 1) {
                 sb.append(System.lineSeparator());
             }
         }
-
-        System.out.println(sb.toString());
+        System.out.println(sb.toString() + ANSI_RESET);
         System.out.println();
     }
 }

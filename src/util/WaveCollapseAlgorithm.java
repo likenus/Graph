@@ -66,7 +66,7 @@ public class WaveCollapseAlgorithm implements Runnable {
         Set<Integer> possibleInts = possibilities.get(v.getKey());
 
         if (possibleInts.isEmpty()) {
-            throw new IllegalStateException();
+            throw new IllegalStateException("Evaluation not possible");
         }
 
         int key = possibleInts.stream().toList().get(rnd.nextInt(possibleInts.size()));
