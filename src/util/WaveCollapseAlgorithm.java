@@ -25,6 +25,7 @@ import target.Runner;
 public class WaveCollapseAlgorithm implements Runnable {
 
     private static final List<Integer> NUMBERS = List.of(1, 2, 3, 4, 5);
+    private static final int MAX_BFS_DEPTH = 6;
 
     private final Graph graph;
     private final List<Boolean> isCollapsed = new ArrayList<>();
@@ -265,7 +266,8 @@ public class WaveCollapseAlgorithm implements Runnable {
         Objects.requireNonNull(g);
 
         boolean[] exploredNodes = new boolean[g.sizeVertices()];
-        
+        int[] distances = new int[g.sizeVertices()];
+
         DirectedGraph tree = new DirectedGraph(g.sizeVertices());
         Vertice start = g.parseVertice(s);
 
@@ -276,10 +278,14 @@ public class WaveCollapseAlgorithm implements Runnable {
         Queue<Vertice> queue = new ConcurrentLinkedQueue<>();
         queue.add(start);
         exploredNodes[s] = true;
+        distances[s] = 0;
 
         // BFS
         while (!queue.isEmpty()) {
             Vertice u = queue.poll();
+            if (distances[u.getKey()] > MAX_BFS_DEPTH) {
+                continue;
+            }
             for (Vertice v : u.neighbours()) {
                 if (isCollapsed.get(v.getKey()).booleanValue()) {
                     exploredNodes[v.getKey()] = true;
@@ -287,6 +293,7 @@ public class WaveCollapseAlgorithm implements Runnable {
                 }
                 if (!exploredNodes[v.getKey()]) {
                     queue.add(v);
+                    distances[v.getKey()] = distances[u.getKey()] + 1;
                     tree.addEdge(u.getKey(), v.getKey());
                     exploredNodes[v.getKey()] = true;
                 }
