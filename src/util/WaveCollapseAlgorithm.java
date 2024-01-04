@@ -61,7 +61,7 @@ public class WaveCollapseAlgorithm implements Runnable {
     }
 
     private void evaluate() {
-        collapse(startVertice);
+        collapse(startVertice, false);
         while (!finished) {
             Vertice v = findLowestEntropy();
             for (Vertice vertice : graph.vertices()) {
@@ -69,11 +69,11 @@ public class WaveCollapseAlgorithm implements Runnable {
                     vertice.setValue(0);
                 }
             }
-            collapse(v);
+            collapse(v, false);
         }
     }
 
-    private void collapse(Vertice v) {
+    private void collapse(Vertice v, boolean instant) {
         Set<Integer> possibleInts = possibilities.get(v.getKey());
 
         if (possibleInts.isEmpty()) {
@@ -91,42 +91,23 @@ public class WaveCollapseAlgorithm implements Runnable {
         possibilities.set(v.getKey(), Set.of(value));
         finishedCounter++;
         isCollapsed.set(v.getKey(), true);
-        
-        DirectedGraph searchTree = bfsTree(graph, v.getKey());
 
+        if (finishedCounter == n) {
+            finished = true;
+        }
+
+        if (instant) {
+            return;
+        }
+
+        DirectedGraph searchTree = bfsTree(graph, v.getKey());
         for (Vertice w : searchTree.neighbours(v.getKey())) {
             if (isCollapsed.get(w.getKey()).booleanValue()) {
                 continue;
             }
             update(w, searchTree);
         }
-        if (finishedCounter == n) {
-            finished = true;
-        }
-    }
 
-    private void instantCollapse(Vertice v) {
-        Set<Integer> possibleInts = possibilities.get(v.getKey());
-
-        if (possibleInts.isEmpty()) {
-            System.err.println("Trying to reevaluate");
-            possibleInts = ruleset(v);
-            if (possibleInts.isEmpty()) {
-                System.err.println("A critical error has occurred: Evaluation not possible");
-                possibleInts = Set.of(-1);
-            }
-        }
-
-        int value = possibleInts.stream().toList().get(0);
-        v.setValue(value);
-
-        possibilities.set(v.getKey(), Set.of(value));
-        finishedCounter++;
-        isCollapsed.set(v.getKey(), true);
-
-        if (finishedCounter == n) {
-            finished = true;
-        }
     }
 
     private Vertice findLowestEntropy() {
@@ -158,7 +139,7 @@ public class WaveCollapseAlgorithm implements Runnable {
         }
 
         if (possibleInts.size() == 1) {
-            instantCollapse(graph.parseVertice(v.getKey()));
+            collapse(graph.parseVertice(v.getKey()), true);
         }
     }
 
