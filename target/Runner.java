@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import src.graph.interfaces.Graph;
+import src.graph.models.undirected.Mesh2D;
 import src.util.WaveCollapseAlgorithm;
 
 public class Runner {
@@ -30,7 +31,7 @@ public class Runner {
         System.out.println("Initializing...");
 
         for (int n : numbers) {
-            WaveCollapseAlgorithm wca = new WaveCollapseAlgorithm(graphLoader.plane(200, 100));
+            WaveCollapseAlgorithm wca = new WaveCollapseAlgorithm(graphLoader.zylinder(n));
             algorithms.add(wca);
             threads.add(new Thread(wca));
         }
@@ -65,19 +66,19 @@ public class Runner {
         System.out.println("%.3fs elapsed.".formatted((t2 - t1) / 1000f));
 
         for (WaveCollapseAlgorithm wca : algorithms) {
-            printGraph(wca.getGraph());
+            printGraph((Mesh2D) wca.getGraph());
         }
     }
 
-    public static void printGraph(Graph g) {
+    public static void printGraph(Mesh2D mesh) {
 
-        int width = 200;
-        int height = 100;
+        int width = mesh.getWidth();
+        int height = mesh.getHeight();
 
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                int x = g.get(width * i + j);
+                int x = mesh.getValue(width * i + j);
                 String c;
                 switch(x) {
                     case 1:  c = ANSI_GREEN + TILE_SYMBOL;

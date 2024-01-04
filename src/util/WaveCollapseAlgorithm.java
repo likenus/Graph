@@ -14,7 +14,11 @@ import src.graph.models.directed.DirectedGraph;
 import src.vertices.interfaces.Vertice;
 
 /**
- * WaveCollapseAlgorithm
+ * The Wave Function Collapse Algorithm, short WaveCollapseAlgorithm,
+ * is a algorithm for procedual generation.
+ * </p>
+ * This implementation uses graphs as a basis and a fixed ruleset to
+ * generate randomized patterns. 
  */
 public class WaveCollapseAlgorithm implements Runnable {
 
@@ -36,7 +40,6 @@ public class WaveCollapseAlgorithm implements Runnable {
             possibilities.add(new HashSet<>());
         }
         this.graph = graph;
-        // this.graph = Graphs.clone(graph);
         this.n = graph.sizeVertices();
 
         this.startVertice = this.graph.parseVertice(rnd.nextInt(n));

@@ -48,7 +48,7 @@ public abstract class SingleGraph implements Graph {
     }
 
     @Override
-    public int get(int key) {
+    public int getValue(int key) {
         return parseVertice(key).getValue();
     }
 
@@ -94,7 +94,7 @@ public abstract class SingleGraph implements Graph {
     }
 
     @Override
-    public boolean add() {
+    public boolean addVertice() {
         Vertice v = new Node(this.id);
         this.id++;
         return add(v);

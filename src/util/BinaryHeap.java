@@ -1,12 +1,14 @@
 package src.util;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 
-public class BinaryHeap<T> {
+public class BinaryHeap<T> implements Iterable<T> {
 
     private final List<HeapNode> content = new ArrayList<>();
     private final Map<T, Integer> index = new HashMap<>();
@@ -56,6 +58,15 @@ public class BinaryHeap<T> {
      */
     public T peek() {
         return content.get(0).getValue();
+    }
+
+    /**
+     * Returns a view of the contents of the heap.
+     * Changes made to this List will be reflected in the Heap.
+     * @return A unmodifiable view of the contents.
+     */
+    public List<T> contents() {
+        return Collections.unmodifiableList(index.keySet().stream().toList());
     }
 
     /**
@@ -156,5 +167,10 @@ public class BinaryHeap<T> {
         public void setPrio(int p) {
             this.priority = p;
         }
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return contents().iterator();
     }
 }
