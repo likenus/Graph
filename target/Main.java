@@ -1,6 +1,7 @@
 package target;
 
 import src.graph.interfaces.Graph;
+import src.util.Graphs;
 
 public class Main {
     
@@ -8,14 +9,14 @@ public class Main {
 
         Runner runner = new Runner();
 
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 1; i++)
             runner.run();
     }
 
     private static void foo() {
         GraphLoader graphLoader = new GraphLoader();
-        Graph g = graphLoader.mesh2D(3);
+        Graph g = graphLoader.rnd(100);
         
-        g.vertices().forEach(v -> System.out.println("[%d]".formatted(v.getKey()) + v.neighbours()));
+        System.out.println(Graphs.isOneComponent(g));
     }
 }

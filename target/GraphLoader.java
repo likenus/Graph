@@ -115,17 +115,17 @@ public class GraphLoader {
     public UndirectedGraph rnd(int size) {
         UndirectedGraph graph = new UndirectedGraph(size * size);
 
-        // for (int i = 0; i < size; i++) {
-        //     for (int j = 0; j < size - 2; j++) {
-        //         graph.addEdge(i * size + j, i * size + j + 2);
-        //     }
-        // }
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size - 2; j++) {
+                graph.addEdge(i * size + j, i * size + j + 2);
+            }
+        }
 
-        // for (int i = 0; i < size - 2; i++) {
-        //     for (int j = 0; j < size; j++) {
-        //         graph.addEdge(size * i + j, size * i + j + 2 * size);
-        //     }
-        // }
+        for (int i = 0; i < size - 2; i++) {
+            for (int j = 0; j < size; j++) {
+                graph.addEdge(size * i + j, size * i + j + 2 * size);
+            }
+        }
 
         for (int i = 0; i < size - 1; i++) {
             for (int j = 1; j < size - 1; j++) {

@@ -1,7 +1,7 @@
 package src.util;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -12,8 +12,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import src.graph.interfaces.Graph;
 import src.graph.models.directed.DirectedGraph;
+import src.graph.models.undirected.Mesh2D;
 import src.vertices.interfaces.Vertice;
-import target.Runner;
 
 /**
  * The Wave Function Collapse Algorithm, short WaveCollapseAlgorithm,
@@ -24,24 +24,28 @@ import target.Runner;
  */
 public class WaveCollapseAlgorithm implements Runnable {
 
-    private static final List<Integer> NUMBERS = List.of(1, 2, 3, 4, 5);
     private static final int MAX_BFS_DEPTH = 6;
+    private static final List<Integer> NUMBERS = List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
 
     private final Graph graph;
     private final List<Boolean> isCollapsed = new ArrayList<>();
     private final BinaryHeap<Vertice> notCollapsed = new BinaryHeap<>();
     private final List<Set<Integer>> possibilities = new ArrayList<>();
-    private final Random rnd = new Random();
+    private final Random rnd;
     private final int n;
     private final Vertice startVertice;
 
     private boolean finished = false;
     private int finishedCounter = 0;
 
-    public WaveCollapseAlgorithm(Graph graph) {
+    private WaveCollapseAlgorithm(Graph graph, Random rnd) {
+        
+        this.rnd = rnd;
+        
         for (int i = 0; i < graph.sizeVertices(); i++) {
             possibilities.add(new HashSet<>());
         }
+
         this.graph = graph;
         this.n = graph.sizeVertices();
 
@@ -54,6 +58,14 @@ public class WaveCollapseAlgorithm implements Runnable {
             isCollapsed.add(false);
             possibilities.set(v.getKey(), new HashSet<>(NUMBERS));
         }
+    }
+
+    public WaveCollapseAlgorithm(Graph graph) {
+        this(graph, new Random());
+    }
+
+    public WaveCollapseAlgorithm(Graph graph, long seed) {
+        this(graph, new Random(seed));
     }
 
     @Override
@@ -77,11 +89,12 @@ public class WaveCollapseAlgorithm implements Runnable {
     private void collapse(Vertice v, boolean instant) {
         Set<Integer> possibleInts = possibilities.get(v.getKey());
 
+        // Experimental
         if (possibleInts.isEmpty()) {
-            System.err.println(Runner.ANSI_RED + "Trying to reevaluate" + Runner.ANSI_RESET);
-            possibleInts = ruleset(v);
+            System.err.println(Tiles.ANSI_RED + "Trying to reevaluate" + Tiles.ANSI_RESET);
+            possibleInts = ruleset3(v);
             if (possibleInts.isEmpty()) {
-                System.err.println(Runner.ANSI_RED + "A critical error has occurred: Evaluation not possible" + Runner.ANSI_RESET);
+                System.err.println(Tiles.ANSI_RED + "A critical error has occurred: Evaluation not possible" + Tiles.ANSI_RESET);
                 possibleInts = Set.of(-1);
             }
         }
@@ -112,6 +125,7 @@ public class WaveCollapseAlgorithm implements Runnable {
     }
 
     private Vertice findLowestEntropy() {
+        // Experimental
         while (isCollapsed.get(notCollapsed.peek().getKey()).booleanValue()) {
             notCollapsed.pop();
         }
@@ -122,7 +136,7 @@ public class WaveCollapseAlgorithm implements Runnable {
     private void update(Vertice v, DirectedGraph searchTree) {
         boolean changed = false;
 
-        Set<Integer> possibleInts = ruleset2(v);
+        Set<Integer> possibleInts = ruleset3(v);
         
         if (!possibilities.get(v.getKey()).equals(possibleInts)) {
             possibilities.set(v.getKey(), possibleInts);
@@ -139,9 +153,10 @@ public class WaveCollapseAlgorithm implements Runnable {
             }
         }
 
-        if (possibleInts.size() == 1) {
-            collapse(graph.parseVertice(v.getKey()), true);
-        }
+        // Experimental
+        // if (possibleInts.size() == 1) {
+        //     instantCollapse(graph.parseVertice(v.getKey()));
+        // }
     }
 
     /**
@@ -160,51 +175,25 @@ public class WaveCollapseAlgorithm implements Runnable {
 
             Set<Integer> neighbourInts = possibilities.get(neighbours.get(i).getKey());
             
-            /*
-             * 1 -> Terrain
-             * 2 -> Beach
-             * 3 -> Water
-             * 4 -> Mountain
-             * 5 -> Deep Water
-             */
-            if (neighbourInts.contains(1)) {
-                ints.add(1);
-                ints.add(2);
-                ints.add(4);
-            }
-            if (neighbourInts.contains(2)) {
-                ints.add(1);
-                ints.add(2);
-                ints.add(3);
-            }
-            if (neighbourInts.contains(3)) {
-                ints.add(2);
-                ints.add(3);
-                ints.add(5);
-            }
-            if (neighbourInts.contains(4)) {
-                ints.add(1);
-                ints.add(4);
-            }
-            if (neighbourInts.contains(5)) {
-                ints.add(3);
-                ints.add(5);
+            for (Tiles tile : Tiles.values()) {
+                if (neighbourInts.contains(tile.getIdentifier())) {
+                    ints.addAll(tile.getNeighbours());
+                }
             }
         }
 
         Set<Integer> possibleInts = new HashSet<>();
 
         if (allPossibleInts.stream().filter(set -> set.size() == 2).count() >= 2) {
-            if (allPossibleInts.stream().allMatch(set -> set.contains(4))) {
-                possibleInts.add(4);
+            if (allPossibleInts.stream().allMatch(set -> set.contains(Tiles.DEEP_WATER.getIdentifier()))) {
+                possibleInts.add(Tiles.DEEP_WATER.getIdentifier());
                 return possibleInts;
             }
-            if (allPossibleInts.stream().allMatch(set -> set.contains(5))) {
-                possibleInts.add(5);
+            if (allPossibleInts.stream().allMatch(set -> set.contains(Tiles.FOREST.getIdentifier()))) {
+                possibleInts.add(Tiles.FOREST.getIdentifier());
                 return possibleInts;
             }
         }
-
 
         for (int i : NUMBERS) {
             Integer num = i;
@@ -254,12 +243,138 @@ public class WaveCollapseAlgorithm implements Runnable {
         return possibleInts;
     }
 
+    private Set<Integer> ruleset3(Vertice v) {
+        Mesh2D mesh = (Mesh2D) this.graph;
+
+        List<Set<Integer>> allPossibleInts = new ArrayList<>();
+
+        List<Vertice> neighbours = graph.neighbours(v.getKey());
+
+        for (Vertice neighbour : neighbours) {
+            Set<Integer> ints = new HashSet<>();
+            allPossibleInts.add(ints);
+
+            Set<Integer> neighbourInts = possibilities.get(neighbour.getKey());
+            
+            // Left
+            if (neighbour.getKey() == v.getKey() - 1 || neighbour.getKey() == v.getKey() + mesh.getWidth() - 1) {
+                List<Tiles2> tiles = new ArrayList<>();
+                for (int i : neighbourInts) {
+                    tiles.add(Tiles2.parseTile(i));
+                }
+                for (Tiles2 tile : tiles) {
+                    if (tile.right() == 0) {
+                        for (Tiles2 t : Tiles2.values()) {
+                            if (t.left() == 0) {
+                                ints.add(t.getIdentifier());
+                            }
+                        }
+                    } else {
+                       for (Tiles2 t : Tiles2.values()) {
+                            if (t.left() == 1) {
+                                ints.add(t.getIdentifier());
+                            }
+                        } 
+                    }
+                }
+            }
+
+            // Right
+            if (neighbour.getKey() == v.getKey() + 1 || neighbour.getKey() == v.getKey() - mesh.getWidth() + 1) {
+                List<Tiles2> tiles = new ArrayList<>();
+                for (int i : neighbourInts) {
+                    tiles.add(Tiles2.parseTile(i));
+                }
+                for (Tiles2 tile : tiles) {
+                    if (tile.left() == 0) {
+                        for (Tiles2 t : Tiles2.values()) {
+                            if (t.right() == 0) {
+                                ints.add(t.getIdentifier());
+                            }
+                        }
+                    } else {
+                       for (Tiles2 t : Tiles2.values()) {
+                            if (t.right() == 1) {
+                                ints.add(t.getIdentifier());
+                            }
+                        } 
+                    }
+                }
+            }
+
+            // Top
+            if (neighbour.getKey() == v.getKey() - mesh.getWidth()) {
+                List<Tiles2> tiles = new ArrayList<>();
+                for (int i : neighbourInts) {
+                    tiles.add(Tiles2.parseTile(i));
+                }
+                for (Tiles2 tile : tiles) {
+                    if (tile.bot() == 0) {
+                        for (Tiles2 t : Tiles2.values()) {
+                            if (t.top() == 0) {
+                                ints.add(t.getIdentifier());
+                            }
+                        }
+                    } else {
+                       for (Tiles2 t : Tiles2.values()) {
+                            if (t.top() == 1) {
+                                ints.add(t.getIdentifier());
+                            }
+                        } 
+                    }
+                }
+            }
+
+            // Bot
+            if (neighbour.getKey() == v.getKey() + mesh.getWidth()) {
+                List<Tiles2> tiles = new ArrayList<>();
+                for (int i : neighbourInts) {
+                    tiles.add(Tiles2.parseTile(i));
+                }
+                for (Tiles2 tile : tiles) {
+                    if (tile.top() == 0) {
+                        for (Tiles2 t : Tiles2.values()) {
+                            if (t.bot() == 0) {
+                                ints.add(t.getIdentifier());
+                            }
+                        }
+                    } else {
+                       for (Tiles2 t : Tiles2.values()) {
+                            if (t.bot() == 1) {
+                                ints.add(t.getIdentifier());
+                            }
+                        } 
+                    }
+                }
+            }
+        }
+
+        Set<Integer> possibleInts = new HashSet<>();
+
+        for (int i : NUMBERS) {
+            Integer num = i;
+            if (allPossibleInts.stream().allMatch(set -> set.contains(num) || set.contains(-1))) {
+                possibleInts.add(num);
+            }
+        }
+
+        return possibleInts;
+    }
+
     public double getProgress() {
         return (double) finishedCounter / n;
     }
 
     public Graph getGraph() {
         return graph;
+    }
+
+    public List<Boolean> getIsCollapsed() {
+        return Collections.unmodifiableList(isCollapsed);
+    }
+
+    public List<Set<Integer>> getPossibilities() {
+        return Collections.unmodifiableList(possibilities);
     }
 
     private DirectedGraph bfsTree(Graph g, int s) {

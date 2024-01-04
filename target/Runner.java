@@ -2,29 +2,26 @@ package target;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
+import src.graph.interfaces.Graph;
 import src.graph.models.undirected.Mesh2D;
+import src.util.Tiles;
+import src.util.Tiles2;
 import src.util.WaveCollapseAlgorithm;
+import src.vertices.interfaces.Vertice;
 
 public class Runner {
 
-    public static final String ANSI_RESET = "\u001B[0m";
-    public static final String ANSI_BLACK = "\u001B[30m";
-    public static final String ANSI_RED = "\u001B[31m";
-    public static final String ANSI_GREEN = "\u001B[32m";
-    public static final String ANSI_YELLOW = "\u001B[33m";
-    public static final String ANSI_BLUE = "\u001B[34m";
-    public static final String ANSI_PURPLE = "\u001B[35m";
-    public static final String ANSI_CYAN = "\u001B[36m";
-    public static final String ANSI_WHITE = "\u001B[37m";
-    public static final String TILE_SYMBOL = "■";
-
-    private static final boolean animateOutput = false;
+    private static final boolean ANIMATED_OUTPUT = true;
 
     public void run() {
+
+        long seed = 274551879641337L;
         GraphLoader graphLoader = new GraphLoader();
 
-        int[] numbers = {99, 100, 101};
+        int[] numbers = {50};
 
         List<Thread> threads = new ArrayList<>();
         List<WaveCollapseAlgorithm> algorithms = new ArrayList<>();
@@ -34,7 +31,7 @@ public class Runner {
         long t1 = System.currentTimeMillis();
 
         for (int n : numbers) {
-            Mesh2D graph = graphLoader.zylinder(n);
+            Mesh2D graph = graphLoader.zylinder(500, 100);
             System.out.println("%s: width: %d height: %d".formatted(graph.getMeshType(), graph.getWidth(), graph.getHeight()));
             WaveCollapseAlgorithm wca = new WaveCollapseAlgorithm(graph);
             algorithms.add(wca);
@@ -53,8 +50,6 @@ public class Runner {
             thread.start();
         }
 
-        double oldRemainingTime = 1e10;
-
         while (threads.stream().anyMatch(Thread::isAlive)) {
             t2 = System.currentTimeMillis();
             System.out.print("Calculating... ");
@@ -66,16 +61,14 @@ public class Runner {
             }
             progressAvg /= algorithms.size();
             double remainingTime = ((t2 - t1) / 1000f) / progressAvg - (t2 - t1) / 1000f;
-            double deltaTime = Math.abs(oldRemainingTime - remainingTime);
             System.out.println(" %.3fs elapsed | Estimated time remaining: %.3fs.".formatted((t2 - t1) / 1000f, remainingTime));
-            oldRemainingTime = remainingTime / deltaTime;
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException exception) {
                 exception.printStackTrace();
             }
-            if (animateOutput) {
-                printGraph((Mesh2D) algorithms.get(0).getGraph());
+            if (ANIMATED_OUTPUT) {
+                printGraph2((Mesh2D) algorithms.get(0).getGraph());
             }
         }
 
@@ -83,7 +76,7 @@ public class Runner {
         System.out.println("%.3fs elapsed.".formatted((t2 - t1) / 1000f));
 
         for (WaveCollapseAlgorithm wca : algorithms) {
-            printGraph((Mesh2D) wca.getGraph());
+            printGraph2((Mesh2D) wca.getGraph());
         }
     }
 
@@ -96,29 +89,87 @@ public class Runner {
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 int x = mesh.getValue(width * i + j);
-                String c;
-                switch(x) {
-                    case 1:  c = ANSI_GREEN + TILE_SYMBOL;
-                        break;
-                    case 2:  c = ANSI_YELLOW + TILE_SYMBOL;
-                        break;
-                    case 3:  c = ANSI_CYAN + TILE_SYMBOL;
-                        break;
-                    case 4:  c = ANSI_BLACK + TILE_SYMBOL;
-                        break;
-                    case 5:  c = ANSI_BLUE + TILE_SYMBOL;
-                        break;
-                    case -1: c = ANSI_RED + TILE_SYMBOL;
-                        break;
-                    default: c = " ";
+                String c = null;
+
+                for (Tiles tile : Tiles.values()) {
+                    if (x == tile.getIdentifier()) {
+                        c = tile.toString();
+                    }
                 }
+
+                if (c == null) {
+                    c = " ";
+                }
+                
                 sb.append(c + " ");
             }
             if (i < height - 1) {
                 sb.append(System.lineSeparator());
             }
         }
-        System.out.println(sb.toString() + ANSI_RESET);
+        System.out.println(sb.toString() + Tiles.ANSI_RESET);
         System.out.println();
+    }
+
+    public static void printGraph2(Mesh2D mesh) {
+
+        int width = mesh.getWidth();
+        int height = mesh.getHeight();
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                int x = mesh.getValue(width * i + j);
+                String c = null;
+
+                for (Tiles2 tile : Tiles2.values()) {
+                    if (x == tile.getIdentifier()) {
+                        c = tile.toString();
+                    }
+                }
+
+                if (c == null) {
+                    c = " ";
+                }
+                
+                sb.append(c + "");
+            }
+            if (i < height - 1) {
+                sb.append(System.lineSeparator());
+            }
+        }
+        System.out.println(sb.toString() + Tiles.ANSI_RESET);
+        System.out.println();
+    }
+
+    private void foo(WaveCollapseAlgorithm wca) {
+
+        Graph graph = wca.getGraph();
+        List<Boolean> isCollapsed = wca.getIsCollapsed();
+        List<Set<Integer>> possibilities = wca.getPossibilities();
+
+        List<Vertice> notEvaluated = graph.vertices().stream()
+            .filter(v -> !isCollapsed.get(v.getKey()))
+            .toList();
+        
+        Optional<Integer> min = notEvaluated.stream()
+            .map(v -> possibilities.get(v.getKey()).size())
+            .min(Integer::compare);
+
+        if (!min.isPresent()) {
+            return;
+        }
+
+        notEvaluated.stream()
+            .filter(v -> possibilities.get(v.getKey()).size() == min.get())
+            .forEach(v -> v.setValue(-1));
+           
+        printGraph((Mesh2D) graph);
+
+        for (Vertice vertice : graph.vertices()) {
+            if (vertice.getValue() == -1) {
+                vertice.setValue(0);
+            }
+        }
     }
 }
