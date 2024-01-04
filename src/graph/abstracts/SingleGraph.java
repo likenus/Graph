@@ -2,8 +2,10 @@ package src.graph.abstracts;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import src.edge.interfaces.Edge;
 import src.graph.interfaces.Graph;
@@ -13,7 +15,7 @@ import src.vertices.models.Node;
 public abstract class SingleGraph implements Graph {
 
     protected final List<Vertice> vertices = new ArrayList<>();
-    protected final List<Edge> edges = new LinkedList<>();
+    protected final Set<Edge> edges = new HashSet<>();
     protected int id;
 
     protected SingleGraph() {
@@ -119,7 +121,7 @@ public abstract class SingleGraph implements Graph {
 
     @Override
     public List<Edge> edges() {
-        return Collections.unmodifiableList(this.edges);
+        return Collections.unmodifiableList(new ArrayList<>(this.edges));
     }
 
     @Override
