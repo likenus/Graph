@@ -5,21 +5,24 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import src.algo.wfca.WaveCollapseAlgorithm;
+import src.algo.wfca.rulesets.LandscapeRuleset;
+import src.algo.wfca.rulesets.Ruleset;
 import src.graph.interfaces.Graph;
 import src.graph.models.undirected.Mesh2D;
-import src.util.Tiles;
-import src.util.Tiles2;
-import src.util.WaveCollapseAlgorithm;
 import src.vertices.interfaces.Vertice;
 
 public class Runner {
 
-    private static final boolean ANIMATED_OUTPUT = true;
+    private static final boolean ANIMATED_OUTPUT = false;
+    private static final boolean PRINT_RESULT = true;
+    private static final int SLEEP_TIMER = 1000;
 
     public void run() {
 
         long seed = 274551879641337L;
         GraphLoader graphLoader = new GraphLoader();
+        Ruleset ruleset = new LandscapeRuleset();
 
         int[] numbers = {50};
 
@@ -31,13 +34,13 @@ public class Runner {
         long t1 = System.currentTimeMillis();
 
         for (int n : numbers) {
-            Mesh2D graph = graphLoader.zylinder(500, 100);
-            System.out.println("%s: width: %d height: %d".formatted(graph.getMeshType(), graph.getWidth(), graph.getHeight()));
-            WaveCollapseAlgorithm wca = new WaveCollapseAlgorithm(graph);
+            Mesh2D graph = graphLoader.zylinder(200, 50);
+            System.out.println("%s: Width: %d Height: %d | %d total Nodes".formatted(graph.getMeshType(), graph.getWidth(), graph.getHeight(), graph.getWidth() * graph.getHeight()));
+            WaveCollapseAlgorithm wca = new WaveCollapseAlgorithm(graph, ruleset);
             algorithms.add(wca);
             threads.add(new Thread(wca));
         }
-        
+
         long t2 = System.currentTimeMillis();
 
         System.out.println("Took %.3fs.".formatted((t2 - t1) / 1000f));
@@ -63,24 +66,28 @@ public class Runner {
             double remainingTime = ((t2 - t1) / 1000f) / progressAvg - (t2 - t1) / 1000f;
             System.out.println(" %.3fs elapsed | Estimated time remaining: %.3fs.".formatted((t2 - t1) / 1000f, remainingTime));
             try {
-                Thread.sleep(1000);
+                Thread.sleep(SLEEP_TIMER);
             } catch (InterruptedException exception) {
                 exception.printStackTrace();
             }
             if (ANIMATED_OUTPUT) {
-                printGraph2((Mesh2D) algorithms.get(0).getGraph());
+                printGraph((Mesh2D) algorithms.get(0).getGraph(), algorithms.get(0).getRuleset());
             }
         }
 
         t2 = System.currentTimeMillis();
         System.out.println("%.3fs elapsed.".formatted((t2 - t1) / 1000f));
 
+        if (!PRINT_RESULT) {
+            return;
+        }
+
         for (WaveCollapseAlgorithm wca : algorithms) {
-            printGraph2((Mesh2D) wca.getGraph());
+            printGraph((Mesh2D) wca.getGraph(), wca.getRuleset());
         }
     }
 
-    public static void printGraph(Mesh2D mesh) {
+    public static void printGraph(Mesh2D mesh, Ruleset ruleset) {
 
         int width = mesh.getWidth();
         int height = mesh.getHeight();
@@ -91,15 +98,7 @@ public class Runner {
                 int x = mesh.getValue(width * i + j);
                 String c = null;
 
-                for (Tiles tile : Tiles.values()) {
-                    if (x == tile.getIdentifier()) {
-                        c = tile.toString();
-                    }
-                }
-
-                if (c == null) {
-                    c = " ";
-                }
+                c = ruleset.stringRepresentation(x);
                 
                 sb.append(c + " ");
             }
@@ -107,42 +106,11 @@ public class Runner {
                 sb.append(System.lineSeparator());
             }
         }
-        System.out.println(sb.toString() + Tiles.ANSI_RESET);
+        System.out.println(sb.toString() + "\u001B[0m");
         System.out.println();
     }
 
-    public static void printGraph2(Mesh2D mesh) {
-
-        int width = mesh.getWidth();
-        int height = mesh.getHeight();
-
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                int x = mesh.getValue(width * i + j);
-                String c = null;
-
-                for (Tiles2 tile : Tiles2.values()) {
-                    if (x == tile.getIdentifier()) {
-                        c = tile.toString();
-                    }
-                }
-
-                if (c == null) {
-                    c = " ";
-                }
-                
-                sb.append(c + "");
-            }
-            if (i < height - 1) {
-                sb.append(System.lineSeparator());
-            }
-        }
-        System.out.println(sb.toString() + Tiles.ANSI_RESET);
-        System.out.println();
-    }
-
-    private void foo(WaveCollapseAlgorithm wca) {
+    private void debugPrint(WaveCollapseAlgorithm wca) {
 
         Graph graph = wca.getGraph();
         List<Boolean> isCollapsed = wca.getIsCollapsed();
@@ -164,7 +132,7 @@ public class Runner {
             .filter(v -> possibilities.get(v.getKey()).size() == min.get())
             .forEach(v -> v.setValue(-1));
            
-        printGraph((Mesh2D) graph);
+        printGraph((Mesh2D) graph, wca.getRuleset());
 
         for (Vertice vertice : graph.vertices()) {
             if (vertice.getValue() == -1) {
