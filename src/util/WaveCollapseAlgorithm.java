@@ -72,10 +72,10 @@ public class WaveCollapseAlgorithm implements Runnable {
             throw new IllegalStateException("Evaluation not possible");
         }
 
-        int key = possibleInts.stream().toList().get(rnd.nextInt(possibleInts.size()));
-        v.setValue(key);
+        int value = possibleInts.stream().toList().get(rnd.nextInt(possibleInts.size()));
+        v.setValue(value);
 
-        possibilities.set(v.getKey(), Set.of(key));
+        possibilities.set(v.getKey(), Set.of(value));
         finishedCounter++;
         isCollapsed.set(v.getKey(), true);
         
@@ -92,7 +92,30 @@ public class WaveCollapseAlgorithm implements Runnable {
         }
     }
 
+    private void instantCollapse(Vertice v) {
+        Set<Integer> possibleInts = possibilities.get(v.getKey());
+
+        if (possibleInts.isEmpty()) {
+            throw new IllegalStateException("Evaluation not possible");
+        }
+
+        int value = possibleInts.stream().toList().get(0);
+        v.setValue(value);
+
+        possibilities.set(v.getKey(), Set.of(value));
+        finishedCounter++;
+        isCollapsed.set(v.getKey(), true);
+
+        if (finishedCounter == n) {
+            finished = true;
+        }
+    }
+
     private Vertice findLowestEntropy() {
+        while (isCollapsed.get(notCollapsed.peek().getKey()).booleanValue()) {
+            notCollapsed.pop();
+        }
+
         return notCollapsed.pop();
     }
 
@@ -100,13 +123,13 @@ public class WaveCollapseAlgorithm implements Runnable {
         boolean changed = false;
 
         Set<Integer> possibleInts = ruleset2(v);
-
+        
         if (!possibilities.get(v.getKey()).equals(possibleInts)) {
             possibilities.set(v.getKey(), possibleInts);
             changed = true;
             notCollapsed.decPrio(v, possibleInts.size());
         }
-
+        
         if (changed) {
             for (Vertice w : searchTree.neighbours(v.getKey())) {
                 if (isCollapsed.get(w.getKey()).booleanValue()) {
@@ -114,6 +137,10 @@ public class WaveCollapseAlgorithm implements Runnable {
                 }
                 update(w, searchTree);
             }
+        }
+
+        if (possibleInts.size() == 1) {
+            instantCollapse(graph.parseVertice(v.getKey()));
         }
     }
 
