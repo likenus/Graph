@@ -3,7 +3,6 @@ package src.graph.abstracts;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -92,7 +91,7 @@ public abstract class SingleGraph implements Graph {
             return this.neighbours(v);
         }
 
-        return null;
+        return new ArrayList<>();
     }
 
     @Override
