@@ -5,11 +5,7 @@ public class Mesh2D extends UndirectedGraph {
     private final int width;
     private final int height;
 
-    private Mesh2D() {
-        this.width = 0;
-        this.height = 0;
-        throw new UnsupportedOperationException();
-    }
+    private MeshType meshType;
 
     public Mesh2D(int width, int height) {
         super(width * height);
@@ -29,6 +25,8 @@ public class Mesh2D extends UndirectedGraph {
                 this.addEdge(width * i + j, width * i + j + width);
             }
         }
+
+        this.meshType = MeshType.SQUARE;
     }
 
     public int getWidth() {
@@ -37,5 +35,22 @@ public class Mesh2D extends UndirectedGraph {
 
     public int getHeight() {
         return height;
+    }
+
+    public MeshType getMeshType() {
+        return meshType;
+    }
+
+    public void setMeshType(MeshType meshType) {
+        this.meshType = meshType;
+    }
+
+    public enum MeshType {
+
+        SQUARE,
+
+        ZYLINDER,
+
+        DONUT;
     }
 }

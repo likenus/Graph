@@ -11,6 +11,7 @@ import src.graph.models.undirected.Mesh2D;
 import src.graph.models.undirected.UndirectedGraph;
 import src.graph.models.undirected.UndirectedTree;
 import src.graph.models.undirected.UndirectedWeightedGraph;
+import src.graph.models.undirected.Mesh2D.MeshType;
 
 public class GraphLoader {
 
@@ -83,6 +84,8 @@ public class GraphLoader {
     public Mesh2D zylinder(int width, int height) {
         Mesh2D graph = mesh2D(width, height);
 
+        graph.setMeshType(MeshType.ZYLINDER);
+
         for (int i = 0; i < height; i++) {
             graph.addEdge(i * width, i * width + width - 1);
         }
@@ -96,6 +99,7 @@ public class GraphLoader {
 
     public Mesh2D plane(int width, int height) {
         Mesh2D graph = zylinder(width, height);
+        graph.setMeshType(MeshType.DONUT);
 
         for (int i = 0; i < width; i++) {
             graph.addEdge(i, height * width - width + i);

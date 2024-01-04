@@ -12,6 +12,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import src.graph.interfaces.Graph;
 import src.graph.models.directed.DirectedGraph;
 import src.vertices.interfaces.Vertice;
+import target.Runner;
 
 /**
  * The Wave Function Collapse Algorithm, short WaveCollapseAlgorithm,
@@ -69,7 +70,12 @@ public class WaveCollapseAlgorithm implements Runnable {
         Set<Integer> possibleInts = possibilities.get(v.getKey());
 
         if (possibleInts.isEmpty()) {
-            throw new IllegalStateException("Evaluation not possible");
+            System.err.println(Runner.ANSI_RED + "Trying to reevaluate" + Runner.ANSI_RESET);
+            possibleInts = ruleset(v);
+            if (possibleInts.isEmpty()) {
+                System.err.println(Runner.ANSI_RED + "A critical error has occurred: Evaluation not possible" + Runner.ANSI_RESET);
+                possibleInts = Set.of(-1);
+            }
         }
 
         int value = possibleInts.stream().toList().get(rnd.nextInt(possibleInts.size()));
@@ -96,7 +102,12 @@ public class WaveCollapseAlgorithm implements Runnable {
         Set<Integer> possibleInts = possibilities.get(v.getKey());
 
         if (possibleInts.isEmpty()) {
-            throw new IllegalStateException("Evaluation not possible");
+            System.err.println("Trying to reevaluate");
+            possibleInts = ruleset(v);
+            if (possibleInts.isEmpty()) {
+                System.err.println("A critical error has occurred: Evaluation not possible");
+                possibleInts = Set.of(-1);
+            }
         }
 
         int value = possibleInts.stream().toList().get(0);
@@ -208,7 +219,7 @@ public class WaveCollapseAlgorithm implements Runnable {
 
         for (int i : NUMBERS) {
             Integer num = i;
-            if (allPossibleInts.stream().allMatch(set -> set.contains(num))) {
+            if (allPossibleInts.stream().allMatch(set -> set.contains(num) || set.contains(-1))) {
                 possibleInts.add(num);
             }
         }

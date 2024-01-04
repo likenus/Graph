@@ -8,7 +8,8 @@ public class Main {
 
         Runner runner = new Runner();
 
-        runner.run();
+        for (int i = 0; i < 10; i++)
+            runner.run();
     }
 
     private static void foo() {
