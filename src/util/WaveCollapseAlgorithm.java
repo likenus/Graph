@@ -24,6 +24,7 @@ import src.vertices.interfaces.Vertice;
  */
 public class WaveCollapseAlgorithm implements Runnable {
 
+    private static final int MAX_BFS_DEPTH = 6;
     private static final List<Integer> NUMBERS = List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
 
     private final Graph graph;
@@ -73,14 +74,19 @@ public class WaveCollapseAlgorithm implements Runnable {
     }
 
     private void evaluate() {
-        collapse(startVertice);
+        collapse(startVertice, false);
         while (!finished) {
             Vertice v = findLowestEntropy();
-            collapse(v);
+            for (Vertice vertice : graph.vertices()) {
+                if (vertice.getValue() == -1 ) {
+                    vertice.setValue(0);
+                }
+            }
+            collapse(v, false);
         }
     }
 
-    private void collapse(Vertice v) {
+    private void collapse(Vertice v, boolean instant) {
         Set<Integer> possibleInts = possibilities.get(v.getKey());
 
         // Experimental
@@ -99,42 +105,23 @@ public class WaveCollapseAlgorithm implements Runnable {
         possibilities.set(v.getKey(), Set.of(value));
         finishedCounter++;
         isCollapsed.set(v.getKey(), true);
-        
-        DirectedGraph searchTree = bfsTree(graph, v.getKey());
 
+        if (finishedCounter == n) {
+            finished = true;
+        }
+
+        if (instant) {
+            return;
+        }
+
+        DirectedGraph searchTree = bfsTree(graph, v.getKey());
         for (Vertice w : searchTree.neighbours(v.getKey())) {
             if (isCollapsed.get(w.getKey()).booleanValue()) {
                 continue;
             }
             update(w, searchTree);
         }
-        if (finishedCounter == n) {
-            finished = true;
-        }
-    }
 
-    private void instantCollapse(Vertice v) {
-        Set<Integer> possibleInts = possibilities.get(v.getKey());
-
-        if (possibleInts.isEmpty()) {
-            System.err.println("Trying to reevaluate");
-            possibleInts = ruleset3(v);
-            if (possibleInts.isEmpty()) {
-                System.err.println("A critical error has occurred: Evaluation not possible");
-                possibleInts = Set.of(-1);
-            }
-        }
-
-        int value = possibleInts.stream().toList().get(0);
-        v.setValue(value);
-
-        possibilities.set(v.getKey(), Set.of(value));
-        finishedCounter++;
-        isCollapsed.set(v.getKey(), true);
-
-        if (finishedCounter == n) {
-            finished = true;
-        }
     }
 
     private Vertice findLowestEntropy() {
@@ -394,7 +381,8 @@ public class WaveCollapseAlgorithm implements Runnable {
         Objects.requireNonNull(g);
 
         boolean[] exploredNodes = new boolean[g.sizeVertices()];
-        
+        int[] distances = new int[g.sizeVertices()];
+
         DirectedGraph tree = new DirectedGraph(g.sizeVertices());
         Vertice start = g.parseVertice(s);
 
@@ -405,10 +393,14 @@ public class WaveCollapseAlgorithm implements Runnable {
         Queue<Vertice> queue = new ConcurrentLinkedQueue<>();
         queue.add(start);
         exploredNodes[s] = true;
+        distances[s] = 0;
 
         // BFS
         while (!queue.isEmpty()) {
             Vertice u = queue.poll();
+            if (distances[u.getKey()] > MAX_BFS_DEPTH) {
+                continue;
+            }
             for (Vertice v : u.neighbours()) {
                 if (isCollapsed.get(v.getKey()).booleanValue()) {
                     exploredNodes[v.getKey()] = true;
@@ -416,6 +408,7 @@ public class WaveCollapseAlgorithm implements Runnable {
                 }
                 if (!exploredNodes[v.getKey()]) {
                     queue.add(v);
+                    distances[v.getKey()] = distances[u.getKey()] + 1;
                     tree.addEdge(u.getKey(), v.getKey());
                     exploredNodes[v.getKey()] = true;
                 }
