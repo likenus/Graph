@@ -1,4 +1,4 @@
-package src.algo.wfca.rulesets;
+package src.algorithms.wfca.rulesets;
 
 import java.util.List;
 import java.util.Set;

@@ -1,4 +1,4 @@
-package src.algo.wfca;
+package src.algorithms.wfca;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,7 +10,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import src.algo.wfca.rulesets.Ruleset;
+import src.algorithms.wfca.rulesets.Ruleset;
 import src.graph.interfaces.Graph;
 import src.graph.models.directed.DirectedGraph;
 import src.util.BinaryHeap;

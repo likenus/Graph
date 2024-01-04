@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import src.algo.wfca.WaveCollapseAlgorithm;
-import src.algo.wfca.rulesets.LandscapeRuleset;
-import src.algo.wfca.rulesets.Ruleset;
+import src.algorithms.wfca.WaveCollapseAlgorithm;
+import src.algorithms.wfca.rulesets.LandscapeRuleset;
+import src.algorithms.wfca.rulesets.Ruleset;
 import src.graph.interfaces.Graph;
 import src.graph.models.undirected.Mesh2D;
 import src.vertices.interfaces.Vertice;

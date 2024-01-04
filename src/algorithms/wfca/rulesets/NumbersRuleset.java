@@ -1,4 +1,4 @@
-package src.algo.wfca.rulesets;
+package src.algorithms.wfca.rulesets;
 
 import java.util.ArrayList;
 import java.util.HashSet;
