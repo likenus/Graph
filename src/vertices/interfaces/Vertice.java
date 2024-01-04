@@ -4,6 +4,9 @@ import java.util.List;
 
 import src.edge.interfaces.Edge;
 
+/**
+ * TODO javadoc
+ */
 public interface Vertice {
 
     /**

@@ -13,9 +13,14 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import src.graph.interfaces.Graph;
 import src.graph.models.directed.DirectedGraph;
 import src.vertices.interfaces.Vertice;
+import target.Runner;
 
 /**
- * WaveCollapseAlgorithm
+ * The Wave Function Collapse Algorithm, short WaveCollapseAlgorithm,
+ * is a algorithm for procedual generation.
+ * </p>
+ * This implementation uses graphs as a basis and a fixed ruleset to
+ * generate randomized patterns. 
  */
 public class WaveCollapseAlgorithm implements Runnable {
 
@@ -72,13 +77,18 @@ public class WaveCollapseAlgorithm implements Runnable {
         Set<Integer> possibleInts = possibilities.get(v.getKey());
 
         if (possibleInts.isEmpty()) {
-            throw new IllegalStateException("Evaluation not possible");
+            System.err.println(Runner.ANSI_RED + "Trying to reevaluate" + Runner.ANSI_RESET);
+            possibleInts = ruleset(v);
+            if (possibleInts.isEmpty()) {
+                System.err.println(Runner.ANSI_RED + "A critical error has occurred: Evaluation not possible" + Runner.ANSI_RESET);
+                possibleInts = Set.of(-1);
+            }
         }
 
-        int key = possibleInts.stream().toList().get(rnd.nextInt(possibleInts.size()));
-        v.setValue(key);
+        int value = possibleInts.stream().toList().get(rnd.nextInt(possibleInts.size()));
+        v.setValue(value);
 
-        possibilities.set(v.getKey(), Set.of(key));
+        possibilities.set(v.getKey(), Set.of(value));
         finishedCounter++;
         isCollapsed.set(v.getKey(), true);
         
@@ -95,19 +105,34 @@ public class WaveCollapseAlgorithm implements Runnable {
         }
     }
 
-    private Vertice findLowestEntropy() {
-        List<Vertice> notEvaluated = graph.vertices().stream()
-            .filter(v -> isCollapsed.get(v.getKey()))
-            .toList();
-        
-        int min = notEvaluated.stream()
-            .map(v -> possibilities.get(v.getKey()).size())
-            .min(Integer::compare)
-            .orElseThrow();
+    private void instantCollapse(Vertice v) {
+        Set<Integer> possibleInts = possibilities.get(v.getKey());
 
-        notEvaluated.stream()
-            .filter(v -> possibilities.get(v.getKey()).size() == min)
-            .forEach(v -> v.setValue(-1));
+        if (possibleInts.isEmpty()) {
+            System.err.println("Trying to reevaluate");
+            possibleInts = ruleset(v);
+            if (possibleInts.isEmpty()) {
+                System.err.println("A critical error has occurred: Evaluation not possible");
+                possibleInts = Set.of(-1);
+            }
+        }
+
+        int value = possibleInts.stream().toList().get(0);
+        v.setValue(value);
+
+        possibilities.set(v.getKey(), Set.of(value));
+        finishedCounter++;
+        isCollapsed.set(v.getKey(), true);
+
+        if (finishedCounter == n) {
+            finished = true;
+        }
+    }
+
+    private Vertice findLowestEntropy() {
+        while (isCollapsed.get(notCollapsed.peek().getKey()).booleanValue()) {
+            notCollapsed.pop();
+        }
 
         return notCollapsed.pop();
     }
@@ -116,13 +141,13 @@ public class WaveCollapseAlgorithm implements Runnable {
         boolean changed = false;
 
         Set<Integer> possibleInts = ruleset2(v);
-
+        
         if (!possibilities.get(v.getKey()).equals(possibleInts)) {
             possibilities.set(v.getKey(), possibleInts);
             changed = true;
             notCollapsed.decPrio(v, possibleInts.size());
         }
-
+        
         if (changed) {
             for (Vertice w : searchTree.neighbours(v.getKey())) {
                 if (isCollapsed.get(w.getKey()).booleanValue()) {
@@ -130,6 +155,10 @@ public class WaveCollapseAlgorithm implements Runnable {
                 }
                 update(w, searchTree);
             }
+        }
+
+        if (possibleInts.size() == 1) {
+            instantCollapse(graph.parseVertice(v.getKey()));
         }
     }
 
@@ -197,7 +226,7 @@ public class WaveCollapseAlgorithm implements Runnable {
 
         for (int i : NUMBERS) {
             Integer num = i;
-            if (allPossibleInts.stream().allMatch(set -> set.contains(num))) {
+            if (allPossibleInts.stream().allMatch(set -> set.contains(num) || set.contains(-1))) {
                 possibleInts.add(num);
             }
         }

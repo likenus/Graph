@@ -3,7 +3,7 @@ package target;
 import java.util.ArrayList;
 import java.util.List;
 
-import src.graph.interfaces.Graph;
+import src.graph.models.undirected.Mesh2D;
 import src.util.WaveCollapseAlgorithm;
 
 public class Runner {
@@ -19,32 +19,44 @@ public class Runner {
     public static final String ANSI_WHITE = "\u001B[37m";
     public static final String TILE_SYMBOL = "■";
 
+    private static final boolean animateOutput = false;
+
     public void run() {
         GraphLoader graphLoader = new GraphLoader();
 
-        int[] numbers = {5};
+        int[] numbers = {99, 100, 101};
 
         List<Thread> threads = new ArrayList<>();
         List<WaveCollapseAlgorithm> algorithms = new ArrayList<>();
 
         System.out.println("Initializing...");
 
+        long t1 = System.currentTimeMillis();
+
         for (int n : numbers) {
-            WaveCollapseAlgorithm wca = new WaveCollapseAlgorithm(graphLoader.zylinder(n));
+            Mesh2D graph = graphLoader.zylinder(n);
+            System.out.println("%s: width: %d height: %d".formatted(graph.getMeshType(), graph.getWidth(), graph.getHeight()));
+            WaveCollapseAlgorithm wca = new WaveCollapseAlgorithm(graph);
             algorithms.add(wca);
             threads.add(new Thread(wca));
         }
+        
+        long t2 = System.currentTimeMillis();
+
+        System.out.println("Took %.3fs.".formatted((t2 - t1) / 1000f));
 
         System.out.println("Starting Threads...");
 
-        long t1 = System.currentTimeMillis();
+        t1 = System.currentTimeMillis();
 
         for (Thread thread : threads) {
             thread.start();
         }
 
+        double oldRemainingTime = 1e10;
+
         while (threads.stream().anyMatch(Thread::isAlive)) {
-            long t2 = System.currentTimeMillis();
+            t2 = System.currentTimeMillis();
             System.out.print("Calculating... ");
             double progressAvg = 1e-20;
             for (WaveCollapseAlgorithm wca : algorithms) {
@@ -53,32 +65,37 @@ public class Runner {
                 progressAvg += progress;
             }
             progressAvg /= algorithms.size();
-            System.out.println(" %.3fs elapsed | Estimated time remaining: %.3fs.".formatted((t2 - t1) / 1000f, ((t2 - t1) / 1000f) / progressAvg - (t2 - t1) / 1000f));
+            double remainingTime = ((t2 - t1) / 1000f) / progressAvg - (t2 - t1) / 1000f;
+            double deltaTime = Math.abs(oldRemainingTime - remainingTime);
+            System.out.println(" %.3fs elapsed | Estimated time remaining: %.3fs.".formatted((t2 - t1) / 1000f, remainingTime));
+            oldRemainingTime = remainingTime / deltaTime;
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException exception) {
                 exception.printStackTrace();
             }
-            printGraph(algorithms.get(0).getGraph());
+            if (animateOutput) {
+                printGraph((Mesh2D) algorithms.get(0).getGraph());
+            }
         }
 
-        long t2 = System.currentTimeMillis();
+        t2 = System.currentTimeMillis();
         System.out.println("%.3fs elapsed.".formatted((t2 - t1) / 1000f));
 
         for (WaveCollapseAlgorithm wca : algorithms) {
-            printGraph(wca.getGraph());
+            printGraph((Mesh2D) wca.getGraph());
         }
     }
 
-    public static void printGraph(Graph g) {
+    public static void printGraph(Mesh2D mesh) {
 
-        int width = 5;
-        int height = 5;
+        int width = mesh.getWidth();
+        int height = mesh.getHeight();
 
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                int x = g.get(width * i + j);
+                int x = mesh.getValue(width * i + j);
                 String c;
                 switch(x) {
                     case 1:  c = ANSI_GREEN + TILE_SYMBOL;

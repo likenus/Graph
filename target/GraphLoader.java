@@ -7,9 +7,11 @@ import src.graph.interfaces.Graph;
 import src.graph.models.directed.DirectedGraph;
 import src.graph.models.directed.DirectedWeightedGraph;
 import src.graph.models.directed.DirectedWeightedTree;
+import src.graph.models.undirected.Mesh2D;
 import src.graph.models.undirected.UndirectedGraph;
 import src.graph.models.undirected.UndirectedTree;
 import src.graph.models.undirected.UndirectedWeightedGraph;
+import src.graph.models.undirected.Mesh2D.MeshType;
 
 public class GraphLoader {
 
@@ -71,32 +73,18 @@ public class GraphLoader {
      * @param size The length of one side of the quadrat
      * @return An undirected graph
      */
-    public UndirectedGraph mesh2D(int width, int height) {
-        UndirectedGraph graph = new UndirectedGraph(width * height);
-
-        // Horizontal lines
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width - 1; j++) {
-                graph.addEdge(i * width + j, i * width + j + 1);
-            }
-        }
-
-        // Vertical lines
-        for (int i = 0; i < height - 1; i++) {
-            for (int j = 0; j < width; j++) {
-                graph.addEdge(width * i + j, width * i + j + width);
-            }
-        }
-
-        return graph;
+    public Mesh2D mesh2D(int width, int height) {
+        return new Mesh2D(width, height);
     }
 
-    public UndirectedGraph mesh2D(int size) {
+    public Mesh2D mesh2D(int size) {
         return mesh2D(size, size);
     }
 
-    public UndirectedGraph zylinder(int width, int height) {
-        UndirectedGraph graph = mesh2D(width, height);
+    public Mesh2D zylinder(int width, int height) {
+        Mesh2D graph = mesh2D(width, height);
+
+        graph.setMeshType(MeshType.ZYLINDER);
 
         for (int i = 0; i < height; i++) {
             graph.addEdge(i * width, i * width + width - 1);
@@ -105,12 +93,13 @@ public class GraphLoader {
         return graph;
     }
 
-    public UndirectedGraph zylinder(int size) {
+    public Mesh2D zylinder(int size) {
         return zylinder(size, size);
     }
 
-    public UndirectedGraph donut(int width, int height) {
-        UndirectedGraph graph = zylinder(width, height);
+    public Mesh2D donut(int width, int height) {
+        Mesh2D graph = zylinder(width, height);
+        graph.setMeshType(MeshType.DONUT);
 
         for (int i = 0; i < width; i++) {
             graph.addEdge(i, height * width - width + i);
