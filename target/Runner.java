@@ -20,7 +20,6 @@ public class Runner {
 
     public void run() {
 
-        long seed = 274551879641337L;
         GraphLoader graphLoader = new GraphLoader();
         Ruleset ruleset = new LandscapeRuleset();
 
@@ -34,7 +33,7 @@ public class Runner {
         long t1 = System.currentTimeMillis();
 
         for (int n : numbers) {
-            Mesh2D graph = graphLoader.zylinder(200, 50);
+            Mesh2D graph = graphLoader.zylinder(n);
             System.out.println("%s: Width: %d Height: %d | %d total Nodes".formatted(graph.getMeshType(), graph.getWidth(), graph.getHeight(), graph.getWidth() * graph.getHeight()));
             WaveCollapseAlgorithm wca = new WaveCollapseAlgorithm(graph, ruleset);
             algorithms.add(wca);
@@ -71,7 +70,8 @@ public class Runner {
                 exception.printStackTrace();
             }
             if (ANIMATED_OUTPUT) {
-                printGraph((Mesh2D) algorithms.get(0).getGraph(), algorithms.get(0).getRuleset());
+                debugPrint(algorithms.get(0));
+                printGraph(algorithms.get(0));
             }
         }
 
@@ -83,11 +83,14 @@ public class Runner {
         }
 
         for (WaveCollapseAlgorithm wca : algorithms) {
-            printGraph((Mesh2D) wca.getGraph(), wca.getRuleset());
+            printGraph(wca);
         }
     }
 
-    public static void printGraph(Mesh2D mesh, Ruleset ruleset) {
+    public static void printGraph(WaveCollapseAlgorithm wca) {
+
+        Mesh2D mesh = (Mesh2D) wca.getGraph();
+        Ruleset ruleset = wca.getRuleset();
 
         int width = mesh.getWidth();
         int height = mesh.getHeight();
@@ -132,7 +135,7 @@ public class Runner {
             .filter(v -> possibilities.get(v.getKey()).size() == min.get())
             .forEach(v -> v.setValue(-1));
            
-        printGraph((Mesh2D) graph, wca.getRuleset());
+        printGraph(wca);
 
         for (Vertice vertice : graph.vertices()) {
             if (vertice.getValue() == -1) {

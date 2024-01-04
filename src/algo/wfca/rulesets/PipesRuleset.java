@@ -16,9 +16,10 @@ import src.vertices.interfaces.Vertice;
  */
 public class PipesRuleset implements Ruleset {
 
-    private static final Set<Integer> NUMBERS = new HashSet<>(Arrays.asList(Tiles.values()).stream().map(Tiles::getIdentifier).toList());
+    private static final Set<Integer> NUMBERS = new HashSet<>(Arrays.asList(Tile.values()).stream().map(Tile::getIdentifier).toList());
 
     @Override
+    @SuppressWarnings("all") // If it works dont touch it
     public Set<Integer> ruleset(Graph graph, Vertice v, List<Set<Integer>> possibilities) {
         Mesh2D mesh = (Mesh2D) graph;
 
@@ -34,19 +35,19 @@ public class PipesRuleset implements Ruleset {
             
             // Left
             if (neighbour.getKey() == v.getKey() - 1 || neighbour.getKey() == v.getKey() + mesh.getWidth() - 1) {
-                List<Tiles> tiles = new ArrayList<>();
+                List<Tile> tiles = new ArrayList<>();
                 for (int i : neighbourInts) {
-                    tiles.add(Tiles.parseTile(i));
+                    tiles.add(Tile.parseTile(i));
                 }
-                for (Tiles tile : tiles) {
+                for (Tile tile : tiles) {
                     if (tile.right() == 0) {
-                        for (Tiles t : Tiles.values()) {
+                        for (Tile t : Tile.values()) {
                             if (t.left() == 0) {
                                 ints.add(t.getIdentifier());
                             }
                         }
                     } else {
-                       for (Tiles t : Tiles.values()) {
+                       for (Tile t : Tile.values()) {
                             if (t.left() == 1) {
                                 ints.add(t.getIdentifier());
                             }
@@ -57,19 +58,19 @@ public class PipesRuleset implements Ruleset {
 
             // Right
             if (neighbour.getKey() == v.getKey() + 1 || neighbour.getKey() == v.getKey() - mesh.getWidth() + 1) {
-                List<Tiles> tiles = new ArrayList<>();
+                List<Tile> tiles = new ArrayList<>();
                 for (int i : neighbourInts) {
-                    tiles.add(Tiles.parseTile(i));
+                    tiles.add(Tile.parseTile(i));
                 }
-                for (Tiles tile : tiles) {
+                for (Tile tile : tiles) {
                     if (tile.left() == 0) {
-                        for (Tiles t : Tiles.values()) {
+                        for (Tile t : Tile.values()) {
                             if (t.right() == 0) {
                                 ints.add(t.getIdentifier());
                             }
                         }
                     } else {
-                       for (Tiles t : Tiles.values()) {
+                       for (Tile t : Tile.values()) {
                             if (t.right() == 1) {
                                 ints.add(t.getIdentifier());
                             }
@@ -80,19 +81,19 @@ public class PipesRuleset implements Ruleset {
 
             // Top
             if (neighbour.getKey() == v.getKey() - mesh.getWidth()) {
-                List<Tiles> tiles = new ArrayList<>();
+                List<Tile> tiles = new ArrayList<>();
                 for (int i : neighbourInts) {
-                    tiles.add(Tiles.parseTile(i));
+                    tiles.add(Tile.parseTile(i));
                 }
-                for (Tiles tile : tiles) {
+                for (Tile tile : tiles) {
                     if (tile.bot() == 0) {
-                        for (Tiles t : Tiles.values()) {
+                        for (Tile t : Tile.values()) {
                             if (t.top() == 0) {
                                 ints.add(t.getIdentifier());
                             }
                         }
                     } else {
-                       for (Tiles t : Tiles.values()) {
+                       for (Tile t : Tile.values()) {
                             if (t.top() == 1) {
                                 ints.add(t.getIdentifier());
                             }
@@ -103,19 +104,19 @@ public class PipesRuleset implements Ruleset {
 
             // Bot
             if (neighbour.getKey() == v.getKey() + mesh.getWidth()) {
-                List<Tiles> tiles = new ArrayList<>();
+                List<Tile> tiles = new ArrayList<>();
                 for (int i : neighbourInts) {
-                    tiles.add(Tiles.parseTile(i));
+                    tiles.add(Tile.parseTile(i));
                 }
-                for (Tiles tile : tiles) {
+                for (Tile tile : tiles) {
                     if (tile.top() == 0) {
-                        for (Tiles t : Tiles.values()) {
+                        for (Tile t : Tile.values()) {
                             if (t.bot() == 0) {
                                 ints.add(t.getIdentifier());
                             }
                         }
                     } else {
-                       for (Tiles t : Tiles.values()) {
+                       for (Tile t : Tile.values()) {
                             if (t.bot() == 1) {
                                 ints.add(t.getIdentifier());
                             }
@@ -144,11 +145,11 @@ public class PipesRuleset implements Ruleset {
 
     @Override
     public String stringRepresentation(int i) {
-        Tiles tile = Tiles.parseTile(i);
+        Tile tile = Tile.parseTile(i);
         return tile == null ? " " : tile.toString();
     }
 
-    private enum Tiles {
+    private enum Tile {
     
         TOP(1, new int[][] {
             {0, 0, 0}, 
@@ -213,7 +214,7 @@ public class PipesRuleset implements Ruleset {
         private int identifier;
         private int[][] shape;
     
-        private Tiles(int identifier, int[][] shape) {
+        private Tile(int identifier, int[][] shape) {
             this.identifier = identifier;
             this.shape = shape;
         }
@@ -238,8 +239,8 @@ public class PipesRuleset implements Ruleset {
             return identifier;
         }
     
-        public static Tiles parseTile(int identifier) {
-            for (Tiles tile : values()) {
+        public static Tile parseTile(int identifier) {
+            for (Tile tile : values()) {
                 if (tile.identifier == identifier) {
                     return tile;
                 }
