@@ -123,7 +123,7 @@ public interface Graph {
     List<Edge> edges();
 
     /**
-     * Parses an edge corresponding to its injacent vertices. This will return {@code null} if
+     * Parses an edge corresponding to its incident vertices. This will return {@code null} if
      * the input is invalid or the edge does not exist.
      * </p>
      * Note: Directed graphs are order-sensitive.

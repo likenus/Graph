@@ -155,7 +155,7 @@ public class DirectedWeightedTree extends DirectedWeightedGraph implements Tree 
     protected void removeEdge(Edge e) {
         this.edges.remove(e);
         for (Vertice v : e.getVertices()) {
-            v.disconnectEdge(e);
+            v.separateEdge(e);
         }
         if (parent(e.end()).equals(e.start())) {
             setParent(e.end(), null);

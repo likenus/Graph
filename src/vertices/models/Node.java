@@ -34,17 +34,13 @@ public class Node implements Vertice {
         return this.key;
     }
 
-    public void setKey(int key) {
-        this.key = key;
-    }
-
     @Override
     public void connectEdge(Edge e) {
         this.edges.add(e);
     }
 
     @Override
-    public void disconnectEdge(Edge e) {
+    public void separateEdge(Edge e) {
         this.edges.remove(e);
     }
 
