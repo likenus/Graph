@@ -2,14 +2,14 @@ package src.edge.models;
 
 import java.util.Objects;
 
+import src.edge.abstracts.AbstractEdge;
 import src.edge.interfaces.Edge;
 import src.util.Tuple;
 import src.vertices.interfaces.Vertice;
 
-public class UndirectedEdge implements Edge {
+public class UndirectedEdge extends AbstractEdge {
     
     protected Tuple<Vertice> vertices;
-    protected int value;
 
     /**
      * Creates a new non-directional edge. In undirected edges the connected 
@@ -90,15 +90,5 @@ public class UndirectedEdge implements Edge {
     @Override
     public Vertice end() {
         return vertices.b();
-    }
-
-    @Override
-    public int getWeight() {
-        return this.value;
-    }
-
-    @Override
-    public void setWeight(int weight) {
-        this.value = weight;
     }
 }

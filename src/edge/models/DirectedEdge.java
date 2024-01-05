@@ -2,11 +2,12 @@ package src.edge.models;
 
 import java.util.Objects;
 
+import src.edge.abstracts.AbstractEdge;
 import src.edge.interfaces.Edge;
 import src.util.Tuple;
 import src.vertices.interfaces.Vertice;
 
-public class DirectedEdge implements Edge {
+public class DirectedEdge extends AbstractEdge {
     
     protected Vertice start;
     protected Vertice end;
@@ -89,11 +90,6 @@ public class DirectedEdge implements Edge {
     @Override
     public String toString() {
         return "[%s %s, %s]".formatted(start, end, value);
-    }
-
-    @Override
-    public int getWeight() {
-        return this.value;
     }
 
     @Override
