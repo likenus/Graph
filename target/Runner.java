@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import src.algorithms.wfca.WaveFunctionCollapse;
+import src.algorithms.wfca.rulesets.LandscapeRuleset;
 import src.algorithms.wfca.rulesets.PipesRuleset;
 import src.algorithms.wfca.rulesets.Ruleset;
 import src.graph.graph.interfaces.Graph;
@@ -14,8 +15,8 @@ import src.graph.vertices.interfaces.Vertice;
 
 public class Runner {
 
-    private static final boolean ANIMATED_OUTPUT = true;
-    private static final boolean PRINT_RESULT = false;
+    private static final boolean ANIMATED_OUTPUT = false;
+    private static final boolean PRINT_RESULT = true;
     private static final int SLEEP_TIMER = 1000;
 
     private int[] numbers = {100};
@@ -24,7 +25,7 @@ public class Runner {
     public void run() {
 
         GraphLoader graphLoader = new GraphLoader();
-        Ruleset ruleset = new PipesRuleset();
+        Ruleset ruleset = new LandscapeRuleset();
 
         List<Thread> threads = new ArrayList<>();
         List<WaveFunctionCollapse> algorithms = new ArrayList<>();

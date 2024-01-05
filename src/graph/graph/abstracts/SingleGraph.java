@@ -2,8 +2,10 @@ package src.graph.graph.abstracts;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import src.graph.edge.interfaces.Edge;
@@ -13,7 +15,7 @@ import src.graph.vertices.models.Node;
 
 public abstract class SingleGraph implements Graph {
 
-    protected final List<Vertice> vertices = new ArrayList<>();
+    protected final Map<Integer, Vertice> vertices = new HashMap<>();
     protected final Set<Edge> edges = new HashSet<>();
     protected int id;
 
@@ -30,7 +32,7 @@ public abstract class SingleGraph implements Graph {
 
         for (int j = 0; j < i; j++) {
             Vertice node = new Node(j);
-            this.vertices.add(j, node);
+            this.vertices.put(j, node);
         }
     }
 
@@ -40,7 +42,11 @@ public abstract class SingleGraph implements Graph {
 
     protected boolean add(Vertice v) {
         // Node is always unique
-        return vertices.add(v);
+        if (vertices.get(v.getKey()) == null) {
+            vertices.put(v.getKey(), v);
+            return true;
+        }
+        return false;
     }
 
     protected void remove(int key) {
@@ -80,7 +86,7 @@ public abstract class SingleGraph implements Graph {
 
     @Override
     public List<Vertice> vertices() {
-        return Collections.unmodifiableList(this.vertices);
+        return Collections.unmodifiableList(this.vertices.values().stream().toList());
     }
 
     @Override
@@ -103,9 +109,6 @@ public abstract class SingleGraph implements Graph {
     
     @Override
     public Vertice parseVertice(int key) {
-        if (key >= vertices.size()) {
-            return null;
-        }
         return vertices.get(key);
     }
 
