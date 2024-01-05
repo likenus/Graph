@@ -6,24 +6,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import src.graph.interfaces.Graph;
-import src.vertices.interfaces.Vertice;
+import src.graph.graph.interfaces.Graph;
+import src.graph.vertices.interfaces.Vertice;
+import src.util.Ansi;
 
 /**
  * This ruleset attempts to paint a landscape like image. Its rules say that water and land
  * may not be adjacent and must be connected via a beach.
  */
 public class LandscapeRuleset implements Ruleset {
-
-    public static final String ANSI_RESET = "\u001B[0m";
-    public static final String ANSI_BLACK = "\u001B[30m";
-    public static final String ANSI_RED = "\u001B[31m";
-    public static final String ANSI_GREEN = "\u001B[32m";
-    public static final String ANSI_YELLOW = "\u001B[33m";
-    public static final String ANSI_BLUE = "\u001B[34m";
-    public static final String ANSI_PURPLE = "\u001B[35m";
-    public static final String ANSI_CYAN = "\u001B[36m";
-    public static final String ANSI_WHITE = "\u001B[37m";
     public static final String TILE_SYMBOL = "■";
 
     private static final Set<Integer> NUMBERS = new HashSet<>(Arrays.asList(Tile.values()).stream().map(Tile::getIdentifier).toList());
@@ -79,29 +70,29 @@ public class LandscapeRuleset implements Ruleset {
     @Override
     public String stringRepresentation(int i) {
         Tile tile = Tile.parseTile(i);
-        return tile == null ? ANSI_RED + TILE_SYMBOL : tile.toString();
+        return tile == null ? Ansi.Red + TILE_SYMBOL : tile.toString();
     }
     
     private enum Tile {
 
-        DEEP_WATER(1, ANSI_BLUE, Set.of(1, 2)),
+        DEEP_WATER(1, Ansi.Blue, Set.of(1, 2)),
         
-        WATER(2, ANSI_CYAN, Set.of(1, 2, 3)),
+        WATER(2, Ansi.Cyan, Set.of(1, 2, 3)),
         
-        BEACH(3, ANSI_YELLOW, Set.of(2, 3, 4)),
+        BEACH(3, Ansi.Yellow, Set.of(2, 3, 4)),
         
-        FOREST(4, ANSI_GREEN, Set.of(4, 3, 5)),
+        FOREST(4, Ansi.Green, Set.of(4, 3, 5)),
         
-        MOUNTAIN(5, ANSI_BLACK, Set.of(4, 5));  
+        MOUNTAIN(5, Ansi.Black, Set.of(4, 5));
         
     
         private int identifier;
-        private String ansiColor;
+        private Ansi ansiConfig;
         private Set<Integer> possibleNeighbours;
         
-        private Tile(int identifier, String ansiColor, Set<Integer> possibleNeighbours) {
+        private Tile(int identifier, Ansi ansiConfig, Set<Integer> possibleNeighbours) {
             this.identifier = identifier;
-            this.ansiColor = ansiColor;
+            this.ansiConfig = ansiConfig;
             this.possibleNeighbours = possibleNeighbours;
         }
     
@@ -125,7 +116,7 @@ public class LandscapeRuleset implements Ruleset {
     
         @Override
         public String toString() {
-            return this.ansiColor + TILE_SYMBOL;
+            return this.ansiConfig + TILE_SYMBOL;
         }
     }
 

@@ -5,8 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import src.graph.interfaces.Graph;
-import src.vertices.interfaces.Vertice;
+import src.graph.graph.interfaces.Graph;
+import src.graph.vertices.interfaces.Vertice;
 
 /**
  * In this ruleset integers in adjacent tiles may only have a difference of exaclty 1.

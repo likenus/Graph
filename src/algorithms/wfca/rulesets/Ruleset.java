@@ -3,12 +3,12 @@ package src.algorithms.wfca.rulesets;
 import java.util.List;
 import java.util.Set;
 
-import src.graph.interfaces.Graph;
-import src.vertices.interfaces.Vertice;
+import src.graph.graph.interfaces.Graph;
+import src.graph.vertices.interfaces.Vertice;
 
 /**
  * Rulesets use numbers and a set of rules to give the numbers meaning. 
- * Rulesets are used by the {@link src.algorithms.wfca.WaveCollapseAlgorithm}.
+ * Rulesets are used by the {@link src.algorithms.wfca.WaveFunctionCollapse}.
  */
 public interface Ruleset {
 

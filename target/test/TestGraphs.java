@@ -6,14 +6,14 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
-import src.edge.interfaces.Edge;
-import src.graph.interfaces.Graph;
-import src.graph.interfaces.Tree;
-import src.graph.models.undirected.UndirectedGraph;
-import src.graph.models.undirected.UndirectedTree;
-import src.graph.models.undirected.UndirectedWeightedGraph;
-import src.util.Graphs;
-import src.vertices.interfaces.Vertice;
+import src.graph.edge.interfaces.Edge;
+import src.graph.graph.interfaces.Graph;
+import src.graph.graph.interfaces.Tree;
+import src.graph.graph.models.undirected.UndirectedGraph;
+import src.graph.graph.models.undirected.UndirectedTree;
+import src.graph.graph.models.undirected.UndirectedWeightedGraph;
+import src.graph.util.Graphs;
+import src.graph.vertices.interfaces.Vertice;
 
 public class TestGraphs {
 

@@ -3,15 +3,15 @@ package target;
 import java.io.IOException;
 import java.util.List;
 
-import src.graph.interfaces.Graph;
-import src.graph.models.directed.DirectedGraph;
-import src.graph.models.directed.DirectedWeightedGraph;
-import src.graph.models.directed.DirectedWeightedTree;
-import src.graph.models.undirected.Mesh2D;
-import src.graph.models.undirected.UndirectedGraph;
-import src.graph.models.undirected.UndirectedTree;
-import src.graph.models.undirected.UndirectedWeightedGraph;
-import src.graph.models.undirected.Mesh2D.MeshType;
+import src.graph.graph.interfaces.Graph;
+import src.graph.graph.models.directed.DirectedGraph;
+import src.graph.graph.models.directed.DirectedWeightedGraph;
+import src.graph.graph.models.directed.DirectedWeightedTree;
+import src.graph.graph.models.undirected.Mesh2D;
+import src.graph.graph.models.undirected.UndirectedGraph;
+import src.graph.graph.models.undirected.UndirectedTree;
+import src.graph.graph.models.undirected.UndirectedWeightedGraph;
+import src.graph.graph.models.undirected.Mesh2D.MeshType;
 
 public class GraphLoader {
 
