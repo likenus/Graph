@@ -24,7 +24,7 @@ public class Runner {
         GraphLoader graphLoader = new GraphLoader();
         Ruleset ruleset = new PipesRuleset();
 
-        int[] numbers = {50};
+        int[] numbers = {10};
 
         List<Thread> threads = new ArrayList<>();
         List<WaveFunctionCollapse> algorithms = new ArrayList<>();
@@ -100,11 +100,8 @@ public class Runner {
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 int x = mesh.getValue(width * i + j);
-                String c = null;
 
-                c = ruleset.stringRepresentation(x);
-                
-                sb.append(c + " ");
+                sb.append(ruleset.stringRepresentation(x) + " ");
             }
             if (i < height - 1) {
                 sb.append(System.lineSeparator());
