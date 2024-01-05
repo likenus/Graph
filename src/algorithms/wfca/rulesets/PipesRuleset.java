@@ -262,7 +262,7 @@ public class PipesRuleset implements Ruleset {
                 case 8 -> "╔";
                 case 9 -> "╗";
                 case 10 -> "╝";
-                default -> " ";
+                default -> "X";
             };
         }
     }
