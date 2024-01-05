@@ -7,7 +7,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-
 public class BinaryHeap<T> implements Iterable<T> {
 
     private final List<HeapNode> content = new ArrayList<>();
