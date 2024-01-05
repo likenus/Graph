@@ -114,11 +114,8 @@ public class Runner {
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 int x = mesh.getValue(width * i + j);
-                String c = null;
 
-                c = ruleset.stringRepresentation(x);
-                
-                sb.append(c + " ");
+                sb.append(ruleset.stringRepresentation(x) + " ");
             }
             if (i < height - 1) {
                 sb.append(System.lineSeparator());

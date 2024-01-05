@@ -12,6 +12,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import src.algorithms.wfca.rulesets.Ruleset;
 import src.graph.graph.models.directed.DirectedGraph;
+import src.graph.graph.models.directed.LazyDirectedGraph;
 import src.graph.vertices.interfaces.Vertice;
 import src.graph.graph.interfaces.Graph;
 import src.util.BinaryHeap;
@@ -169,7 +170,7 @@ public class WaveFunctionCollapse implements Runnable {
         boolean[] exploredNodes = new boolean[g.sizeVertices()];
         int[] distances = new int[g.sizeVertices()];
         
-        DirectedGraph tree = new DirectedGraph(g.sizeVertices());
+        DirectedGraph tree = new LazyDirectedGraph(s);
         Vertice start = g.parseVertice(s);
         
         if (start == null) {
