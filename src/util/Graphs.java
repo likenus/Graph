@@ -49,6 +49,7 @@ public final class Graphs {
      * @param t The key of the target node.
      * @return The Path from s to t including s and t. Returns an empty list if {@code s.equals(t)} is true.
      * Returns null if no path was found.
+     * @see Graphs#dijkstra()
      */
     public static List<Vertice> bfs(Graph g, int s, int t) {
         Objects.requireNonNull(g);
@@ -90,6 +91,12 @@ public final class Graphs {
         return reconstructPath(parents, start, target);
     }
 
+    /**
+     * Clones a graph such that {@code (g == clone(g)) == false} and 
+     * {@code g.equals(clone(g)) == true}.
+     * @param graph The graph to be cloned
+     * @return The cloned graph
+     */
     public static Graph clone(Graph graph) {
         Graph clone = new UndirectedGraph(graph.sizeVertices());
         for (Vertice vertice : graph.vertices()) {
@@ -104,9 +111,9 @@ public final class Graphs {
 
     /**
      * Will calculate the search tree of a breadth first search
-     * @param g
-     * @param s
-     * @return
+     * @param g The graph to calculate the search tree from
+     * @param s The starting vertice, the root of the search tree
+     * @return A bfs search tree
      */
     public static DirectedGraph bfsTree(Graph g, int s) {
         Objects.requireNonNull(g);
@@ -274,7 +281,14 @@ public final class Graphs {
         return array;
     }
 
-    public static boolean isOneComponent(Graph g) {
+    /**
+     * Checks whether a given graph forms a single component.
+     * </p>
+     * A graph is considered coherent if all vertices can be reached from any vertice.
+     * @param g The graph to be checked
+     * @return True if the graph is coherent
+     */
+    public static boolean isCoherent(UndirectedGraph g) {
         boolean[] exploredNodes = new boolean[g.sizeVertices()];
 
         Vertice start = g.parseVertice(0);

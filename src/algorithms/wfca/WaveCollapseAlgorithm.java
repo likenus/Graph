@@ -158,6 +158,12 @@ public class WaveCollapseAlgorithm implements Runnable {
         }
     }
 
+    /**
+     * This bfs tree is modified, for a full version see {@link src.util.Graphs#bfsTree()}
+     * @param g a graph
+     * @param s the starting vertice
+     * @return The search tree
+     */
     private DirectedGraph bfsTree(Graph g, int s) {
         Objects.requireNonNull(g);
         
