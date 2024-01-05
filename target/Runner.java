@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import src.algorithms.wfca.WaveCollapseAlgorithm;
+import src.algorithms.wfca.WaveFunctionCollapse;
 import src.algorithms.wfca.rulesets.LandscapeRuleset;
 import src.algorithms.wfca.rulesets.Ruleset;
 import src.graph.interfaces.Graph;
@@ -26,7 +26,7 @@ public class Runner {
         int[] numbers = {50};
 
         List<Thread> threads = new ArrayList<>();
-        List<WaveCollapseAlgorithm> algorithms = new ArrayList<>();
+        List<WaveFunctionCollapse> algorithms = new ArrayList<>();
 
         System.out.println("Initializing...");
 
@@ -35,9 +35,9 @@ public class Runner {
         for (int n : numbers) {
             Mesh2D graph = graphLoader.zylinder(n);
             System.out.println("%s: Width: %d Height: %d | %d total Nodes".formatted(graph.getMeshType(), graph.getWidth(), graph.getHeight(), graph.getWidth() * graph.getHeight()));
-            WaveCollapseAlgorithm wca = new WaveCollapseAlgorithm(graph, ruleset);
-            algorithms.add(wca);
-            threads.add(new Thread(wca));
+            WaveFunctionCollapse wfc = new WaveFunctionCollapse(graph, ruleset);
+            algorithms.add(wfc);
+            threads.add(new Thread(wfc));
         }
 
         long t2 = System.currentTimeMillis();
@@ -56,7 +56,7 @@ public class Runner {
             t2 = System.currentTimeMillis();
             System.out.print("Calculating... ");
             double progressAvg = 1e-20;
-            for (WaveCollapseAlgorithm wca : algorithms) {
+            for (WaveFunctionCollapse wca : algorithms) {
                 double progress = wca.getProgress();
                 System.out.print("| %.2f%% |".formatted(progress * 100));
                 progressAvg += progress;
@@ -82,12 +82,12 @@ public class Runner {
             return;
         }
 
-        for (WaveCollapseAlgorithm wca : algorithms) {
+        for (WaveFunctionCollapse wca : algorithms) {
             printGraph(wca);
         }
     }
 
-    public static void printGraph(WaveCollapseAlgorithm wca) {
+    public static void printGraph(WaveFunctionCollapse wca) {
 
         Mesh2D mesh = (Mesh2D) wca.getGraph();
         Ruleset ruleset = wca.getRuleset();
@@ -113,7 +113,7 @@ public class Runner {
         System.out.println();
     }
 
-    private void debugPrint(WaveCollapseAlgorithm wca) {
+    private void debugPrint(WaveFunctionCollapse wca) {
 
         Graph graph = wca.getGraph();
         List<Boolean> isCollapsed = wca.getIsCollapsed();

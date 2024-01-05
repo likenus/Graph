@@ -17,8 +17,7 @@ import src.util.BinaryHeap;
 import src.vertices.interfaces.Vertice;
 
 /**
- * The Wave Function Collapse Algorithm, short WaveCollapseAlgorithm,
- * is a algorithm for procedual generation.
+ * The Wave Function Collapse Algorithm, is an algorithm for procedual generation.
  * </p>
  * The Algorithm starts with a blank field of tiles. Every tile is in a superposition meaning it has
  * different possible states it can collapse to. Collapsing a tile will force it to choose one state.
@@ -30,11 +29,11 @@ import src.vertices.interfaces.Vertice;
  * generate randomized patterns. 
  * @version 2.0
  * 
- * @author Linus Klopsch
+ * @author likenus
  * 
  * @see src.util.Graphs#dijkstra()
  */
-public class WaveCollapseAlgorithm implements Runnable {
+public class WaveFunctionCollapse implements Runnable {
 
     private static final int MAX_BFS_DEPTH = 6;
 
@@ -52,7 +51,7 @@ public class WaveCollapseAlgorithm implements Runnable {
     private boolean finished = false;
     private int finishedCounter = 0;
 
-    private WaveCollapseAlgorithm(Graph graph, Ruleset ruleset, Random rnd) {
+    private WaveFunctionCollapse(Graph graph, Ruleset ruleset, Random rnd) {
         
         for (int i = 0; i < graph.sizeVertices(); i++) {
             possibilities.add(new HashSet<>());
@@ -79,7 +78,7 @@ public class WaveCollapseAlgorithm implements Runnable {
      * Initializes a new Wave Function Collapse Algorithm with a random seed.
      * @param graph The graph to be collapsed
      */
-    public WaveCollapseAlgorithm(Graph graph, Ruleset ruleset) {
+    public WaveFunctionCollapse(Graph graph, Ruleset ruleset) {
         this(graph, ruleset, new Random());
     }
 
@@ -88,7 +87,7 @@ public class WaveCollapseAlgorithm implements Runnable {
      * @param graph The graph to be collapsed
      * @param seed The seed
      */
-    public WaveCollapseAlgorithm(Graph graph, Ruleset ruleset, long seed) {
+    public WaveFunctionCollapse(Graph graph, Ruleset ruleset, long seed) {
         this(graph, ruleset, new Random(seed));
     }
 
