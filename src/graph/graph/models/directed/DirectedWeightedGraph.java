@@ -35,10 +35,6 @@ public class DirectedWeightedGraph extends SingleGraph {
 
         Edge edge = new DirectedEdge(v, w, value);
 
-        // if (this.edges.contains(edge)) {
-        //     return false;
-        // }
-
         v.connectEdge(edge);
 
         return this.edges.add(edge);
