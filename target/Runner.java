@@ -8,9 +8,9 @@ import java.util.Set;
 import src.algorithms.wfca.WaveFunctionCollapse;
 import src.algorithms.wfca.rulesets.LandscapeRuleset;
 import src.algorithms.wfca.rulesets.Ruleset;
-import src.graph.interfaces.Graph;
-import src.graph.models.undirected.Mesh2D;
-import src.vertices.interfaces.Vertice;
+import src.graph.graph.interfaces.Graph;
+import src.graph.graph.models.undirected.Mesh2D;
+import src.graph.vertices.interfaces.Vertice;
 
 public class Runner {
 

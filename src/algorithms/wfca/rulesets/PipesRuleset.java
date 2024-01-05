@@ -6,9 +6,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import src.graph.interfaces.Graph;
-import src.graph.models.undirected.Mesh2D;
-import src.vertices.interfaces.Vertice;
+import src.graph.graph.interfaces.Graph;
+import src.graph.graph.models.undirected.Mesh2D;
+import src.graph.vertices.interfaces.Vertice;
 
 /**
  * This ruleset uses these ASCII characters {'╩', '╚', '╠' etc...} to form a structure

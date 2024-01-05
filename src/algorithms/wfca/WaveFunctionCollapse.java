@@ -11,10 +11,10 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import src.algorithms.wfca.rulesets.Ruleset;
-import src.graph.interfaces.Graph;
-import src.graph.models.directed.DirectedGraph;
+import src.graph.graph.models.directed.DirectedGraph;
+import src.graph.vertices.interfaces.Vertice;
+import src.graph.graph.interfaces.Graph;
 import src.util.BinaryHeap;
-import src.vertices.interfaces.Vertice;
 
 /**
  * The Wave Function Collapse Algorithm, is an algorithm for procedual generation.
@@ -31,7 +31,7 @@ import src.vertices.interfaces.Vertice;
  * 
  * @author likenus
  * 
- * @see src.util.Graphs#dijkstra()
+ * @see src.graph.util.Graphs#dijkstra()
  */
 public class WaveFunctionCollapse implements Runnable {
 
@@ -158,7 +158,7 @@ public class WaveFunctionCollapse implements Runnable {
     }
 
     /**
-     * This bfs tree is modified, for a full version see {@link src.util.Graphs#bfsTree()}
+     * This bfs tree is modified, for a full version see {@link src.graph.util.Graphs#bfsTree()}
      * @param g a graph
      * @param s the starting vertice
      * @return The search tree

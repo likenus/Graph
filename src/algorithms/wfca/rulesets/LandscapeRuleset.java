@@ -6,9 +6,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import src.graph.interfaces.Graph;
+import src.graph.graph.interfaces.Graph;
+import src.graph.vertices.interfaces.Vertice;
 import src.util.Ansi;
-import src.vertices.interfaces.Vertice;
 
 /**
  * This ruleset attempts to paint a landscape like image. Its rules say that water and land
