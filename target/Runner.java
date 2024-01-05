@@ -7,6 +7,7 @@ import java.util.Set;
 
 import src.algorithms.wfca.WaveFunctionCollapse;
 import src.algorithms.wfca.rulesets.LandscapeRuleset;
+import src.algorithms.wfca.rulesets.PipesRuleset;
 import src.algorithms.wfca.rulesets.Ruleset;
 import src.graph.graph.interfaces.Graph;
 import src.graph.graph.models.undirected.Mesh2D;
@@ -21,7 +22,7 @@ public class Runner {
     public void run() {
 
         GraphLoader graphLoader = new GraphLoader();
-        Ruleset ruleset = new LandscapeRuleset();
+        Ruleset ruleset = new PipesRuleset();
 
         int[] numbers = {50};
 
