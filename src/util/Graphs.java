@@ -100,7 +100,7 @@ public final class Graphs {
     public static Graph clone(Graph graph) {
         Graph clone = new UndirectedGraph(graph.sizeVertices());
         for (Vertice vertice : graph.vertices()) {
-            clone.set(vertice.getKey(), vertice.getValue());
+            clone.setValue(vertice.getKey(), vertice.getValue());
         }
         for (Edge edge : graph.edges()) {
             clone.addEdge(edge.start().getKey(), edge.end().getKey());

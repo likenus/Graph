@@ -54,7 +54,7 @@ public abstract class SingleGraph implements Graph {
     }
 
     @Override
-    public void set(int key, int value) {
+    public void setValue(int key, int value) {
         parseVertice(key).setValue(value);
     }
 
@@ -137,7 +137,7 @@ public abstract class SingleGraph implements Graph {
     }
 
     @Override
-    public int value(int a, int b) {
+    public int weightOf(int a, int b) {
         Edge edge = parseEdge(a, b);
 
         if (edge == null) {

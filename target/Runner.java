@@ -56,8 +56,8 @@ public class Runner {
             t2 = System.currentTimeMillis();
             System.out.print("Calculating... ");
             double progressAvg = 1e-20;
-            for (WaveFunctionCollapse wca : algorithms) {
-                double progress = wca.getProgress();
+            for (WaveFunctionCollapse wfc : algorithms) {
+                double progress = wfc.getProgress();
                 System.out.print("| %.2f%% |".formatted(progress * 100));
                 progressAvg += progress;
             }
@@ -82,15 +82,15 @@ public class Runner {
             return;
         }
 
-        for (WaveFunctionCollapse wca : algorithms) {
-            printGraph(wca);
+        for (WaveFunctionCollapse wfc : algorithms) {
+            printGraph(wfc);
         }
     }
 
-    public static void printGraph(WaveFunctionCollapse wca) {
+    public static void printGraph(WaveFunctionCollapse wfc) {
 
-        Mesh2D mesh = (Mesh2D) wca.getGraph();
-        Ruleset ruleset = wca.getRuleset();
+        Mesh2D mesh = (Mesh2D) wfc.getGraph();
+        Ruleset ruleset = wfc.getRuleset();
 
         int width = mesh.getWidth();
         int height = mesh.getHeight();
@@ -113,11 +113,11 @@ public class Runner {
         System.out.println();
     }
 
-    private void debugPrint(WaveFunctionCollapse wca) {
+    private void debugPrint(WaveFunctionCollapse wfc) {
 
-        Graph graph = wca.getGraph();
-        List<Boolean> isCollapsed = wca.getIsCollapsed();
-        List<Set<Integer>> possibilities = wca.getPossibilities();
+        Graph graph = wfc.getGraph();
+        List<Boolean> isCollapsed = wfc.getIsCollapsed();
+        List<Set<Integer>> possibilities = wfc.getPossibilities();
 
         List<Vertice> notEvaluated = graph.vertices().stream()
             .filter(v -> !isCollapsed.get(v.getKey()))
@@ -135,7 +135,7 @@ public class Runner {
             .filter(v -> possibilities.get(v.getKey()).size() == min.get())
             .forEach(v -> v.setValue(-1));
            
-        printGraph(wca);
+        printGraph(wfc);
 
         for (Vertice vertice : graph.vertices()) {
             if (vertice.getValue() == -1) {

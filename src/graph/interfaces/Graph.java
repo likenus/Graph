@@ -6,7 +6,13 @@ import src.edge.interfaces.Edge;
 import src.vertices.interfaces.Vertice;
 
 /**
- * TODO javadoc
+ * A graph is simply put a set of vertices that may or may not be connecd by edges.
+ * Edges give the graph its structure and can be directed/non-directional or weighted/non-weighted.
+ * </p>
+ * Graph implementations are free to decide which type of edge they use, however
+ * every graph must be able to be safely casted to Graph.
+ * 
+ * @author likenus
  */
 public interface Graph {
     
@@ -91,15 +97,51 @@ public interface Graph {
      */
     int getValue(int key);
 
-    void set(int key, int value);
+    /**
+     * Sets the value of a vertice in the graph.
+     * @param key The key of the corresponding vertice
+     * @param value The value to be set
+     */
+    void setValue(int key, int value);
 
-    int value(int a, int b);
+    /**
+     * Returns the weight of an edge in the graph.
+     * In unweighted graphs this will default to {@code 1}.
+     * </p>
+     * Note: Directed graphs are order-sensitive.
+     * @param a The starting vertice
+     * @param b The ending vertice
+     * @return The weight of the edge
+     */
+    int weightOf(int a, int b);
 
+    /**
+     * Returns a list-view of all the edges in the graph.
+     * Changes made to elements in the list will be reflected in the graph itself.
+     * @return A list containing edges
+     */
     List<Edge> edges();
 
+    /**
+     * Parses an edge corresponding to its injacent vertices. This will return {@code null} if
+     * the input is invalid or the edge does not exist.
+     * </p>
+     * Note: Directed graphs are order-sensitive.
+     * @param a The starting vertice
+     * @param b The ending vertice
+     * @return The found edge, {@code null} otherwise
+     */
     Edge parseEdge(int a, int b);
 
+    /**
+     * Returns the total amount of vertices within the graph. This number can not be negative.
+     * @return The amount of vertices
+     */
     int sizeVertices();
 
+    /**
+     * Returns the total amount of edges within the graph. This number can not be negative.
+     * @return The amount of edges
+     */
     int sizeEdges();
 }
