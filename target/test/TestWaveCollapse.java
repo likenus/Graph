@@ -3,11 +3,11 @@ package target.test;
 import org.junit.Assert;
 import org.junit.Test;
 
-import src.algorithms.wfca.WaveCollapseAlgorithm;
+import src.algorithms.wfca.WaveFunctionCollapse;
 import src.algorithms.wfca.rulesets.LandscapeRuleset;
 import src.algorithms.wfca.rulesets.Ruleset;
-import src.graph.interfaces.Graph;
-import src.graph.models.undirected.Mesh2D;
+import src.graph.graph.interfaces.Graph;
+import src.graph.graph.models.undirected.Mesh2D;
 import target.GraphLoader;
 
 public class TestWaveCollapse {
@@ -32,14 +32,14 @@ public class TestWaveCollapse {
         GraphLoader graphLoader = new GraphLoader();
         Graph graph = graphLoader.zylinder(10);
 
-        WaveCollapseAlgorithm wca = new WaveCollapseAlgorithm(graph, ruleset, SEED);
+        WaveFunctionCollapse wca = new WaveFunctionCollapse(graph, ruleset, SEED);
 
         wca.run();
 
         Assert.assertEquals(EXPECTED, printGraph(wca));
     }
 
-    public static String printGraph(WaveCollapseAlgorithm wca) {
+    public static String printGraph(WaveFunctionCollapse wca) {
 
         Mesh2D mesh = (Mesh2D) wca.getGraph();
 
