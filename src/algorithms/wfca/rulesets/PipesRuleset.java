@@ -22,31 +22,14 @@ public class PipesRuleset implements Ruleset {
     private static final Set<Integer> NUMBERS = new HashSet<>(Arrays.asList(Tile.values()).stream().map(Tile::getIdentifier).toList());
 
     @Override
-    @SuppressWarnings("all") // If it works dont touch it
     public Set<Integer> ruleset(Graph graph, Vertice v, List<Set<Integer>> possibilities) {
         Mesh2D mesh = (Mesh2D) graph;
 
         List<Set<Integer>> allPossibleInts = new ArrayList<>();
 
-        List<Vertice> neighbours = graph.neighbours(v.getKey());
-        Map<Direction, Vertice> a = new EnumMap<>(Direction.class);
+        Map<Direction, Vertice> neighbours = initNeighbours(v, graph.neighbours(v.getKey()), mesh);
 
-        for (Vertice neighbour : neighbours) {
-            if (neighbour.getKey() == v.getKey() - 1 || neighbour.getKey() == v.getKey() + mesh.getWidth() - 1) {
-                a.put(Direction.LEFT, neighbour);
-            }
-            if (neighbour.getKey() == v.getKey() + 1 || neighbour.getKey() == v.getKey() - mesh.getWidth() + 1) {
-                a.put(Direction.RIGHT, neighbour);
-            }
-            if (neighbour.getKey() == v.getKey() - mesh.getWidth()) {
-                a.put(Direction.UP, neighbour);
-            }
-            if (neighbour.getKey() == v.getKey() + mesh.getWidth()) {
-                a.put(Direction.DOWN, neighbour);
-            }
-        }
-
-        for (Entry<Direction, Vertice> entry : a.entrySet()) {
+        for (Entry<Direction, Vertice> entry : neighbours.entrySet()) {
             Set<Integer> ints = new HashSet<>();
             allPossibleInts.add(ints);
 
@@ -55,26 +38,14 @@ public class PipesRuleset implements Ruleset {
 
             Set<Integer> neighbourInts = possibilities.get(neighbour.getKey());
 
-            List<Tile> tiles = new ArrayList<>();
-            for (int i : neighbourInts) {
-                tiles.add(Tile.parseTile(i));
-            }
+            List<Tile> tiles = initTiles(neighbourInts);
 
-            
             for (Tile tile : tiles) {
                 int footprint = tile.getFootprint(direction.opposite());
-                if (footprint == 0) {
-                    for (Tile t : Tile.values()) {
-                        if (t.getFootprint(direction) == 0) {
-                            ints.add(t.getIdentifier());
-                        }
+                for (Tile t : Tile.values()) {
+                    if (footprint == t.getFootprint(direction)) {
+                        ints.add(t.getIdentifier());
                     }
-                } else {
-                   for (Tile t : Tile.values()) {
-                        if (t.getFootprint(direction) == 1) {
-                            ints.add(t.getIdentifier());
-                        }
-                    } 
                 }
                 if (ints.size() == NUMBERS.size()) {
                     break;
@@ -83,6 +54,36 @@ public class PipesRuleset implements Ruleset {
         }
 
         return Ruleset.intersect(allPossibleInts, NUMBERS);
+    }
+
+    private static Map<Direction, Vertice> initNeighbours(Vertice v, List<Vertice> neighbours, Mesh2D mesh) {
+        Map<Direction, Vertice> map = new EnumMap<>(Direction.class);
+
+        for (Vertice neighbour : neighbours) {
+            if (neighbour.getKey() == v.getKey() - 1 || neighbour.getKey() == v.getKey() + mesh.getWidth() - 1) {
+                map.put(Direction.LEFT, neighbour);
+            }
+            if (neighbour.getKey() == v.getKey() + 1 || neighbour.getKey() == v.getKey() - mesh.getWidth() + 1) {
+                map.put(Direction.RIGHT, neighbour);
+            }
+            if (neighbour.getKey() == v.getKey() - mesh.getWidth()) {
+                map.put(Direction.UP, neighbour);
+            }
+            if (neighbour.getKey() == v.getKey() + mesh.getWidth()) {
+                map.put(Direction.DOWN, neighbour);
+            }
+        }
+
+        return map;
+    }
+
+    private static List<Tile> initTiles(Set<Integer> neighbourInts) {
+        List<Tile> tiles = new ArrayList<>();
+        for (int i : neighbourInts) {
+            tiles.add(Tile.parseTile(i));
+        }
+
+        return tiles;
     }
     
     @Override
