@@ -36,7 +36,7 @@ import src.util.BinaryHeap;
  */
 public class WaveFunctionCollapse implements Runnable {
 
-    private static final int MAX_BFS_DEPTH = 6;
+    private static final int MAX_BFS_DEPTH = 8;
 
     private final List<Boolean> isCollapsed = new ArrayList<>();
     private final BinaryHeap<Vertice> notCollapsed = new BinaryHeap<>();
