@@ -211,13 +211,13 @@ public class PipesRuleset implements Ruleset {
             {0, 0, 0}
             }), 
         
-        HORIZONTAL(11, " ", new int[][] { //TODO enter ASCII symbols
+        HORIZONTAL(11, "═", new int[][] {
             {0, 0, 0},
             {1, 1, 1},
             {0, 0, 0}
             }), 
             
-        VERTICAL(12, " ", new int[][] {
+        VERTICAL(12, "║", new int[][] {
             {0, 1, 0},
             {0, 1, 0},
             {0, 1, 0}
