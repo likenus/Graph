@@ -33,7 +33,7 @@ public class Runner {
         for (int n : numbers) {
             Mesh2D graph = graphLoader.zylinder(50, 25); // <-- Meshes are generated here
             System.out.println("%s: Width: %d Height: %d | %d total Nodes".formatted(graph.getMeshType(), graph.getWidth(), graph.getHeight(), graph.getWidth() * graph.getHeight()));
-            WaveFunctionCollapse wfc = new WaveFunctionCollapse(graph, ruleset, 1);
+            WaveFunctionCollapse wfc = new WaveFunctionCollapse(graph, ruleset);
             algorithms.add(wfc);
             threads.add(new Thread(wfc));
         }
