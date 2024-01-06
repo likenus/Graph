@@ -1,6 +1,8 @@
 package src.graph.vertices.models;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -27,6 +29,22 @@ public class Node implements Vertice {
             neighbours.add(edge.getOther(this));
         }
         return Collections.unmodifiableList(neighbours);
+    }
+    @Override
+    public Iterator<Vertice> neighboursIterator() {
+        Vertice thisVertice = this;
+        return new Iterator<>() {
+            Iterator<Edge> edgeIterator = edges.iterator();
+            @Override
+            public boolean hasNext() {
+                return edgeIterator.hasNext();
+            }
+
+            @Override
+            public Vertice next() {
+                return edgeIterator.next().getOther(thisVertice);
+            }
+        };
     }
 
     @Override

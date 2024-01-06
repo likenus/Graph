@@ -1,5 +1,6 @@
 package src.graph.vertices.interfaces;
 
+import java.util.Iterator;
 import java.util.List;
 
 import src.graph.edge.interfaces.Edge;
@@ -18,6 +19,12 @@ public interface Vertice {
      * @return A list containing all reachable vertices.
      */
     List<Vertice> neighbours();
+
+    /**
+     * Returns an iterator which iterates over all vertices that can be reached from this vertice.
+     * @return An iterator over all reachable vertices.
+     */
+    Iterator<Vertice> neighboursIterator();
 
     /**
      * Returns the key associated with this vertice.

@@ -3,6 +3,7 @@ package src.algorithms.wfca;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Queue;
@@ -203,7 +204,9 @@ public class WaveFunctionCollapse implements Runnable {
             if (distances[u.getKey()] > MAX_BFS_DEPTH) {
                 continue;
             }
-            for (Vertice v : u.neighbours()) {
+            Iterator<Vertice> neighborIt = u.neighboursIterator();
+            while (neighborIt.hasNext()) {
+                Vertice v = neighborIt.next();
                 if (isCollapsed.get(v.getKey()).booleanValue()) {
                     exploredNodes[v.getKey()] = true;
                     continue;
