@@ -2,29 +2,25 @@ package target;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 
 import src.algorithms.wfca.WaveFunctionCollapse;
-import src.algorithms.wfca.rulesets.PipesRuleset;
+import src.algorithms.wfca.rulesets.LandscapeRuleset;
 import src.algorithms.wfca.rulesets.Ruleset;
-import src.graph.graph.interfaces.Graph;
 import src.graph.graph.models.undirected.Mesh2D;
-import src.graph.vertices.interfaces.Vertice;
 
 public class Runner {
 
-    private static final boolean ANIMATED_OUTPUT = true;
-    private static final boolean PRINT_RESULT = false;
+    private static final boolean ANIMATED_OUTPUT = false;
+    private static final boolean PRINT_RESULT = true;
     private static final int SLEEP_TIMER = 1000;
 
-    private int[] numbers = {100};
+    private int[] numbers = {50};
 
-
+    @SuppressWarnings("all")
     public void run() {
 
         GraphLoader graphLoader = new GraphLoader();
-        Ruleset ruleset = new PipesRuleset();
+        Ruleset ruleset = new LandscapeRuleset();
 
         List<Thread> threads = new ArrayList<>();
         List<WaveFunctionCollapse> algorithms = new ArrayList<>();
@@ -34,9 +30,9 @@ public class Runner {
         long t1 = System.currentTimeMillis();
 
         for (int n : numbers) {
-            Mesh2D graph = graphLoader.zylinder(n);
+            Mesh2D graph = graphLoader.zylinder(400, 400); // <-- Meshes are generated here
             System.out.println("%s: Width: %d Height: %d | %d total Nodes".formatted(graph.getMeshType(), graph.getWidth(), graph.getHeight(), graph.getWidth() * graph.getHeight()));
-            WaveFunctionCollapse wfc = new WaveFunctionCollapse(graph, ruleset);
+            WaveFunctionCollapse wfc = new WaveFunctionCollapse(graph, ruleset, 1);
             algorithms.add(wfc);
             threads.add(new Thread(wfc));
         }
@@ -67,12 +63,12 @@ public class Runner {
             double remainingTime = ((t2 - t1) / 1000f) / progressAvg - (t2 - t1) / 1000f;
             String eTime;
             String rTime;
-            if (elapsedTime > 180) {
+            if (elapsedTime > 120) {
                 eTime = "%.0fmin".formatted(elapsedTime / 60);
             } else {
                 eTime = "%.2fs".formatted(elapsedTime);
             }
-            if (remainingTime > 180) {
+            if (remainingTime > 120) {
                 rTime = "%.0fmin".formatted(remainingTime / 60);
             } else {
                 rTime = "%.2fs".formatted(remainingTime);
@@ -85,7 +81,6 @@ public class Runner {
                 exception.printStackTrace();
             }
             if (ANIMATED_OUTPUT) {
-                // debugPrint(algorithms.get(0));
                 printGraph(algorithms.get(0));
             }
         }
@@ -123,36 +118,5 @@ public class Runner {
         }
         System.out.println(sb.toString() + "\u001B[0m");
         System.out.println();
-    }
-
-    private void debugPrint(WaveFunctionCollapse wfc) {
-
-        Graph graph = wfc.getGraph();
-        List<Boolean> isCollapsed = wfc.getIsCollapsed();
-        List<Set<Integer>> possibilities = wfc.getPossibilities();
-
-        List<Vertice> notEvaluated = graph.vertices().stream()
-            .filter(v -> !isCollapsed.get(v.getKey()))
-            .toList();
-        
-        Optional<Integer> min = notEvaluated.stream()
-            .map(v -> possibilities.get(v.getKey()).size())
-            .min(Integer::compare);
-
-        if (!min.isPresent()) {
-            return;
-        }
-
-        notEvaluated.stream()
-            .filter(v -> possibilities.get(v.getKey()).size() == min.get())
-            .forEach(v -> v.setValue(-1));
-           
-        printGraph(wfc);
-
-        for (Vertice vertice : graph.vertices()) {
-            if (vertice.getValue() == -1) {
-                vertice.setValue(0);
-            }
-        }
     }
 }

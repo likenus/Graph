@@ -4,9 +4,11 @@ import src.graph.vertices.interfaces.Vertice;
 import src.graph.vertices.models.Node;
 
 public class LazyDirectedGraph extends DirectedGraph {
+
     public LazyDirectedGraph(int startNode) {
         add(new Node(startNode));
     }
+
     @Override
     public boolean addEdge(int a, int b) {
         Vertice v = parseVertice(a);

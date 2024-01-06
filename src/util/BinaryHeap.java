@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class BinaryHeap<T> implements Iterable<T> {
 
@@ -64,8 +65,8 @@ public class BinaryHeap<T> implements Iterable<T> {
      * Changes made to this List will be reflected in the Heap.
      * @return A unmodifiable view of the contents.
      */
-    public List<T> contents() {
-        return Collections.unmodifiableList(index.keySet().stream().toList());
+    public Set<T> contents() {
+        return Collections.unmodifiableSet(index.keySet());
     }
 
     /**
@@ -171,5 +172,14 @@ public class BinaryHeap<T> implements Iterable<T> {
     @Override
     public Iterator<T> iterator() {
         return contents().iterator();
+    }
+
+    public boolean contains(Object o) {
+        return contents().contains(o);
+    }
+
+    public void clear() {
+        this.content.clear();
+        this.index.clear();
     }
 }
