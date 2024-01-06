@@ -81,7 +81,6 @@ public class Runner {
                 exception.printStackTrace();
             }
             if (ANIMATED_OUTPUT) {
-                // debugPrint(algorithms.get(0));
                 printGraph(algorithms.get(0));
             }
         }

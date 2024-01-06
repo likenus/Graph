@@ -16,12 +16,17 @@ import src.graph.graph.models.undirected.Mesh2D.MeshType;
 public class GraphLoader {
 
     private static final String ARG_SPLITTER = "->|:";
+    private static final String FOLDER_PATH = "files";
 
     private FileLoader fileLoader;
 
     public GraphLoader() {
+        this(FOLDER_PATH);
+    }
+
+    public GraphLoader(String path) {
         try {
-            fileLoader = new FileLoader("files");
+            fileLoader = new FileLoader(path);
         } catch (IOException e) {
             e.printStackTrace();
         }
