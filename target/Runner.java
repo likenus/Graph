@@ -5,6 +5,7 @@ import java.util.List;
 
 import src.algorithms.wfca.WaveFunctionCollapse;
 import src.algorithms.wfca.rulesets.LandscapeRuleset;
+import src.algorithms.wfca.rulesets.PipesRuleset;
 import src.algorithms.wfca.rulesets.Ruleset;
 import src.graph.graph.models.undirected.Mesh2D;
 
@@ -20,7 +21,7 @@ public class Runner {
     public void run() {
 
         GraphLoader graphLoader = new GraphLoader();
-        Ruleset ruleset = new LandscapeRuleset();
+        Ruleset ruleset = new PipesRuleset();
 
         List<Thread> threads = new ArrayList<>();
         List<WaveFunctionCollapse> algorithms = new ArrayList<>();
@@ -30,7 +31,7 @@ public class Runner {
         long t1 = System.currentTimeMillis();
 
         for (int n : numbers) {
-            Mesh2D graph = graphLoader.zylinder(400, 400); // <-- Meshes are generated here
+            Mesh2D graph = graphLoader.zylinder(50, 25); // <-- Meshes are generated here
             System.out.println("%s: Width: %d Height: %d | %d total Nodes".formatted(graph.getMeshType(), graph.getWidth(), graph.getHeight(), graph.getWidth() * graph.getHeight()));
             WaveFunctionCollapse wfc = new WaveFunctionCollapse(graph, ruleset, 1);
             algorithms.add(wfc);
@@ -110,7 +111,7 @@ public class Runner {
             for (int j = 0; j < width; j++) {
                 int x = mesh.getValue(width * i + j);
 
-                sb.append(ruleset.stringRepresentation(x) + " ");
+                sb.append(ruleset.stringRepresentation(x) + "");
             }
             if (i < height - 1) {
                 sb.append(System.lineSeparator());

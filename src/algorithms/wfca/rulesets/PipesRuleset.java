@@ -33,16 +33,16 @@ public class PipesRuleset implements Ruleset {
 
         for (Vertice neighbour : neighbours) {
             if (neighbour.getKey() == v.getKey() - 1 || neighbour.getKey() == v.getKey() + mesh.getWidth() - 1) {
-                a.put(Direction.LEFT, v);
+                a.put(Direction.LEFT, neighbour);
             }
             if (neighbour.getKey() == v.getKey() + 1 || neighbour.getKey() == v.getKey() - mesh.getWidth() + 1) {
-                a.put(Direction.RIGHT, v);
+                a.put(Direction.RIGHT, neighbour);
             }
             if (neighbour.getKey() == v.getKey() - mesh.getWidth()) {
-                a.put(Direction.UP, v);
+                a.put(Direction.UP, neighbour);
             }
             if (neighbour.getKey() == v.getKey() + mesh.getWidth()) {
-                a.put(Direction.DOWN, v);
+                a.put(Direction.DOWN, neighbour);
             }
         }
 
@@ -76,119 +76,13 @@ public class PipesRuleset implements Ruleset {
                         }
                     } 
                 }
+                if (ints.size() == NUMBERS.size()) {
+                    break;
+                }
             }
         }
 
-        // for (Vertice neighbour : neighbours) {
-        //     Set<Integer> ints = new HashSet<>();
-        //     allPossibleInts.add(ints);
-
-        //     Set<Integer> neighbourInts = possibilities.get(neighbour.getKey());
-            
-        //     // Left
-        //     if (neighbour.getKey() == v.getKey() - 1 || neighbour.getKey() == v.getKey() + mesh.getWidth() - 1) {
-        //         List<Tile> tiles = new ArrayList<>();
-        //         for (int i : neighbourInts) {
-        //             tiles.add(Tile.parseTile(i));
-        //         }
-        //         for (Tile tile : tiles) {
-        //             if (tile.right() == 0) {
-        //                 for (Tile t : Tile.values()) {
-        //                     if (t.left() == 0) {
-        //                         ints.add(t.getIdentifier());
-        //                     }
-        //                 }
-        //             } else {
-        //                for (Tile t : Tile.values()) {
-        //                     if (t.left() == 1) {
-        //                         ints.add(t.getIdentifier());
-        //                     }
-        //                 } 
-        //             }
-        //         }
-        //     }
-
-        //     // Right
-        //     if (neighbour.getKey() == v.getKey() + 1 || neighbour.getKey() == v.getKey() - mesh.getWidth() + 1) {
-        //         List<Tile> tiles = new ArrayList<>();
-        //         for (int i : neighbourInts) {
-        //             tiles.add(Tile.parseTile(i));
-        //         }
-        //         for (Tile tile : tiles) {
-        //             if (tile.left() == 0) {
-        //                 for (Tile t : Tile.values()) {
-        //                     if (t.right() == 0) {
-        //                         ints.add(t.getIdentifier());
-        //                     }
-        //                 }
-        //             } else {
-        //                for (Tile t : Tile.values()) {
-        //                     if (t.right() == 1) {
-        //                         ints.add(t.getIdentifier());
-        //                     }
-        //                 } 
-        //             }
-        //         }
-        //     }
-
-        //     // Top
-        //     if (neighbour.getKey() == v.getKey() - mesh.getWidth()) {
-        //         List<Tile> tiles = new ArrayList<>();
-        //         for (int i : neighbourInts) {
-        //             tiles.add(Tile.parseTile(i));
-        //         }
-        //         for (Tile tile : tiles) {
-        //             if (tile.bot() == 0) {
-        //                 for (Tile t : Tile.values()) {
-        //                     if (t.top() == 0) {
-        //                         ints.add(t.getIdentifier());
-        //                     }
-        //                 }
-        //             } else {
-        //                for (Tile t : Tile.values()) {
-        //                     if (t.top() == 1) {
-        //                         ints.add(t.getIdentifier());
-        //                     }
-        //                 } 
-        //             }
-        //         }
-        //     }
-
-        //     // Bot
-        //     if (neighbour.getKey() == v.getKey() + mesh.getWidth()) {
-        //         List<Tile> tiles = new ArrayList<>();
-        //         for (int i : neighbourInts) {
-        //             tiles.add(Tile.parseTile(i));
-        //         }
-        //         for (Tile tile : tiles) {
-        //             if (tile.top() == 0) {
-        //                 for (Tile t : Tile.values()) {
-        //                     if (t.bot() == 0) {
-        //                         ints.add(t.getIdentifier());
-        //                     }
-        //                 }
-        //             } else {
-        //                for (Tile t : Tile.values()) {
-        //                     if (t.bot() == 1) {
-        //                         ints.add(t.getIdentifier());
-        //                     }
-        //                 } 
-        //             }
-        //         }
-        //     }
-        // }
-
         return Ruleset.intersect(allPossibleInts, NUMBERS);
-        // Set<Integer> possibleInts = new HashSet<>();
-
-        // for (int i : NUMBERS) {
-        //     Integer num = i;
-        //     if (allPossibleInts.stream().allMatch(set -> set.contains(num) || set.contains(-1))) {
-        //         possibleInts.add(num);
-        //     }
-        // }
-        
-        // return possibleInts;
     }
     
     @Override
