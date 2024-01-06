@@ -2,9 +2,12 @@ package src.algorithms.wfca.rulesets;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 
 import src.graph.graph.interfaces.Graph;
 import src.graph.graph.models.undirected.Mesh2D;
@@ -26,116 +29,166 @@ public class PipesRuleset implements Ruleset {
         List<Set<Integer>> allPossibleInts = new ArrayList<>();
 
         List<Vertice> neighbours = graph.neighbours(v.getKey());
+        Map<Direction, Vertice> a = new EnumMap<>(Direction.class);
 
         for (Vertice neighbour : neighbours) {
+            if (neighbour.getKey() == v.getKey() - 1 || neighbour.getKey() == v.getKey() + mesh.getWidth() - 1) {
+                a.put(Direction.LEFT, v);
+            }
+            if (neighbour.getKey() == v.getKey() + 1 || neighbour.getKey() == v.getKey() - mesh.getWidth() + 1) {
+                a.put(Direction.RIGHT, v);
+            }
+            if (neighbour.getKey() == v.getKey() - mesh.getWidth()) {
+                a.put(Direction.UP, v);
+            }
+            if (neighbour.getKey() == v.getKey() + mesh.getWidth()) {
+                a.put(Direction.DOWN, v);
+            }
+        }
+
+        for (Entry<Direction, Vertice> entry : a.entrySet()) {
             Set<Integer> ints = new HashSet<>();
             allPossibleInts.add(ints);
 
+            Vertice neighbour = entry.getValue();
+            Direction direction = entry.getKey();
+
             Set<Integer> neighbourInts = possibilities.get(neighbour.getKey());
+
+            List<Tile> tiles = new ArrayList<>();
+            for (int i : neighbourInts) {
+                tiles.add(Tile.parseTile(i));
+            }
+
             
-            // Left
-            if (neighbour.getKey() == v.getKey() - 1 || neighbour.getKey() == v.getKey() + mesh.getWidth() - 1) {
-                List<Tile> tiles = new ArrayList<>();
-                for (int i : neighbourInts) {
-                    tiles.add(Tile.parseTile(i));
-                }
-                for (Tile tile : tiles) {
-                    if (tile.right() == 0) {
-                        for (Tile t : Tile.values()) {
-                            if (t.left() == 0) {
-                                ints.add(t.getIdentifier());
-                            }
+            for (Tile tile : tiles) {
+                int footprint = tile.getFootprint(direction.opposite());
+                if (footprint == 0) {
+                    for (Tile t : Tile.values()) {
+                        if (t.getFootprint(direction) == 0) {
+                            ints.add(t.getIdentifier());
                         }
-                    } else {
-                       for (Tile t : Tile.values()) {
-                            if (t.left() == 1) {
-                                ints.add(t.getIdentifier());
-                            }
-                        } 
                     }
-                }
-            }
-
-            // Right
-            if (neighbour.getKey() == v.getKey() + 1 || neighbour.getKey() == v.getKey() - mesh.getWidth() + 1) {
-                List<Tile> tiles = new ArrayList<>();
-                for (int i : neighbourInts) {
-                    tiles.add(Tile.parseTile(i));
-                }
-                for (Tile tile : tiles) {
-                    if (tile.left() == 0) {
-                        for (Tile t : Tile.values()) {
-                            if (t.right() == 0) {
-                                ints.add(t.getIdentifier());
-                            }
+                } else {
+                   for (Tile t : Tile.values()) {
+                        if (t.getFootprint(direction) == 1) {
+                            ints.add(t.getIdentifier());
                         }
-                    } else {
-                       for (Tile t : Tile.values()) {
-                            if (t.right() == 1) {
-                                ints.add(t.getIdentifier());
-                            }
-                        } 
-                    }
-                }
-            }
-
-            // Top
-            if (neighbour.getKey() == v.getKey() - mesh.getWidth()) {
-                List<Tile> tiles = new ArrayList<>();
-                for (int i : neighbourInts) {
-                    tiles.add(Tile.parseTile(i));
-                }
-                for (Tile tile : tiles) {
-                    if (tile.bot() == 0) {
-                        for (Tile t : Tile.values()) {
-                            if (t.top() == 0) {
-                                ints.add(t.getIdentifier());
-                            }
-                        }
-                    } else {
-                       for (Tile t : Tile.values()) {
-                            if (t.top() == 1) {
-                                ints.add(t.getIdentifier());
-                            }
-                        } 
-                    }
-                }
-            }
-
-            // Bot
-            if (neighbour.getKey() == v.getKey() + mesh.getWidth()) {
-                List<Tile> tiles = new ArrayList<>();
-                for (int i : neighbourInts) {
-                    tiles.add(Tile.parseTile(i));
-                }
-                for (Tile tile : tiles) {
-                    if (tile.top() == 0) {
-                        for (Tile t : Tile.values()) {
-                            if (t.bot() == 0) {
-                                ints.add(t.getIdentifier());
-                            }
-                        }
-                    } else {
-                       for (Tile t : Tile.values()) {
-                            if (t.bot() == 1) {
-                                ints.add(t.getIdentifier());
-                            }
-                        } 
-                    }
+                    } 
                 }
             }
         }
 
-        Set<Integer> possibleInts = new HashSet<>();
+        // for (Vertice neighbour : neighbours) {
+        //     Set<Integer> ints = new HashSet<>();
+        //     allPossibleInts.add(ints);
 
-        for (int i : NUMBERS) {
-            Integer num = i;
-            if (allPossibleInts.stream().allMatch(set -> set.contains(num) || set.contains(-1))) {
-                possibleInts.add(num);
-            }
-        }
+        //     Set<Integer> neighbourInts = possibilities.get(neighbour.getKey());
+            
+        //     // Left
+        //     if (neighbour.getKey() == v.getKey() - 1 || neighbour.getKey() == v.getKey() + mesh.getWidth() - 1) {
+        //         List<Tile> tiles = new ArrayList<>();
+        //         for (int i : neighbourInts) {
+        //             tiles.add(Tile.parseTile(i));
+        //         }
+        //         for (Tile tile : tiles) {
+        //             if (tile.right() == 0) {
+        //                 for (Tile t : Tile.values()) {
+        //                     if (t.left() == 0) {
+        //                         ints.add(t.getIdentifier());
+        //                     }
+        //                 }
+        //             } else {
+        //                for (Tile t : Tile.values()) {
+        //                     if (t.left() == 1) {
+        //                         ints.add(t.getIdentifier());
+        //                     }
+        //                 } 
+        //             }
+        //         }
+        //     }
+
+        //     // Right
+        //     if (neighbour.getKey() == v.getKey() + 1 || neighbour.getKey() == v.getKey() - mesh.getWidth() + 1) {
+        //         List<Tile> tiles = new ArrayList<>();
+        //         for (int i : neighbourInts) {
+        //             tiles.add(Tile.parseTile(i));
+        //         }
+        //         for (Tile tile : tiles) {
+        //             if (tile.left() == 0) {
+        //                 for (Tile t : Tile.values()) {
+        //                     if (t.right() == 0) {
+        //                         ints.add(t.getIdentifier());
+        //                     }
+        //                 }
+        //             } else {
+        //                for (Tile t : Tile.values()) {
+        //                     if (t.right() == 1) {
+        //                         ints.add(t.getIdentifier());
+        //                     }
+        //                 } 
+        //             }
+        //         }
+        //     }
+
+        //     // Top
+        //     if (neighbour.getKey() == v.getKey() - mesh.getWidth()) {
+        //         List<Tile> tiles = new ArrayList<>();
+        //         for (int i : neighbourInts) {
+        //             tiles.add(Tile.parseTile(i));
+        //         }
+        //         for (Tile tile : tiles) {
+        //             if (tile.bot() == 0) {
+        //                 for (Tile t : Tile.values()) {
+        //                     if (t.top() == 0) {
+        //                         ints.add(t.getIdentifier());
+        //                     }
+        //                 }
+        //             } else {
+        //                for (Tile t : Tile.values()) {
+        //                     if (t.top() == 1) {
+        //                         ints.add(t.getIdentifier());
+        //                     }
+        //                 } 
+        //             }
+        //         }
+        //     }
+
+        //     // Bot
+        //     if (neighbour.getKey() == v.getKey() + mesh.getWidth()) {
+        //         List<Tile> tiles = new ArrayList<>();
+        //         for (int i : neighbourInts) {
+        //             tiles.add(Tile.parseTile(i));
+        //         }
+        //         for (Tile tile : tiles) {
+        //             if (tile.top() == 0) {
+        //                 for (Tile t : Tile.values()) {
+        //                     if (t.bot() == 0) {
+        //                         ints.add(t.getIdentifier());
+        //                     }
+        //                 }
+        //             } else {
+        //                for (Tile t : Tile.values()) {
+        //                     if (t.bot() == 1) {
+        //                         ints.add(t.getIdentifier());
+        //                     }
+        //                 } 
+        //             }
+        //         }
+        //     }
+        // }
+
+        return Ruleset.intersect(allPossibleInts, NUMBERS);
+        // Set<Integer> possibleInts = new HashSet<>();
+
+        // for (int i : NUMBERS) {
+        //     Integer num = i;
+        //     if (allPossibleInts.stream().allMatch(set -> set.contains(num) || set.contains(-1))) {
+        //         possibleInts.add(num);
+        //     }
+        // }
         
-        return possibleInts;
+        // return possibleInts;
     }
     
     @Override
@@ -267,6 +320,33 @@ public class PipesRuleset implements Ruleset {
         public String toString() {
             return symbol;
         }
+
+        public int getFootprint(Direction direction) {
+            return switch(direction) {
+                case UP -> top();
+                case DOWN -> bot();
+                case LEFT -> left();
+                case RIGHT -> right();
+            };
+        }
     }
 
+    private enum Direction {
+        UP,
+
+        DOWN,
+
+        LEFT,
+
+        RIGHT;
+
+        public Direction opposite() {
+            return switch (this) {
+                case UP -> DOWN;
+                case DOWN -> UP;
+                case LEFT -> RIGHT;
+                case RIGHT -> LEFT;
+            };
+        }
+    }
 }

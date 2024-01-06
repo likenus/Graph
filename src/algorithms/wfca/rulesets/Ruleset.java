@@ -1,5 +1,6 @@
 package src.algorithms.wfca.rulesets;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -34,4 +35,17 @@ public interface Ruleset {
      * @return A Strings
      */
     String stringRepresentation(int i);
+
+    /* Package Private */ static Set<Integer> intersect(List<Set<Integer>> sets, Set<Integer> numbers) {
+        Set<Integer> possibleInts = new HashSet<>();
+
+        for (int i : numbers) {
+            Integer num = i;
+            if (sets.stream().allMatch(set -> set.contains(num) || set.contains(-1))) {
+                possibleInts.add(num);
+            }
+        }
+
+        return possibleInts;
+    }
 } 
