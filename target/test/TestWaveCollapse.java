@@ -57,7 +57,7 @@ public class TestWaveCollapse {
                     sb.append(x);
                 }
             }
-            sb.append(System.lineSeparator());
+            sb.append("\n");
             
         }
 
