@@ -1,6 +1,7 @@
 package src.algorithms.wfca.rulesets;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -13,12 +14,12 @@ import src.graph.graph.interfaces.Graph;
 import src.graph.graph.models.undirected.Mesh2D;
 import src.graph.vertices.interfaces.Vertice;
 
-public class PatternReader implements Ruleset {
+public class PatternRuleset implements Ruleset {
 
     private final Set<Integer> numbers = new HashSet<>();
     private final Map<Integer, DirectionalTupel<Integer>> pattern = new HashMap<>();
     
-    public PatternReader(int[][] input) {
+    public PatternRuleset(int[][] input) {
         for (int[] line : input) {
             for (int i : line) {
                 numbers.add(i);
@@ -36,7 +37,12 @@ public class PatternReader implements Ruleset {
                 inintNeighboursOf(i, j, input, pattern.get(input[i][j]));
             }
         }
-        System.out.println();
+        
+        DirectionalTupel<Integer> tupel = new DirectionalTupel<>();
+        for (Direction direction : Direction.values()) {
+            tupel.addAll(direction, numbers);
+        }
+        pattern.put(-1, tupel);
     }
 
     private void inintNeighboursOf(int x, int y, int[][] input, DirectionalTupel<Integer> neighbours) {
@@ -120,6 +126,10 @@ public class PatternReader implements Ruleset {
 
         public void add(Direction direction, T e) {
             get(direction).add(e);
+        }
+
+        public void addAll(Direction direction, Collection<? extends T> c) {
+            get(direction).addAll(c);
         }
 
         public Set<T> get(Direction direction) {

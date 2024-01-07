@@ -27,7 +27,7 @@ public class Runner {
     public void run() {
 
         GraphLoader graphLoader = new GraphLoader();
-        Ruleset ruleset = new PatternReader(loadPattern());
+        Ruleset ruleset = new PatternRuleset(loadPattern());
 
         List<Thread> threads = new ArrayList<>();
         List<WaveFunctionCollapse> algorithms = new ArrayList<>();
@@ -37,7 +37,7 @@ public class Runner {
         long t1 = System.currentTimeMillis();
 
         for (int n : numbers) {
-            Mesh2D graph = graphLoader.zylinder(10, 10); // <-- Meshes are generated here
+            Mesh2D graph = graphLoader.mesh2D(10, 10); // <-- Meshes are generated here
             System.out.println("%s: Width: %d Height: %d | %d total Nodes".formatted(graph.getMeshType(), graph.getWidth(), graph.getHeight(), graph.getWidth() * graph.getHeight()));
             WaveFunctionCollapse wfc = new WaveFunctionCollapse(graph, ruleset);
             algorithms.add(wfc);
