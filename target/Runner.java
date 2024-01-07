@@ -37,7 +37,7 @@ public class Runner {
         long t1 = System.currentTimeMillis();
 
         for (int n : numbers) {
-            Mesh2D graph = graphLoader.mesh2D(10, 10); // <-- Meshes are generated here
+            Mesh2D graph = graphLoader.mesh2D(n); // <-- Meshes are generated here
             System.out.println("%s: Width: %d Height: %d | %d total Nodes".formatted(graph.getMeshType(), graph.getWidth(), graph.getHeight(), graph.getWidth() * graph.getHeight()));
             WaveFunctionCollapse wfc = new WaveFunctionCollapse(graph, ruleset);
             algorithms.add(wfc);
@@ -154,7 +154,7 @@ public class Runner {
         FileLoader fileLoader = null;
         List<String> lines = null;
         try {
-            fileLoader = new FileLoader("files");
+            fileLoader = new FileLoader("files/WaveFunction_Patterns");
             lines = fileLoader.loadSimulationFile("Pattern.pat");
         } catch (IOException exception) {
             exception.printStackTrace();

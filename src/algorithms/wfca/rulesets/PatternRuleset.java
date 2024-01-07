@@ -13,8 +13,11 @@ import java.util.Set;
 import src.graph.graph.interfaces.Graph;
 import src.graph.graph.models.undirected.Mesh2D;
 import src.graph.vertices.interfaces.Vertice;
+import src.util.Ansi;
 
 public class PatternRuleset implements Ruleset {
+
+    public static final String TILE_SYMBOL = "■";
 
     private final Set<Integer> numbers = new HashSet<>();
     private final Map<Integer, DirectionalTupel<Integer>> pattern = new HashMap<>();
@@ -114,7 +117,11 @@ public class PatternRuleset implements Ruleset {
 
     @Override
     public String stringRepresentation(int i) {
-        return String.valueOf(i);
+        return switch(i) {
+            case 1 -> Ansi.Blue + TILE_SYMBOL;
+            case 0 -> Ansi.Red + TILE_SYMBOL;
+            default -> " ";
+        };
     }
 
     private class DirectionalTupel<T> {
