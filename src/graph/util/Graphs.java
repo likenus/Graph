@@ -180,8 +180,8 @@ public final class Graphs {
         }
 
         double[] distances = infinityArray(g.sizeVertices());
-
         distances[s] = 0;
+
         BinaryHeap<Vertice> heap = new BinaryHeap<>();
         for (Vertice v : g.vertices()) {
             heap.push(v, (int) distances[v.getKey()]);

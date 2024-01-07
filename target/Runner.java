@@ -2,10 +2,15 @@ package target;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import src.algorithms.wfca.WaveFunctionCollapse;
 import src.algorithms.wfca.rulesets.*;
+import src.graph.edge.interfaces.Edge;
+import src.graph.graph.interfaces.Graph;
 import src.graph.graph.models.undirected.Mesh2D;
+import src.graph.util.Graphs;
+import src.graph.vertices.interfaces.Vertice;
 
 public class Runner {
 
@@ -19,7 +24,7 @@ public class Runner {
     public void run() {
 
         GraphLoader graphLoader = new GraphLoader();
-        Ruleset ruleset = new PipesRuleset();
+        Ruleset ruleset = new LandscapeRuleset();
 
         List<Thread> threads = new ArrayList<>();
         List<WaveFunctionCollapse> algorithms = new ArrayList<>();
@@ -29,9 +34,9 @@ public class Runner {
         long t1 = System.currentTimeMillis();
 
         for (int n : numbers) {
-            Mesh2D graph = graphLoader.zylinder(50, 25); // <-- Meshes are generated here
+            Mesh2D graph = graphLoader.zylinder(100, 100); // <-- Meshes are generated here
             System.out.println("%s: Width: %d Height: %d | %d total Nodes".formatted(graph.getMeshType(), graph.getWidth(), graph.getHeight(), graph.getWidth() * graph.getHeight()));
-            WaveFunctionCollapse wfc = new WaveFunctionCollapse(graph, ruleset);
+            WaveFunctionCollapse wfc = new WaveFunctionCollapse(graph, ruleset, 1);
             algorithms.add(wfc);
             threads.add(new Thread(wfc));
         }
@@ -92,8 +97,10 @@ public class Runner {
         }
 
         for (WaveFunctionCollapse wfc : algorithms) {
-            printGraph(wfc);
+            // printGraph(wfc);
         }
+
+        printRandomPath(algorithms.get(0));
     }
 
     public static void printGraph(WaveFunctionCollapse wfc) {
@@ -109,7 +116,7 @@ public class Runner {
             for (int j = 0; j < width; j++) {
                 int x = mesh.getValue(width * i + j);
 
-                sb.append(ruleset.stringRepresentation(x) + "");
+                sb.append(ruleset.stringRepresentation(x) + " ");
             }
             if (i < height - 1) {
                 sb.append(System.lineSeparator());
@@ -117,5 +124,27 @@ public class Runner {
         }
         System.out.println(sb.toString() + "\u001B[0m");
         System.out.println();
+    }
+
+    private void printRandomPath(WaveFunctionCollapse wfc) {
+
+        Graph g = wfc.getGraph();
+        Random random = new Random();
+
+        for (Edge edge : g.edges()) {
+            edge.setWeight((edge.start().getValue() + edge.end().getValue()) / 2);
+        }
+
+        Vertice start = g.vertices().get(random.nextInt(g.sizeVertices()));
+        Vertice end = g.vertices().get(random.nextInt(g.sizeVertices()));
+
+        System.out.println("Starting dijkstra");
+        List<Vertice> path = Graphs.dijkstra(g, start.getKey(), end.getKey());
+
+        for (Vertice vertice : path) {
+            vertice.setValue(-1);
+        }
+
+        printGraph(wfc);
     }
 }

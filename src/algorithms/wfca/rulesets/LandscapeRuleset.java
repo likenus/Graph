@@ -52,14 +52,7 @@ public class LandscapeRuleset implements Ruleset {
             }
         }
 
-        for (int i : NUMBERS) {
-            Integer num = i;
-            if (allPossibleInts.stream().allMatch(set -> set.contains(num) || set.contains(-1))) {
-                possibleInts.add(num);
-            }
-        }
-
-        return possibleInts;
+        return Ruleset.intersect(allPossibleInts, NUMBERS);
     }
 
     @Override
@@ -69,6 +62,9 @@ public class LandscapeRuleset implements Ruleset {
 
     @Override
     public String stringRepresentation(int i) {
+        if (i == 0) {
+            return " ";
+        }
         Tile tile = Tile.parseTile(i);
         return tile == null ? Ansi.Red + TILE_SYMBOL : tile.toString();
     }
@@ -113,12 +109,10 @@ public class LandscapeRuleset implements Ruleset {
 
             return null;
         }
-    
+
         @Override
         public String toString() {
             return this.ansiConfig + TILE_SYMBOL;
         }
     }
-
-    
 }
