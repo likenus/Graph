@@ -24,7 +24,6 @@ public class Runner {
     public void run() {
 
         GraphLoader graphLoader = new GraphLoader();
-        Ruleset ruleset = new LandscapeRuleset();
 
         List<Thread> threads = new ArrayList<>();
         List<WaveFunctionCollapse> algorithms = new ArrayList<>();
@@ -35,8 +34,9 @@ public class Runner {
 
         for (int n : numbers) {
             Mesh2D graph = graphLoader.zylinder(100, 100); // <-- Meshes are generated here
+            Ruleset ruleset = new BiomedLandscapeRuleset(graph);
             System.out.println("%s: Width: %d Height: %d | %d total Nodes".formatted(graph.getMeshType(), graph.getWidth(), graph.getHeight(), graph.getWidth() * graph.getHeight()));
-            WaveFunctionCollapse wfc = new WaveFunctionCollapse(graph, ruleset, 1);
+            WaveFunctionCollapse wfc = new WaveFunctionCollapse(graph, ruleset);
             algorithms.add(wfc);
             threads.add(new Thread(wfc));
         }
@@ -97,10 +97,10 @@ public class Runner {
         }
 
         for (WaveFunctionCollapse wfc : algorithms) {
-            // printGraph(wfc);
+            printGraph(wfc);
         }
 
-        printRandomPath(algorithms.get(0));
+        //printRandomPath(algorithms.get(0));
     }
 
     public static void printGraph(WaveFunctionCollapse wfc) {
