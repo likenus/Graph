@@ -51,11 +51,6 @@ public class NumbersRuleset implements Ruleset {
     }
 
     @Override
-    public Set<Integer> numbers() {
-        return NUMBERS;
-    }
-
-    @Override
     public String stringRepresentation(int i) {
         return String.valueOf(i);
     }

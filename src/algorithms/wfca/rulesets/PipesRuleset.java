@@ -85,11 +85,6 @@ public class PipesRuleset implements Ruleset {
 
         return tiles;
     }
-    
-    @Override
-    public Set<Integer> numbers() {
-        return NUMBERS;
-    }
 
     @Override
     public String stringRepresentation(int i) {

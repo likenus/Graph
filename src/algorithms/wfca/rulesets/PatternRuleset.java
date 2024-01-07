@@ -111,11 +111,6 @@ public class PatternRuleset implements Ruleset {
     }
 
     @Override
-    public Set<Integer> numbers() {
-        return numbers;
-    }
-
-    @Override
     public String stringRepresentation(int i) {
         return switch(i) {
             case 1 -> Ansi.Green + TILE_SYMBOL;

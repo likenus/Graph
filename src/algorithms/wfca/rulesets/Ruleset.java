@@ -27,7 +27,7 @@ public interface Ruleset {
      * Returns the set of numbers, used by this ruleset.
      * @return A set of numbers, cannot be empty
      */
-    Set<Integer> numbers();
+    // Set<Integer> numbers();
 
     /**
      * Interpretes the numbers of the working set into an easier to understand string-representation.

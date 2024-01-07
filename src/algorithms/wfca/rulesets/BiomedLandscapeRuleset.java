@@ -3,10 +3,8 @@ package src.algorithms.wfca.rulesets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import src.algorithms.wfca.WaveFunctionCollapse;
@@ -116,11 +114,6 @@ public class BiomedLandscapeRuleset implements Ruleset {
             allowedByBiome.addAll(b.getAllowedTiles());
         }
         return allowedByBiome;
-    }
-
-    @Override
-    public Set<Integer> numbers() {
-        return NUMBERS;
     }
 
     @Override

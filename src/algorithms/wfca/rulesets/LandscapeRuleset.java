@@ -58,11 +58,6 @@ public class LandscapeRuleset implements Ruleset {
     }
 
     @Override
-    public Set<Integer> numbers() {
-        return NUMBERS;
-    }
-
-    @Override
     public String stringRepresentation(int i) {
         if (i == 0) {
             return " ";

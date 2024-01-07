@@ -55,7 +55,6 @@ public class WaveFunctionCollapse implements Runnable {
     private final List<Set<Integer>> possibilities = new ArrayList<>();
 
     private final Ruleset ruleset;
-    private final Set<Integer> numbers;
     private final Vertice startVertice;
     private final Graph graph;
     private final Random rnd;
@@ -74,7 +73,6 @@ public class WaveFunctionCollapse implements Runnable {
         this.graph = graph;
         this.n = graph.sizeVertices();
         this.ruleset = ruleset;
-        this.numbers = ruleset.numbers();
 
         this.startVertice = this.graph.parseVertice(rnd.nextInt(n));
 
