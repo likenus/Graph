@@ -97,6 +97,11 @@ public class PipesRuleset implements Ruleset {
         return tile == null ? " " : tile.toString();
     }
 
+    @Override
+    public Set<Integer> initialPossibilities(Vertice v) {
+        return NUMBERS;
+    }
+
     private enum Tile {
     
         TOP(1, "╦", new int[][] {

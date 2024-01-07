@@ -68,7 +68,12 @@ public class LandscapeRuleset implements Ruleset {
         Tile tile = Tile.parseTile(i);
         return tile == null ? Ansi.Red + TILE_SYMBOL : tile.toString();
     }
-    
+
+    @Override
+    public Set<Integer> initialPossibilities(Vertice v) {
+        return NUMBERS;
+    }
+
     private enum Tile {
 
         DEEP_WATER(1, Ansi.Blue, Set.of(1, 2)),

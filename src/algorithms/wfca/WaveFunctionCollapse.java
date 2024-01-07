@@ -79,11 +79,12 @@ public class WaveFunctionCollapse implements Runnable {
         this.startVertice = this.graph.parseVertice(rnd.nextInt(n));
 
         for (Vertice v : this.graph.vertices()) {
+            Set<Integer> initialPossibilities = ruleset.initialPossibilities(v);
             if (!v.equals(startVertice)) {
-                notCollapsed.push(v, numbers.size());
+                notCollapsed.push(v, initialPossibilities.size());
             }
             isCollapsed.add(false);
-            possibilities.set(v.getKey(), new HashSet<>(numbers));
+            possibilities.set(v.getKey(), initialPossibilities);
         }
     }
 

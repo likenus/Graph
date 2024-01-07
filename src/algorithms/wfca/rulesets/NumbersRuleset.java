@@ -59,4 +59,9 @@ public class NumbersRuleset implements Ruleset {
     public String stringRepresentation(int i) {
         return String.valueOf(i);
     }
+
+    @Override
+    public Set<Integer> initialPossibilities(Vertice v) {
+        return NUMBERS;
+    }
 }

@@ -104,4 +104,9 @@ public class TopoRuleset implements Ruleset {
         Tile tile = Tile.parseTile(i);
         return tile == null ? Ansi.Red + TILE_SYMBOL : tile.toString();
     }
+
+    @Override
+    public Set<Integer> initialPossibilities(Vertice v) {
+        return NUMBERS;
+    }
 }

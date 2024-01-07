@@ -36,6 +36,13 @@ public interface Ruleset {
      */
     String stringRepresentation(int i);
 
+    /**
+     * Calculates the initial possible states for the given vertex according to the specified ruleset
+     * @param v The vertex that is to be evaluated
+     * @return Some numbers
+     */
+    Set<Integer> initialPossibilities(Vertice v);
+
     /* Package Private */ static Set<Integer> intersect(List<Set<Integer>> sets, Set<Integer> numbers) {
         Set<Integer> possibleInts = new HashSet<>();
 
