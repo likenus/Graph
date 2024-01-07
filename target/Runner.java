@@ -21,7 +21,7 @@ public class Runner {
     private static final int SLEEP_TIMER = 1000;
     private static final long SEED = 1;
 
-    private int[] numbers = {50};
+    private int[] numbers = {10};
 
     @SuppressWarnings("all")
     public void run() {
@@ -155,7 +155,7 @@ public class Runner {
         List<String> lines = null;
         try {
             fileLoader = new FileLoader("files/WaveFunction_Patterns");
-            lines = fileLoader.loadSimulationFile("Pattern.pat");
+            lines = fileLoader.loadSimulationFile("NumbersPattern.pat");
         } catch (IOException exception) {
             exception.printStackTrace();
         }

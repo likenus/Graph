@@ -1,5 +1,6 @@
 package src.algorithms.wfca.rulesets;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumMap;
@@ -118,8 +119,10 @@ public class PatternRuleset implements Ruleset {
     @Override
     public String stringRepresentation(int i) {
         return switch(i) {
-            case 1 -> Ansi.Blue + TILE_SYMBOL;
-            case 0 -> Ansi.Red + TILE_SYMBOL;
+            case 1 -> Ansi.Green + TILE_SYMBOL;
+            case 2 -> Ansi.Yellow + TILE_SYMBOL;
+            case 3 -> Ansi.Blue + TILE_SYMBOL;
+            case 4 -> Ansi.Red + TILE_SYMBOL;
             default -> " ";
         };
     }
