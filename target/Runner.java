@@ -1,5 +1,6 @@
 package target;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -14,11 +15,14 @@ import src.graph.vertices.interfaces.Vertice;
 
 public class Runner {
 
+    public static final long SEED = 1;
+
     private static final boolean ANIMATED_OUTPUT = false;
     private static final boolean PRINT_RESULT = true;
     private static final int SLEEP_TIMER = 1000;
 
-    private int[] numbers = {50};
+    private final Random random = new Random();
+    private int[] numbers = {10};
 
     @SuppressWarnings("all")
     public void run() {
@@ -126,10 +130,9 @@ public class Runner {
         System.out.println();
     }
 
-    private void printRandomPath(WaveFunctionCollapse wfc) {
+    public void printRandomPath(WaveFunctionCollapse wfc) {
 
         Graph g = wfc.getGraph();
-        Random random = new Random();
 
         for (Edge edge : g.edges()) {
             edge.setWeight((edge.start().getValue() + edge.end().getValue()) / 2);
@@ -146,5 +149,27 @@ public class Runner {
         }
 
         printGraph(wfc);
+    }
+
+    private int[][] loadPattern() {
+        FileLoader fileLoader = null;
+        List<String> lines = new ArrayList<>();
+        try {
+            fileLoader = new FileLoader("files/WaveFunction_Patterns");
+            lines = fileLoader.loadSimulationFile("NumbersPattern.pat");
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        }
+
+        int[][] arr = new int[lines.size()][lines.size()];
+        for (int i = 0; i < lines.size(); i++) {
+            String line = lines.get(i);
+            String[] chars = line.split(" ");
+            for (int j = 0; j < chars.length; j++) {
+                arr[i][j] = Integer.parseInt(chars[j]);
+            }
+        }
+
+        return arr;
     }
 }
