@@ -126,6 +126,11 @@ public class PatternRuleset implements Ruleset {
         };
     }
 
+    @Override
+    public Set<Integer> initialPossibilities(Vertice v) {
+        return numbers;
+    }
+
     private class DirectionalTupel<T> {
 
         private final Set<T> up = new HashSet<>();        
