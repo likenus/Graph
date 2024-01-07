@@ -15,11 +15,13 @@ import src.graph.vertices.interfaces.Vertice;
 
 public class Runner {
 
+    public static final long SEED = 1;
+
     private static final boolean ANIMATED_OUTPUT = false;
     private static final boolean PRINT_RESULT = true;
     private static final int SLEEP_TIMER = 1000;
-    private static final long SEED = 1;
 
+    private final Random random = new Random();
     private int[] numbers = {10};
 
     @SuppressWarnings("all")
@@ -130,7 +132,6 @@ public class Runner {
     public void printRandomPath(WaveFunctionCollapse wfc) {
 
         Graph g = wfc.getGraph();
-        Random random = new Random();
 
         for (Edge edge : g.edges()) {
             edge.setWeight((edge.start().getValue() + edge.end().getValue()) / 2);
