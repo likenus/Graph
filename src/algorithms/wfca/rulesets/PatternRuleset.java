@@ -1,6 +1,5 @@
 package src.algorithms.wfca.rulesets;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumMap;

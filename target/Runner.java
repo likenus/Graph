@@ -1,6 +1,5 @@
 package target;
 
-import java.io.IOError;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -128,7 +127,7 @@ public class Runner {
         System.out.println();
     }
 
-    private void printRandomPath(WaveFunctionCollapse wfc) {
+    public void printRandomPath(WaveFunctionCollapse wfc) {
 
         Graph g = wfc.getGraph();
         Random random = new Random();
@@ -152,7 +151,7 @@ public class Runner {
 
     private int[][] loadPattern() {
         FileLoader fileLoader = null;
-        List<String> lines = null;
+        List<String> lines = new ArrayList<>();
         try {
             fileLoader = new FileLoader("files/WaveFunction_Patterns");
             lines = fileLoader.loadSimulationFile("NumbersPattern.pat");

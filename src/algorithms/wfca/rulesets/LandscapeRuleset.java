@@ -11,13 +11,15 @@ import src.graph.vertices.interfaces.Vertice;
 import src.util.Ansi;
 
 /**
- * This ruleset attempts to paint a landscape like image. Its rules say that water and land
+ * This ruleset attempts to paint a landscape like image. Its rules say that
+ * water and land
  * may not be adjacent and must be connected via a beach.
  */
 public class LandscapeRuleset implements Ruleset {
     public static final String TILE_SYMBOL = "■";
 
-    private static final Set<Integer> NUMBERS = new HashSet<>(Arrays.asList(Tile.values()).stream().map(Tile::getIdentifier).toList());
+    private static final Set<Integer> NUMBERS = new HashSet<>(
+            Arrays.asList(Tile.values()).stream().map(Tile::getIdentifier).toList());
 
     @Override
     public Set<Integer> ruleset(Graph graph, Vertice v, List<Set<Integer>> possibilities) {
@@ -31,7 +33,7 @@ public class LandscapeRuleset implements Ruleset {
             allPossibleInts.add(ints);
 
             Set<Integer> neighbourInts = possibilities.get(neighbours.get(i).getKey());
-            
+
             for (Tile tile : Tile.values()) {
                 if (neighbourInts.contains(tile.getIdentifier())) {
                     ints.addAll(tile.getNeighbours());
@@ -68,34 +70,33 @@ public class LandscapeRuleset implements Ruleset {
         Tile tile = Tile.parseTile(i);
         return tile == null ? Ansi.Red + TILE_SYMBOL : tile.toString();
     }
-    
+
     private enum Tile {
 
         DEEP_WATER(1, Ansi.Blue, Set.of(1, 2)),
-        
+
         WATER(2, Ansi.Cyan, Set.of(1, 2, 3)),
-        
+
         BEACH(3, Ansi.Yellow, Set.of(2, 3, 4)),
-        
+
         FOREST(4, Ansi.Green, Set.of(4, 3, 5)),
-        
+
         MOUNTAIN(5, Ansi.Black, Set.of(4, 5));
-        
-    
+
         private int identifier;
         private Ansi ansiConfig;
         private Set<Integer> possibleNeighbours;
-        
+
         private Tile(int identifier, Ansi ansiConfig, Set<Integer> possibleNeighbours) {
             this.identifier = identifier;
             this.ansiConfig = ansiConfig;
             this.possibleNeighbours = possibleNeighbours;
         }
-    
+
         public int getIdentifier() {
             return identifier;
         }
-    
+
         public Set<Integer> getNeighbours() {
             return possibleNeighbours;
         }
