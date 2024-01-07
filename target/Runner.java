@@ -1,5 +1,7 @@
 package target;
 
+import java.io.IOError;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -17,6 +19,7 @@ public class Runner {
     private static final boolean ANIMATED_OUTPUT = false;
     private static final boolean PRINT_RESULT = true;
     private static final int SLEEP_TIMER = 1000;
+    private static final long SEED = 1;
 
     private int[] numbers = {50};
 
@@ -24,7 +27,7 @@ public class Runner {
     public void run() {
 
         GraphLoader graphLoader = new GraphLoader();
-        Ruleset ruleset = new LandscapeRuleset();
+        Ruleset ruleset = new PatternReader(loadPattern());
 
         List<Thread> threads = new ArrayList<>();
         List<WaveFunctionCollapse> algorithms = new ArrayList<>();
@@ -34,9 +37,9 @@ public class Runner {
         long t1 = System.currentTimeMillis();
 
         for (int n : numbers) {
-            Mesh2D graph = graphLoader.zylinder(100, 100); // <-- Meshes are generated here
+            Mesh2D graph = graphLoader.zylinder(10, 10); // <-- Meshes are generated here
             System.out.println("%s: Width: %d Height: %d | %d total Nodes".formatted(graph.getMeshType(), graph.getWidth(), graph.getHeight(), graph.getWidth() * graph.getHeight()));
-            WaveFunctionCollapse wfc = new WaveFunctionCollapse(graph, ruleset, 1);
+            WaveFunctionCollapse wfc = new WaveFunctionCollapse(graph, ruleset);
             algorithms.add(wfc);
             threads.add(new Thread(wfc));
         }
@@ -97,10 +100,9 @@ public class Runner {
         }
 
         for (WaveFunctionCollapse wfc : algorithms) {
-            // printGraph(wfc);
+            printGraph(wfc);
         }
 
-        printRandomPath(algorithms.get(0));
     }
 
     public static void printGraph(WaveFunctionCollapse wfc) {
@@ -146,5 +148,27 @@ public class Runner {
         }
 
         printGraph(wfc);
+    }
+
+    private int[][] loadPattern() {
+        FileLoader fileLoader = null;
+        List<String> lines = null;
+        try {
+            fileLoader = new FileLoader("files");
+            lines = fileLoader.loadSimulationFile("Pattern.pat");
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        }
+
+        int[][] arr = new int[lines.size()][lines.size()];
+        for (int i = 0; i < lines.size(); i++) {
+            String line = lines.get(i);
+            String[] chars = line.split(" ");
+            for (int j = 0; j < chars.length; j++) {
+                arr[i][j] = Integer.parseInt(chars[j]);
+            }
+        }
+
+        return arr;
     }
 }

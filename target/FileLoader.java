@@ -32,7 +32,7 @@ public final class FileLoader {
         return loadSimulationFile(fileName);
     }
 
-    private List<String> loadSimulationFile(String fileName) throws IOException {
+    public List<String> loadSimulationFile(String fileName) throws IOException {
         final Path filePath = this.folderPath.resolve(Path.of(fileName));
         final File file = filePath.toFile();
 
