@@ -59,4 +59,9 @@ public class NumbersRuleset implements Ruleset {
     public Set<Integer> initialPossibilities(Vertex v) {
         return NUMBERS;
     }
+
+    @Override
+    public int maxBFSDepth() {
+        return 8;
+    }
 }

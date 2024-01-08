@@ -158,6 +158,11 @@ public class StrictPatternRuleset implements Ruleset {
         return numbers;
     }
 
+    @Override
+    public int maxBFSDepth() {
+        return 16;
+    }
+
     private class DirectionalTupel<T> {
 
         private final Set<T> up = new HashSet<>();        

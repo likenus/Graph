@@ -47,9 +47,6 @@ import src.util.BinaryHeap;
  * @see src.graph.util.Graphs#dijkstra()
  */
 public class WaveFunctionCollapse implements Runnable {
-
-    private static final int MAX_BFS_DEPTH = 8;
-
     private final List<Boolean> isCollapsed = new ArrayList<>();
     private final BinaryHeap<Vertex> notCollapsed = new BinaryHeap<>();
     private final List<Set<Integer>> possibilities = new ArrayList<>();
@@ -195,7 +192,7 @@ public class WaveFunctionCollapse implements Runnable {
         // BFS
         while (!queue.isEmpty()) {
             Vertex u = queue.poll();
-            if (distances[u.getKey()] > MAX_BFS_DEPTH) {
+            if (distances[u.getKey()] > ruleset.maxBFSDepth()) {
                 continue;
             }
             Iterator<Vertex> neighborIt = u.neighboursIterator();

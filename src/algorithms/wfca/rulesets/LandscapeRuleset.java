@@ -71,6 +71,11 @@ public class LandscapeRuleset implements Ruleset {
         return NUMBERS;
     }
 
+    @Override
+    public int maxBFSDepth() {
+        return 8;
+    }
+
     private enum Tile {
 
         DEEP_WATER(1, Ansi.Blue, Set.of(1, 2)),
