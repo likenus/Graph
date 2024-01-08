@@ -101,10 +101,10 @@ public class Runner {
         }
 
         for (WaveFunctionCollapse wfc : algorithms) {
-            printGraph(wfc);
+            //printGraph(wfc);
         }
 
-        //printRandomPath(algorithms.get(0));
+        printRandomPath(algorithms.get(0));
     }
 
     public static void printGraph(WaveFunctionCollapse wfc) {

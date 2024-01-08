@@ -191,10 +191,12 @@ public final class Graphs {
             Vertice u = heap.pop();
             int j = u.getKey();
             exploredNodes[j] = true;
+            List<Edge> uEdges = u.edges();
             for (Vertice v : u.neighbours()) {
                 int i = v.getKey();
-                if (distances[i] > distances[j] + g.parseEdge(j, i).getWeight()) {
-                    distances[i] = distances[j] + g.parseEdge(j, i).getWeight();
+                Edge e = uEdges.stream().filter((Edge ed) -> (ed.start() == v || ed.end() == v)).findFirst().orElse(null);
+                if (distances[i] > distances[j] + e.getWeight()) {
+                    distances[i] = distances[j] + e.getWeight();
                     if (!exploredNodes[i]) {
                         setParent(parents, v, u);
                     }
