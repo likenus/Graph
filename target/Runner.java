@@ -19,7 +19,7 @@ public class Runner {
 
     private static final boolean ANIMATED_OUTPUT = false;
     private static final boolean PRINT_RESULT = true;
-    private static final int SLEEP_TIMER = 500;
+    private static final int SLEEP_TIMER = 1000;
 
     private final Random random = new Random();
     private int[] numbers = {300};

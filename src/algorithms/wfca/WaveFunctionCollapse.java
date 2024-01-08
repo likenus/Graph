@@ -48,7 +48,7 @@ import src.util.BinaryHeap;
  */
 public class WaveFunctionCollapse implements Runnable {
 
-    private static final int MAX_BFS_DEPTH = 16;
+    private static final int MAX_BFS_DEPTH = 8;
 
     private final List<Boolean> isCollapsed = new ArrayList<>();
     private final BinaryHeap<Vertex> notCollapsed = new BinaryHeap<>();
@@ -60,8 +60,6 @@ public class WaveFunctionCollapse implements Runnable {
     private final Random rnd;
     private final int n;
 
-    private boolean finished = false;
-    private int finishedCounter = 0;
     private int errorCounter = 0;
 
     private WaveFunctionCollapse(Graph graph, Ruleset ruleset, Random rnd) {
@@ -113,8 +111,8 @@ public class WaveFunctionCollapse implements Runnable {
 
     private void evaluate() {
         collapse(startVertex);
-        while (!finished) {
-            Vertex v = findLowestEntropy();
+        while (!notCollapsed.isEmpty()) {
+            Vertex v = notCollapsed.pop();
             collapse(v);
         }
     }
@@ -123,33 +121,24 @@ public class WaveFunctionCollapse implements Runnable {
         Set<Integer> possibleInts = possibilities.get(v.getKey());
 
         if (possibleInts.isEmpty()) {
-            // System.err.println("A critical error has occurred: Evaluation not possible");
             possibleInts = Set.of(-1); // This can crash the algorithm, depending on the ruleset
             errorCounter++;
         }
 
         int value = possibleInts.stream().toList().get(rnd.nextInt(possibleInts.size()));
         v.setValue(value);
+        int key = v.getKey();
 
-        possibilities.set(v.getKey(), Set.of(value));
-        isCollapsed.set(v.getKey(), true);
-        finishedCounter++;
+        possibilities.set(key, Set.of(value));
+        isCollapsed.set(key, true);
 
-        if (finishedCounter == n) {
-            finished = true;
-        }
-
-        DirectedGraph searchTree = bfsTree(graph, v.getKey());
-        for (Vertex w : searchTree.neighbours(v.getKey())) {
+        DirectedGraph searchTree = bfsTree(graph, key);
+        for (Vertex w : searchTree.neighbours(key)) {
             if (isCollapsed.get(w.getKey()).booleanValue()) {
                 continue;
             }
             update(w, searchTree);
         }
-    }
-
-    private Vertex findLowestEntropy() {
-        return notCollapsed.pop();
     }
 
     private void update(Vertex v, DirectedGraph searchTree) {
@@ -234,7 +223,7 @@ public class WaveFunctionCollapse implements Runnable {
      * @return A double between 0 and 1
      */
     public double getProgress() {
-        return (double) finishedCounter / n;
+        return 1 - notCollapsed.size() / (double) n;
     }
 
     /**
