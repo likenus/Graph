@@ -1,6 +1,6 @@
 package src.graph.edge.interfaces;
 
-import src.graph.vertices.interfaces.Vertice;
+import src.graph.vertices.interfaces.Vertex;
 import src.util.Tuple;
 
 /**
@@ -13,33 +13,33 @@ import src.util.Tuple;
 public interface Edge { 
     
     /**
-     * Returns the other vertice connected to the edge. 
-     * Returns {@code null} if the vertice is not connected to this edge and returns v, if this edge is a loop.
-     * @param v The first vertice connected to the edge
-     * @return The other vertice connected to the edge
+     * Returns the other vertex connected to the edge. 
+     * Returns {@code null} if the vertex is not connected to this edge and returns v, if this edge is a loop.
+     * @param v The first vertex connected to the edge
+     * @return The other vertex connected to the edge
      */
-    Vertice getOther(Vertice v);
+    Vertex getOther(Vertex v);
 
     /**
      * Returns a tuple containing both connected vertices. In directed edges, the tuple is ordered. 
      * Undirected edges do not require an order, thus the returned order is the order of insertion.
      * @return The two connected vertices
      */
-    Tuple<Vertice> getVertices();
+    Tuple<Vertex> getVertices();
 
     /**
-     * Returns one of the connected vertices. On directed edges always returns the starting vertice. 
+     * Returns one of the connected vertices. On directed edges always returns the starting vertex. 
      * On undirected edges this does not imply any direction. Use {@link Edge#getVertices} for undirected edges.
-     * @return The starting vertice
+     * @return The starting vertex
      */
-    Vertice start();
+    Vertex start();
 
     /**
-     * Returns one of the connected vertices. On directed edges always returns the ending vertice. 
+     * Returns one of the connected vertices. On directed edges always returns the ending vertex. 
      * On undirected edges this does not imply any direction. Use {@link Edge#getVertices} for undirected edges.
-     * @return The ending vertice
+     * @return The ending vertex
      */
-    Vertice end();
+    Vertex end();
 
     /**
      * Returns the weight value of this edge. Can be negative.

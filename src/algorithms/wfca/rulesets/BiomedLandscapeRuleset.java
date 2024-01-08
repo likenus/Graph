@@ -10,7 +10,7 @@ import java.util.Set;
 import src.algorithms.wfca.WaveFunctionCollapse;
 import src.graph.graph.interfaces.Graph;
 import src.graph.graph.models.undirected.Mesh2D;
-import src.graph.vertices.interfaces.Vertice;
+import src.graph.vertices.interfaces.Vertex;
 import src.util.Ansi;
 import target.GraphLoader;
 
@@ -38,7 +38,7 @@ public class BiomedLandscapeRuleset implements Ruleset {
         biomeGenerator.run();
         Mesh2D biomeMap = (Mesh2D) biomeGenerator.getGraph();
 
-        for (Vertice v: biomeMap.vertices()) {
+        for (Vertex v: biomeMap.vertices()) {
             Biome biome = selectBiome(v);
             int vertexX = v.getKey() % biomeMap.getWidth();
             int vertexY = v.getKey() / biomeMap.getWidth();
@@ -58,7 +58,7 @@ public class BiomedLandscapeRuleset implements Ruleset {
         }
     }
 
-    private Biome selectBiome(Vertice v) {
+    private Biome selectBiome(Vertex v) {
         return switch (v.getValue()) {
             case 1 -> Biome.DEEP_OCEAN;
             case 2 -> Biome.OCEAN;
@@ -69,10 +69,10 @@ public class BiomedLandscapeRuleset implements Ruleset {
     }
 
     @Override
-    public Set<Integer> ruleset(Graph graph, Vertice v, List<Set<Integer>> possibilities) {
+    public Set<Integer> ruleset(Graph graph, Vertex v, List<Set<Integer>> possibilities) {
         List<Set<Integer>> allPossibleInts = new ArrayList<>();
 
-        List<Vertice> neighbours = graph.neighbours(v.getKey());
+        List<Vertex> neighbours = graph.neighbours(v.getKey());
 
         // Check all neighbours
         for (int i = 0; i < neighbours.size(); i++) {
@@ -108,7 +108,7 @@ public class BiomedLandscapeRuleset implements Ruleset {
         return Ruleset.intersect(allPossibleInts, NUMBERS);
     }
 
-    private Set<Integer> allowedByBiome(Vertice v) {
+    private Set<Integer> allowedByBiome(Vertex v) {
         Set<Integer> allowedByBiome = new HashSet<>();
         for (Biome b: vertexBiomes.get(v.getKey())) {
             allowedByBiome.addAll(b.getAllowedTiles());
@@ -126,7 +126,7 @@ public class BiomedLandscapeRuleset implements Ruleset {
     }
 
     @Override
-    public Set<Integer> initialPossibilities(Vertice v) {
+    public Set<Integer> initialPossibilities(Vertex v) {
         return allowedByBiome(v);
     }
 

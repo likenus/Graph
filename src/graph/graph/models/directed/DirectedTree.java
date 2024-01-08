@@ -1,6 +1,6 @@
 package src.graph.graph.models.directed;
 
-import src.graph.vertices.interfaces.Vertice;
+import src.graph.vertices.interfaces.Vertex;
 
 /**
  * Undirected unweighted Tree.
@@ -29,8 +29,8 @@ public class DirectedTree extends DirectedWeightedTree {
 
     @Override
     public boolean addEdge(int a, int b, int value) {
-        Vertice v = parseVertice(a);
-        Vertice w = parseVertice(b);
+        Vertex v = parseVertex(a);
+        Vertex w = parseVertex(b);
 
         return addEdge(v, w, 1);
     }

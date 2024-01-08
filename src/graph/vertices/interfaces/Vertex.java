@@ -6,28 +6,28 @@ import java.util.List;
 import src.graph.edge.interfaces.Edge;
 
 /**
- * A vertice in a graph is mainly an abstact object used to connect edges.
+ * A vertex in a graph is mainly an abstact object used to connect edges.
  * Vertices have a unique key to identify them in a graph and can hold a numerical value
  * which can be interpreted freely.
  * 
  * @author likenus
  */
-public interface Vertice {
+public interface Vertex {
 
     /**
-     * Returns all vertices that can be reached from this vertice.
+     * Returns all vertices that can be reached from this vertex.
      * @return A list containing all reachable vertices.
      */
-    List<Vertice> neighbours();
+    List<Vertex> neighbours();
 
     /**
-     * Returns an iterator which iterates over all vertices that can be reached from this vertice.
+     * Returns an iterator which iterates over all vertices that can be reached from this vertex.
      * @return An iterator over all reachable vertices.
      */
-    Iterator<Vertice> neighboursIterator();
+    Iterator<Vertex> neighboursIterator();
 
     /**
-     * Returns the key associated with this vertice.
+     * Returns the key associated with this vertex.
      * @return An integer
      */
     int getKey();
@@ -40,15 +40,15 @@ public interface Vertice {
     List<Edge> edges();
 
     /**
-     * This method is used to directly connect a vertice to an edge. 
+     * This method is used to directly connect a vertex to an edge. 
      * </p>
      * Use with care!
-     * @param e The edge to connect the vertice to
+     * @param e The edge to connect the vertex to
      */
     void connectEdge(Edge e);
 
     /**
-     * This method is used to directly separate an edge from a vertice.
+     * This method is used to directly separate an edge from a vertex.
      * </p>
      * Use with care!
      * @param e The edge to be separated
@@ -56,7 +56,7 @@ public interface Vertice {
     void separateEdge(Edge e);
 
     /**
-     * The degree of a vertice is the total amount of incident edges. This accounts for outgoing
+     * The degree of a vertex is the total amount of incident edges. This accounts for outgoing
      * as well is incoming edges. 
      * </p>
      * This means that {@code v.neighbours().size() == v.degree()} is not always {@code true}.
@@ -65,13 +65,13 @@ public interface Vertice {
     int degree();
 
     /**
-     * Returns the value stored by the vertice. This value defaults to {@code 0}.
+     * Returns the value stored by the vertex. This value defaults to {@code 0}.
      * @return An integer
      */
     int getValue();
 
     /**
-     * Sets the value to be held by the vertice.
+     * Sets the value to be held by the .
      * @param i an integer
      */
     void setValue(int i);

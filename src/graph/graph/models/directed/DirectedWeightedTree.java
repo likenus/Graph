@@ -7,13 +7,13 @@ import java.util.List;
 import src.graph.edge.interfaces.Edge;
 import src.graph.edge.models.DirectedEdge;
 import src.graph.graph.interfaces.Tree;
-import src.graph.vertices.interfaces.Vertice;
+import src.graph.vertices.interfaces.Vertex;
 
 public class DirectedWeightedTree extends DirectedWeightedGraph implements Tree {
     
-    protected final List<Vertice> parents = new ArrayList<>();
+    protected final List<Vertex> parents = new ArrayList<>();
     
-    protected Vertice root;
+    protected Vertex root;
 
     public DirectedWeightedTree() {
 
@@ -32,16 +32,16 @@ public class DirectedWeightedTree extends DirectedWeightedGraph implements Tree 
     }
 
     @Override
-    public Vertice getRoot() {
+    public Vertex getRoot() {
         return this.root;
     }
 
     @Override
     public void setRoot(int key) {
-        Vertice oldRoot = this.root;
-        Vertice newRoot = parseVertice(key);
+        Vertex oldRoot = this.root;
+        Vertex newRoot = parseVertex(key);
 
-        List<Vertice> path = pathToRoot(newRoot);
+        List<Vertex> path = pathToRoot(newRoot);
 
         if (path.isEmpty() && !edges.isEmpty()) {
             return;
@@ -55,8 +55,8 @@ public class DirectedWeightedTree extends DirectedWeightedGraph implements Tree 
         }
         
         for (int i = 0; i < path.size() - 1; i++) {
-            Vertice v = path.get(i);
-            Vertice n = path.get(i + 1);
+            Vertex v = path.get(i);
+            Vertex n = path.get(i + 1);
 
             Edge e = parseEdge(n.getKey(), v.getKey());
             swapEdge(n, v, e.getWeight());
@@ -66,7 +66,7 @@ public class DirectedWeightedTree extends DirectedWeightedGraph implements Tree 
     }
 
     @Override
-    protected boolean add(Vertice v) {
+    protected boolean add(Vertex v) {
         if (super.add(v)) {
             parents.add(null);
             return true;
@@ -75,7 +75,7 @@ public class DirectedWeightedTree extends DirectedWeightedGraph implements Tree 
     }
 
     @Override
-    protected boolean addEdge(Vertice v, Vertice w, int value) {
+    protected boolean addEdge(Vertex v, Vertex w, int value) {
         if (v == null || w == null || w.equals(this.root)) {
             return false;
         }
@@ -111,15 +111,15 @@ public class DirectedWeightedTree extends DirectedWeightedGraph implements Tree 
         return this.edges.add(edge);
     }
 
-    protected List<Vertice> pathToRoot(Vertice vertice) {
-        List<Vertice> path = new LinkedList<>();
+    protected List<Vertex> pathToRoot(Vertex vertex) {
+        List<Vertex> path = new LinkedList<>();
 
-        if (vertice.equals(root)) {
+        if (vertex.equals(root)) {
             return path;
         }
 
-        path.add(vertice);
-        Vertice v = vertice;
+        path.add(vertex);
+        Vertex v = vertex;
 
         while (parent(v) != null) {
             v = parent(v);
@@ -133,19 +133,19 @@ public class DirectedWeightedTree extends DirectedWeightedGraph implements Tree 
         return path;
     }
 
-    protected Vertice parent(Vertice v) {
+    protected Vertex parent(Vertex v) {
         return parents.get(v.getKey());
     }
 
-    protected void setParent(Vertice v, Vertice w) {
+    protected void setParent(Vertex v, Vertex w) {
         parents.set(v.getKey(), w);
     }
 
     @Override
-    public List<Vertice> pathToRoot(int key) {
-        Vertice v = parseVertice(key);
+    public List<Vertex> pathToRoot(int key) {
+        Vertex v = parseVertex(key);
         if (v == null) {
-            throw new IllegalArgumentException("Vertice does not exist");
+            throw new IllegalArgumentException("Vertex does not exist");
         }
 
         return pathToRoot(v);
@@ -154,7 +154,7 @@ public class DirectedWeightedTree extends DirectedWeightedGraph implements Tree 
     @Override
     protected void removeEdge(Edge e) {
         this.edges.remove(e);
-        for (Vertice v : e.getVertices()) {
+        for (Vertex v : e.getVertices()) {
             v.separateEdge(e);
         }
         if (parent(e.end()).equals(e.start())) {

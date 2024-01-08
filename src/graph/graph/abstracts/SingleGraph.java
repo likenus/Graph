@@ -10,12 +10,12 @@ import java.util.Set;
 
 import src.graph.edge.interfaces.Edge;
 import src.graph.graph.interfaces.Graph;
-import src.graph.vertices.interfaces.Vertice;
+import src.graph.vertices.interfaces.Vertex;
 import src.graph.vertices.models.Node;
 
 public abstract class SingleGraph implements Graph {
 
-    protected final Map<Integer, Vertice> vertices = new HashMap<>();
+    protected final Map<Integer, Vertex> vertices = new HashMap<>();
     protected final Set<Edge> edges = new HashSet<>();
     protected int id;
 
@@ -31,16 +31,16 @@ public abstract class SingleGraph implements Graph {
         this.id  = i;
 
         for (int j = 0; j < i; j++) {
-            Vertice node = new Node(j);
+            Vertex node = new Node(j);
             this.vertices.put(j, node);
         }
     }
 
-    protected List<Vertice> neighbours(Vertice v) {
+    protected List<Vertex> neighbours(Vertex v) {
         return v.neighbours();
     }
 
-    protected boolean add(Vertice v) {
+    protected boolean add(Vertex v) {
         // Node is always unique
         if (vertices.get(v.getKey()) == null) {
             vertices.put(v.getKey(), v);
@@ -56,12 +56,12 @@ public abstract class SingleGraph implements Graph {
 
     @Override
     public int getValue(int key) {
-        return parseVertice(key).getValue();
+        return parseVertex(key).getValue();
     }
 
     @Override
     public void setValue(int key, int value) {
-        parseVertice(key).setValue(value);
+        parseVertex(key).setValue(value);
     }
 
     @Override
@@ -85,13 +85,13 @@ public abstract class SingleGraph implements Graph {
     }
 
     @Override
-    public List<Vertice> vertices() {
+    public List<Vertex> vertices() {
         return Collections.unmodifiableList(this.vertices.values().stream().toList());
     }
 
     @Override
-    public List<Vertice> neighbours(int key) {
-        Vertice v = parseVertice(key);
+    public List<Vertex> neighbours(int key) {
+        Vertex v = parseVertex(key);
 
         if (v != null) {
             return this.neighbours(v);
@@ -101,14 +101,14 @@ public abstract class SingleGraph implements Graph {
     }
 
     @Override
-    public boolean addVertice() {
-        Vertice v = new Node(this.id);
+    public boolean addVertex() {
+        Vertex v = new Node(this.id);
         this.id++;
         return add(v);
     }
     
     @Override
-    public Vertice parseVertice(int key) {
+    public Vertex parseVertex(int key) {
         return vertices.get(key);
     }
 
@@ -128,10 +128,13 @@ public abstract class SingleGraph implements Graph {
 
     @Override
     public Edge parseEdge(int a, int b) {
-        Vertice v = parseVertice(a);
-        Vertice w = parseVertice(b);
+        Vertex v = parseVertex(a);
+        Vertex w = parseVertex(b);
 
-        for (Edge edge : edges) {
+        List<Edge> incidentEdges = new ArrayList<>(v.edges());
+        incidentEdges.addAll(w.edges());
+
+        for (Edge edge : incidentEdges) {
             if (edge.getVertices().contains(v) && edge.getVertices().contains(w)) {
                 return edge;
             }

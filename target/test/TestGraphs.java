@@ -13,7 +13,7 @@ import src.graph.graph.models.undirected.UndirectedGraph;
 import src.graph.graph.models.undirected.UndirectedTree;
 import src.graph.graph.models.undirected.UndirectedWeightedGraph;
 import src.graph.util.Graphs;
-import src.graph.vertices.interfaces.Vertice;
+import src.graph.vertices.interfaces.Vertex;
 
 public class TestGraphs {
 
@@ -58,11 +58,11 @@ public class TestGraphs {
     public void testDijkstra() {
         Graph graph = weightedExampleGraph();
 
-        List<Vertice> path = new LinkedList<>();
-        path.add(graph.parseVertice(0));
-        path.add(graph.parseVertice(6));
-        path.add(graph.parseVertice(7));
-        path.add(graph.parseVertice(9));
+        List<Vertex> path = new LinkedList<>();
+        path.add(graph.parseVertex(0));
+        path.add(graph.parseVertex(6));
+        path.add(graph.parseVertex(7));
+        path.add(graph.parseVertex(9));
 
         Assert.assertEquals(path, Graphs.dijkstra(graph, 0, 9));
     }
@@ -71,11 +71,11 @@ public class TestGraphs {
     public void testBFS() {
         Graph graph = exampleGraph();
 
-        List<Vertice> path = new LinkedList<>();
-        path.add(graph.parseVertice(2));
-        path.add(graph.parseVertice(1));
-        path.add(graph.parseVertice(6));
-        path.add(graph.parseVertice(9));
+        List<Vertex> path = new LinkedList<>();
+        path.add(graph.parseVertex(2));
+        path.add(graph.parseVertex(1));
+        path.add(graph.parseVertex(6));
+        path.add(graph.parseVertex(9));
 
         Assert.assertEquals(path, Graphs.bfs(graph, 2, 9));
     }

@@ -113,7 +113,7 @@ public class GraphLoader {
         return graph;
     }
 
-    public UndirectedGraph donut(int size) {
+    public Mesh2D donut(int size) {
         return donut(size, size);
     }
 

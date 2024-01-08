@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import src.graph.graph.interfaces.Graph;
-import src.graph.vertices.interfaces.Vertice;
+import src.graph.vertices.interfaces.Vertex;
 
 /**
  * In this ruleset integers in adjacent tiles may only have a difference of exaclty 1.
@@ -16,10 +16,10 @@ public class NumbersRuleset implements Ruleset {
     private static final Set<Integer> NUMBERS = Set.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
     
     @Override
-    public Set<Integer> ruleset(Graph graph, Vertice v, List<Set<Integer>> possibilities) {
+    public Set<Integer> ruleset(Graph graph, Vertex v, List<Set<Integer>> possibilities) {
         List<Set<Integer>> allPossibleInts = new ArrayList<>();
     
-        List<Vertice> neighbours = graph.neighbours(v.getKey());
+        List<Vertex> neighbours = graph.neighbours(v.getKey());
 
         // Check all neighbours
         for (int i = 0; i < neighbours.size(); i++) {
@@ -56,7 +56,7 @@ public class NumbersRuleset implements Ruleset {
     }
 
     @Override
-    public Set<Integer> initialPossibilities(Vertice v) {
+    public Set<Integer> initialPossibilities(Vertex v) {
         return NUMBERS;
     }
 }

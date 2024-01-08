@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import src.graph.graph.interfaces.Graph;
-import src.graph.vertices.interfaces.Vertice;
+import src.graph.vertices.interfaces.Vertex;
 import src.util.Ansi;
 
 /**
@@ -22,10 +22,10 @@ public class LandscapeRuleset implements Ruleset {
             Arrays.asList(Tile.values()).stream().map(Tile::getIdentifier).toList());
 
     @Override
-    public Set<Integer> ruleset(Graph graph, Vertice v, List<Set<Integer>> possibilities) {
+    public Set<Integer> ruleset(Graph graph, Vertex v, List<Set<Integer>> possibilities) {
         List<Set<Integer>> allPossibleInts = new ArrayList<>();
 
-        List<Vertice> neighbours = graph.neighbours(v.getKey());
+        List<Vertex> neighbours = graph.neighbours(v.getKey());
 
         // Check all neighbours
         for (int i = 0; i < neighbours.size(); i++) {
@@ -67,7 +67,7 @@ public class LandscapeRuleset implements Ruleset {
     }
 
     @Override
-    public Set<Integer> initialPossibilities(Vertice v) {
+    public Set<Integer> initialPossibilities(Vertex v) {
         return NUMBERS;
     }
 

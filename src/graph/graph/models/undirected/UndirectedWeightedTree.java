@@ -8,11 +8,11 @@ import src.graph.graph.interfaces.Tree;
 import src.graph.graph.interfaces.UnionFind;
 import src.graph.graph.models.directed.ComponentSet;
 import src.graph.util.Graphs;
-import src.graph.vertices.interfaces.Vertice;
+import src.graph.vertices.interfaces.Vertex;
 
 public class UndirectedWeightedTree extends UndirectedWeightedGraph implements Tree {
 
-    private Vertice root;
+    private Vertex root;
     private UnionFind uf = new ComponentSet();
 
     public UndirectedWeightedTree() {
@@ -33,14 +33,14 @@ public class UndirectedWeightedTree extends UndirectedWeightedGraph implements T
 
     @Override
     public boolean addEdge(int a, int b, int value) {
-        Vertice v = parseVertice(a);
-        Vertice w = parseVertice(b);
+        Vertex v = parseVertex(a);
+        Vertex w = parseVertex(b);
 
         return addEdge(v, w, value);
     }
 
     @Override
-    protected boolean addEdge(Vertice v, Vertice w, int value) {
+    protected boolean addEdge(Vertex v, Vertex w, int value) {
         if (v == null || w == null) {
             return false;
         }
@@ -66,7 +66,7 @@ public class UndirectedWeightedTree extends UndirectedWeightedGraph implements T
     }
 
     @Override
-    public Vertice getRoot() {
+    public Vertex getRoot() {
         return this.root;
     }
 
@@ -78,7 +78,7 @@ public class UndirectedWeightedTree extends UndirectedWeightedGraph implements T
     }
 
     @Override
-    public List<Vertice> pathToRoot(int key) {
+    public List<Vertex> pathToRoot(int key) {
         return Graphs.bfs(this, this.root.getKey(), key);
     }
 }

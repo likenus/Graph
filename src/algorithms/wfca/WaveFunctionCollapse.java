@@ -14,7 +14,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import src.algorithms.wfca.rulesets.Ruleset;
 import src.graph.graph.models.directed.DirectedGraph;
 import src.graph.graph.models.directed.LazyDirectedGraph;
-import src.graph.vertices.interfaces.Vertice;
+import src.graph.vertices.interfaces.Vertex;
 import src.graph.graph.interfaces.Graph;
 import src.util.BinaryHeap;
 
@@ -48,20 +48,21 @@ import src.util.BinaryHeap;
  */
 public class WaveFunctionCollapse implements Runnable {
 
-    private static final int MAX_BFS_DEPTH = 8;
+    private static final int MAX_BFS_DEPTH = 16;
 
     private final List<Boolean> isCollapsed = new ArrayList<>();
-    private final BinaryHeap<Vertice> notCollapsed = new BinaryHeap<>();
+    private final BinaryHeap<Vertex> notCollapsed = new BinaryHeap<>();
     private final List<Set<Integer>> possibilities = new ArrayList<>();
 
     private final Ruleset ruleset;
-    private final Vertice startVertice;
+    private final Vertex startVertex;
     private final Graph graph;
     private final Random rnd;
     private final int n;
 
     private boolean finished = false;
     private int finishedCounter = 0;
+    private int errorCounter = 0;
 
     private WaveFunctionCollapse(Graph graph, Ruleset ruleset, Random rnd) {
 
@@ -74,11 +75,11 @@ public class WaveFunctionCollapse implements Runnable {
         this.n = graph.sizeVertices();
         this.ruleset = ruleset;
 
-        this.startVertice = this.graph.parseVertice(rnd.nextInt(n));
+        this.startVertex = this.graph.parseVertex(rnd.nextInt(n));
 
-        for (Vertice v : this.graph.vertices()) {
+        for (Vertex v : this.graph.vertices()) {
             Set<Integer> initialPossibilities = ruleset.initialPossibilities(v);
-            if (!v.equals(startVertice)) {
+            if (!v.equals(startVertex)) {
                 notCollapsed.push(v, initialPossibilities.size());
             }
             isCollapsed.add(false);
@@ -111,19 +112,20 @@ public class WaveFunctionCollapse implements Runnable {
     }
 
     private void evaluate() {
-        collapse(startVertice);
+        collapse(startVertex);
         while (!finished) {
-            Vertice v = findLowestEntropy();
+            Vertex v = findLowestEntropy();
             collapse(v);
         }
     }
 
-    private void collapse(Vertice v) {
+    private void collapse(Vertex v) {
         Set<Integer> possibleInts = possibilities.get(v.getKey());
 
         if (possibleInts.isEmpty()) {
-            System.err.println("A critical error has occurred: Evaluation not possible");
+            // System.err.println("A critical error has occurred: Evaluation not possible");
             possibleInts = Set.of(-1); // This can crash the algorithm, depending on the ruleset
+            errorCounter++;
         }
 
         int value = possibleInts.stream().toList().get(rnd.nextInt(possibleInts.size()));
@@ -138,7 +140,7 @@ public class WaveFunctionCollapse implements Runnable {
         }
 
         DirectedGraph searchTree = bfsTree(graph, v.getKey());
-        for (Vertice w : searchTree.neighbours(v.getKey())) {
+        for (Vertex w : searchTree.neighbours(v.getKey())) {
             if (isCollapsed.get(w.getKey()).booleanValue()) {
                 continue;
             }
@@ -146,11 +148,11 @@ public class WaveFunctionCollapse implements Runnable {
         }
     }
 
-    private Vertice findLowestEntropy() {
+    private Vertex findLowestEntropy() {
         return notCollapsed.pop();
     }
 
-    private void update(Vertice v, DirectedGraph searchTree) {
+    private void update(Vertex v, DirectedGraph searchTree) {
         boolean changed = false;
 
         Set<Integer> possibleInts = ruleset.ruleset(this.graph, v, possibilities); // Magic happens in here
@@ -162,7 +164,7 @@ public class WaveFunctionCollapse implements Runnable {
         }
 
         if (changed) {
-            for (Vertice w : searchTree.neighbours(v.getKey())) {
+            for (Vertex w : searchTree.neighbours(v.getKey())) {
                 if (isCollapsed.get(w.getKey()).booleanValue()) {
                     continue;
                 }
@@ -171,12 +173,16 @@ public class WaveFunctionCollapse implements Runnable {
         }
     }
 
+    public int getErrorCount() {
+        return errorCounter;
+    }
+
     /**
      * This bfs tree is modified, for a full version see
      * {@link src.graph.util.Graphs#bfsTree()}
      * 
      * @param g a graph
-     * @param s the starting vertice
+     * @param s the starting vertex
      * @return The search tree
      */
     private DirectedGraph bfsTree(Graph g, int s) {
@@ -186,26 +192,26 @@ public class WaveFunctionCollapse implements Runnable {
         int[] distances = new int[g.sizeVertices()];
 
         DirectedGraph tree = new LazyDirectedGraph(s);
-        Vertice start = g.parseVertice(s);
+        Vertex start = g.parseVertex(s);
 
         if (start == null) {
             throw new IllegalArgumentException("Start does not exist");
         }
 
-        Queue<Vertice> queue = new ConcurrentLinkedQueue<>();
+        Queue<Vertex> queue = new ConcurrentLinkedQueue<>();
         queue.add(start);
         exploredNodes[s] = true;
         distances[s] = 0;
 
         // BFS
         while (!queue.isEmpty()) {
-            Vertice u = queue.poll();
+            Vertex u = queue.poll();
             if (distances[u.getKey()] > MAX_BFS_DEPTH) {
                 continue;
             }
-            Iterator<Vertice> neighborIt = u.neighboursIterator();
+            Iterator<Vertex> neighborIt = u.neighboursIterator();
             while (neighborIt.hasNext()) {
-                Vertice v = neighborIt.next();
+                Vertex v = neighborIt.next();
                 if (isCollapsed.get(v.getKey()).booleanValue()) {
                     exploredNodes[v.getKey()] = true;
                     continue;

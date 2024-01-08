@@ -11,7 +11,7 @@ import src.graph.edge.interfaces.Edge;
 import src.graph.graph.interfaces.Graph;
 import src.graph.graph.models.undirected.Mesh2D;
 import src.graph.util.Graphs;
-import src.graph.vertices.interfaces.Vertice;
+import src.graph.vertices.interfaces.Vertex;
 
 public class Runner {
 
@@ -19,10 +19,10 @@ public class Runner {
 
     private static final boolean ANIMATED_OUTPUT = false;
     private static final boolean PRINT_RESULT = true;
-    private static final int SLEEP_TIMER = 1000;
+    private static final int SLEEP_TIMER = 500;
 
     private final Random random = new Random();
-    private int[] numbers = {10};
+    private int[] numbers = {300};
 
     @SuppressWarnings("all")
     public void run() {
@@ -37,8 +37,8 @@ public class Runner {
         long t1 = System.currentTimeMillis();
 
         for (int n : numbers) {
-            Mesh2D graph = graphLoader.zylinder(100, 100); // <-- Meshes are generated here
-            Ruleset ruleset = new BiomedLandscapeRuleset(graph);
+            Mesh2D graph = graphLoader.mesh2D(n); // <-- Meshes are generated here
+            Ruleset ruleset = new LandscapeRuleset();
             System.out.println("%s: Width: %d Height: %d | %d total Nodes".formatted(graph.getMeshType(), graph.getWidth(), graph.getHeight(), graph.getWidth() * graph.getHeight()));
             WaveFunctionCollapse wfc = new WaveFunctionCollapse(graph, ruleset);
             algorithms.add(wfc);
@@ -104,7 +104,7 @@ public class Runner {
             printGraph(wfc);
         }
 
-        //printRandomPath(algorithms.get(0));
+        printRandomPath(algorithms.get(0));
     }
 
     public static void printGraph(WaveFunctionCollapse wfc) {
@@ -127,10 +127,10 @@ public class Runner {
             }
         }
         System.out.println(sb.toString() + "\u001B[0m");
-        System.out.println();
+        System.out.println(wfc.getErrorCount() + " Errors");
     }
 
-    public void printRandomPath(WaveFunctionCollapse wfc) {
+    private void printRandomPath(WaveFunctionCollapse wfc) {
 
         Graph g = wfc.getGraph();
 
@@ -138,14 +138,14 @@ public class Runner {
             edge.setWeight((edge.start().getValue() + edge.end().getValue()) / 2);
         }
 
-        Vertice start = g.vertices().get(random.nextInt(g.sizeVertices()));
-        Vertice end = g.vertices().get(random.nextInt(g.sizeVertices()));
+        Vertex start = g.vertices().get(random.nextInt(g.sizeVertices()));
+        Vertex end = g.vertices().get(random.nextInt(g.sizeVertices()));
 
         System.out.println("Starting dijkstra");
-        List<Vertice> path = Graphs.dijkstra(g, start.getKey(), end.getKey());
+        List<Vertex> path = Graphs.dijkstra(g, start.getKey(), end.getKey());
 
-        for (Vertice vertice : path) {
-            vertice.setValue(-1);
+        for (Vertex vertex : path) {
+            vertex.setValue(-1);
         }
 
         printGraph(wfc);
@@ -156,16 +156,20 @@ public class Runner {
         List<String> lines = new ArrayList<>();
         try {
             fileLoader = new FileLoader("files/WaveFunction_Patterns");
-            lines = fileLoader.loadSimulationFile("NumbersPattern.pat");
+            lines = fileLoader.loadSimulationFile("Pattern.pat");
         } catch (IOException exception) {
             exception.printStackTrace();
         }
 
-        int[][] arr = new int[lines.size()][lines.size()];
-        for (int i = 0; i < lines.size(); i++) {
+        String[] parts = lines.get(0).split("x");
+        lines.remove(0);
+        int height = Integer.parseInt(parts[0]);
+        int width = Integer.parseInt(parts[1]);
+        int[][] arr = new int[height][width];
+        for (int i = 0; i < height; i++) {
             String line = lines.get(i);
             String[] chars = line.split(" ");
-            for (int j = 0; j < chars.length; j++) {
+            for (int j = 0; j < width; j++) {
                 arr[i][j] = Integer.parseInt(chars[j]);
             }
         }

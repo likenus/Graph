@@ -18,7 +18,7 @@ import src.graph.graph.models.directed.DirectedGraph;
 import src.graph.graph.models.directed.DirectedWeightedGraph;
 import src.graph.graph.models.undirected.UndirectedGraph;
 import src.graph.graph.models.undirected.UndirectedWeightedTree;
-import src.graph.vertices.interfaces.Vertice;
+import src.graph.vertices.interfaces.Vertex;
 import src.util.BinaryHeap;
 
 /**
@@ -30,11 +30,11 @@ public final class Graphs {
         throw new UnsupportedOperationException();
     }
 
-    private static Vertice parent(Vertice[] parents, Vertice v) {
+    private static Vertex parent(Vertex[] parents, Vertex v) {
         return parents[v.getKey()];
     }
 
-    private static void setParent(Vertice[] parents, Vertice v, Vertice w) {
+    private static void setParent(Vertex[] parents, Vertex v, Vertex w) {
         parents[v.getKey()] = w;
     }
 
@@ -52,32 +52,32 @@ public final class Graphs {
      * Returns null if no path was found.
      * @see Graphs#dijkstra()
      */
-    public static List<Vertice> bfs(Graph g, int s, int t) {
+    public static List<Vertex> bfs(Graph g, int s, int t) {
         Objects.requireNonNull(g);
 
-        List<Vertice> path = new LinkedList<>();
-        Vertice[] parents = new Vertice[g.sizeVertices()];
+        List<Vertex> path = new LinkedList<>();
+        Vertex[] parents = new Vertex[g.sizeVertices()];
         boolean[] exploredNodes = new boolean[g.sizeVertices()];
 
-        Vertice start = g.parseVertice(s);
-        Vertice target = g.parseVertice(t);
+        Vertex start = g.parseVertex(s);
+        Vertex target = g.parseVertex(t);
 
         if (start == null || target == null) {
-            throw new IllegalArgumentException("Start or target vertice dont exist.");
+            throw new IllegalArgumentException("Start or target vertex dont exist.");
         }
 
         if (start.equals(target)) {
             return path;
         }
         
-        Queue<Vertice> queue = new ConcurrentLinkedQueue<>();
+        Queue<Vertex> queue = new ConcurrentLinkedQueue<>();
         queue.add(start);
         exploredNodes[s] = true;
 
         // BFS
         while (!queue.isEmpty()) {
-            Vertice u = queue.poll();
-            for (Vertice v : u.neighbours()) {
+            Vertex u = queue.poll();
+            for (Vertex v : u.neighbours()) {
                 if (!exploredNodes[v.getKey()]) {
                     queue.add(v);
                     exploredNodes[v.getKey()] = true;
@@ -100,8 +100,8 @@ public final class Graphs {
      */
     public static Graph clone(Graph graph) {
         Graph clone = new UndirectedGraph(graph.sizeVertices());
-        for (Vertice vertice : graph.vertices()) {
-            clone.setValue(vertice.getKey(), vertice.getValue());
+        for (Vertex vertex : graph.vertices()) {
+            clone.setValue(vertex.getKey(), vertex.getValue());
         }
         for (Edge edge : graph.edges()) {
             clone.addEdge(edge.start().getKey(), edge.end().getKey());
@@ -113,7 +113,7 @@ public final class Graphs {
     /**
      * Will calculate the search tree of a breadth first search
      * @param g The graph to calculate the search tree from
-     * @param s The starting vertice, the root of the search tree
+     * @param s The starting vertex, the root of the search tree
      * @return A bfs search tree
      */
     public static DirectedGraph bfsTree(Graph g, int s) {
@@ -122,20 +122,20 @@ public final class Graphs {
         boolean[] exploredNodes = new boolean[g.sizeVertices()];
         
         DirectedGraph tree = new DirectedGraph(g.sizeVertices());
-        Vertice start = g.parseVertice(s);
+        Vertex start = g.parseVertex(s);
 
         if (start == null) {
             throw new IllegalArgumentException("Start does not exist");
         }
 
-        Queue<Vertice> queue = new ConcurrentLinkedQueue<>();
+        Queue<Vertex> queue = new ConcurrentLinkedQueue<>();
         queue.add(start);
         exploredNodes[s] = true;
 
         // BFS
         while (!queue.isEmpty()) {
-            Vertice u = queue.poll();
-            for (Vertice v : u.neighbours()) {
+            Vertex u = queue.poll();
+            for (Vertex v : u.neighbours()) {
                 if (!exploredNodes[v.getKey()]) {
                     queue.add(v);
                     tree.addEdge(u.getKey(), v.getKey());
@@ -161,37 +161,36 @@ public final class Graphs {
      * Returns an empty list if {@code s == t} is true.
      * Returns null if no path was found.
      */
-    public static List<Vertice> dijkstra(Graph g, int s, int t) {
+    public static List<Vertex> dijkstra(Graph g, int s, int t) {
         Objects.requireNonNull(g);
         
-        List<Vertice> path = new LinkedList<>();
-        Vertice[] parents = new Vertice[g.sizeVertices()];
+        Vertex[] parents = new Vertex[g.sizeVertices()];
         boolean[] exploredNodes = new boolean[g.sizeVertices()];
 
-        Vertice start = g.parseVertice(s);
-        Vertice target = g.parseVertice(t);
+        Vertex start = g.parseVertex(s);
+        Vertex target = g.parseVertex(t);
 
         if (start == null || target == null) {
             throw new IllegalArgumentException();
         }
 
         if (start.equals(target)) {
-            return path;
+            return new LinkedList<>();
         }
 
         double[] distances = infinityArray(g.sizeVertices());
         distances[s] = 0;
 
-        BinaryHeap<Vertice> heap = new BinaryHeap<>();
-        for (Vertice v : g.vertices()) {
+        BinaryHeap<Vertex> heap = new BinaryHeap<>();
+        for (Vertex v : g.vertices()) {
             heap.push(v, (int) distances[v.getKey()]);
         }
 
         while(!heap.isEmpty()) {
-            Vertice u = heap.pop();
+            Vertex u = heap.pop();
             int j = u.getKey();
             exploredNodes[j] = true;
-            for (Vertice v : u.neighbours()) {
+            for (Vertex v : u.neighbours()) {
                 int i = v.getKey();
                 if (distances[i] > distances[j] + g.parseEdge(j, i).getWeight()) {
                     distances[i] = distances[j] + g.parseEdge(j, i).getWeight();
@@ -206,14 +205,14 @@ public final class Graphs {
         return reconstructPath(parents, start, target);
     }
 
-    private static List<Vertice> reconstructPath(Vertice[] parents, Vertice start, Vertice target) {
-        List<Vertice> path = new LinkedList<>();
+    private static List<Vertex> reconstructPath(Vertex[] parents, Vertex start, Vertex target) {
+        List<Vertex> path = new LinkedList<>();
 
         if (parent(parents, target) == null) {
             throw new IllegalArgumentException();
         }
 
-        Vertice parent = target;
+        Vertex parent = target;
 
         while (parent(parents, parent) != null) {
             path.add(parent);
@@ -251,8 +250,8 @@ public final class Graphs {
 
         List<Edge> edges = new LinkedList<>(g.edges());
         for (Edge e : g.edges()) {
-            edges.add(new UndirectedEdge(copy.parseVertice(e.start().getKey())
-                , copy.parseVertice(e.end().getKey()), e.getWeight()));
+            edges.add(new UndirectedEdge(copy.parseVertex(e.start().getKey())
+                , copy.parseVertex(e.end().getKey()), e.getWeight()));
         }
 
         edges.sort(Comparator.comparing(Edge::getWeight));
@@ -285,22 +284,22 @@ public final class Graphs {
     /**
      * Checks whether a given graph forms a single component.
      * </p>
-     * A graph is considered coherent if all vertices can be reached from any vertice.
+     * A graph is considered coherent if all vertices can be reached from any vertex.
      * @param g The graph to be checked
      * @return True if the graph is coherent
      */
     public static boolean isCoherent(UndirectedGraph g) {
         boolean[] exploredNodes = new boolean[g.sizeVertices()];
 
-        Vertice start = g.parseVertice(0);
-        Queue<Vertice> queue = new ConcurrentLinkedQueue<>();
+        Vertex start = g.parseVertex(0);
+        Queue<Vertex> queue = new ConcurrentLinkedQueue<>();
         queue.add(start);
         exploredNodes[0] = true;
 
         // BFS
         while (!queue.isEmpty()) {
-            Vertice u = queue.poll();
-            for (Vertice v : u.neighbours()) {
+            Vertex u = queue.poll();
+            for (Vertex v : u.neighbours()) {
                 if (!exploredNodes[v.getKey()]) {
                     queue.add(v);
                     exploredNodes[v.getKey()] = true;

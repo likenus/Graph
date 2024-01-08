@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import src.graph.graph.interfaces.Graph;
-import src.graph.vertices.interfaces.Vertice;
+import src.graph.vertices.interfaces.Vertex;
 
 /**
  * Rulesets use numbers and a set of rules to give the numbers meaning. 
@@ -14,20 +14,14 @@ import src.graph.vertices.interfaces.Vertice;
 public interface Ruleset {
 
     /**
-     * Takes the current state of the graph and calculates possible states for the given vertice
+     * Takes the current state of the graph and calculates possible states for the given vertex
      * according to the specified ruleset.
      * @param graph A refrence to the underlying graph
-     * @param v The vertice that needs to be evaluated
+     * @param v The vertex that needs to be evaluated
      * @param possibilities The state of possibilities of all vertices
      * @return Some numbers
      */
-    Set<Integer> ruleset(Graph graph, Vertice v, List<Set<Integer>> possibilities);
-
-    /**
-     * Returns the set of numbers, used by this ruleset.
-     * @return A set of numbers, cannot be empty
-     */
-    // Set<Integer> numbers();
+    Set<Integer> ruleset(Graph graph, Vertex v, List<Set<Integer>> possibilities);
 
     /**
      * Interpretes the numbers of the working set into an easier to understand string-representation.
@@ -41,7 +35,7 @@ public interface Ruleset {
      * @param v The vertex that is to be evaluated
      * @return Some numbers
      */
-    Set<Integer> initialPossibilities(Vertice v);
+    Set<Integer> initialPossibilities(Vertex v);
 
     /* Package Private */ static Set<Integer> intersect(List<Set<Integer>> sets, Set<Integer> numbers) {
         Set<Integer> possibleInts = new HashSet<>();

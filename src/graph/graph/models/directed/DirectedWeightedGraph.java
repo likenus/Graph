@@ -3,7 +3,7 @@ package src.graph.graph.models.directed;
 import src.graph.edge.interfaces.Edge;
 import src.graph.edge.models.DirectedEdge;
 import src.graph.graph.abstracts.SingleGraph;
-import src.graph.vertices.interfaces.Vertice;
+import src.graph.vertices.interfaces.Vertex;
 
 public class DirectedWeightedGraph extends SingleGraph {
 
@@ -17,8 +17,8 @@ public class DirectedWeightedGraph extends SingleGraph {
 
     @Override
     public boolean addEdge(int a, int b, int value) {
-        Vertice v = parseVertice(a);
-        Vertice w = parseVertice(b);
+        Vertex v = parseVertex(a);
+        Vertex w = parseVertex(b);
 
         return addEdge(v, w, value);
     }
@@ -28,7 +28,7 @@ public class DirectedWeightedGraph extends SingleGraph {
         return addEdge(a, b, 1);
     }
 
-    protected boolean addEdge(Vertice v, Vertice w, int value) {
+    protected boolean addEdge(Vertex v, Vertex w, int value) {
         if (v == null || w == null) {
             return false;
         }
@@ -40,11 +40,11 @@ public class DirectedWeightedGraph extends SingleGraph {
         return this.edges.add(edge);
     }
 
-    protected boolean addEdge(Vertice v, Vertice w) {
+    protected boolean addEdge(Vertex v, Vertex w) {
         return addEdge(v, w, 1);
     }
 
-    protected void swapEdge(Vertice a, Vertice b, int value) {
+    protected void swapEdge(Vertex a, Vertex b, int value) {
         for (Edge e : a.edges()) {
             if (e.getOther(a).equals(b)) {
                 removeEdge(e);

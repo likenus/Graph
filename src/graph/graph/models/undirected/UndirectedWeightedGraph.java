@@ -3,7 +3,7 @@ package src.graph.graph.models.undirected;
 import src.graph.edge.interfaces.Edge;
 import src.graph.edge.models.UndirectedEdge;
 import src.graph.graph.abstracts.SingleGraph;
-import src.graph.vertices.interfaces.Vertice;
+import src.graph.vertices.interfaces.Vertex;
 
 public class UndirectedWeightedGraph extends SingleGraph {
 
@@ -17,13 +17,13 @@ public class UndirectedWeightedGraph extends SingleGraph {
 
     @Override
     public boolean addEdge(int a, int b, int value) {
-        Vertice v = parseVertice(a);
-        Vertice w = parseVertice(b);
+        Vertex v = parseVertex(a);
+        Vertex w = parseVertex(b);
 
         return addEdge(v, w, value);
     }
 
-    protected boolean addEdge(Vertice v, Vertice w, int value) {
+    protected boolean addEdge(Vertex v, Vertex w, int value) {
         if (v == null || w == null) {
             return false;
         }

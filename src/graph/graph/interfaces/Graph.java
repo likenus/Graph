@@ -3,7 +3,7 @@ package src.graph.graph.interfaces;
 import java.util.List;
 
 import src.graph.edge.interfaces.Edge;
-import src.graph.vertices.interfaces.Vertice;
+import src.graph.vertices.interfaces.Vertex;
 
 /**
  * A graph is simply put a set of vertices that may or may not be connecd by edges.
@@ -17,28 +17,28 @@ import src.graph.vertices.interfaces.Vertice;
 public interface Graph {
     
     /**
-     * Returns the neighbours of a vertice. The neighbours are other vertices,
-     * that are available from the current vertice. Not all vertices that are
+     * Returns the neighbours of a vertex. The neighbours are other vertices,
+     * that are available from the current vertex. Not all vertices that are
      * connected to the node are neccessarily neighbours.
-     * @param key The key of the vertice to get the neighbours from
+     * @param key The key of the vertex to get the neighbours from
      * @return A list of vertices
      */
-    List<Vertice> neighbours(int key);
+    List<Vertex> neighbours(int key);
 
     /**
      * Returns a list view of all vertices in the graph. Changes made to this list
      * are reflected in the graph.
      * @return A unmodifiable List of vertices
      */
-    List<Vertice> vertices();
+    List<Vertex> vertices();
 
     /**
-     * Adds a Vertice to the graph. Vertices are indexed starting from 0.
-     * The added vertice will have the key {@code n - 1}, where n is the 
+     * Adds a vertex to the graph. Vertices are indexed starting from 0.
+     * The added vertex will have the key {@code n - 1}, where n is the 
      * total amount of vertices.
      * @return true on succesfull call
      */
-    boolean addVertice();
+    boolean addVertex();
 
     /**
      * Checks if the graph is empty. 
@@ -54,52 +54,52 @@ public interface Graph {
      * the same vertices.
      * </p>
      * Note: Some graphs are order-sensitive.
-     * @param a The key of the starting vertice
-     * @param b The key of the ending vertice
+     * @param a The key of the starting vertex
+     * @param b The key of the ending vertex
      * @return True if the edge was successfully added
      */
     boolean addEdge(int a, int b);
 
     /**
-     * Parses a key to its corresponding vertice. Will return {@code null}
-     * if the vertice does not exist. 
+     * Parses a key to its corresponding vertex. Will return {@code null}
+     * if the vertex does not exist. 
      * </p>
      * This runs in constant time.
-     * @param key The key of a vertice
-     * @return A vertice
+     * @param key The key of a vertex
+     * @return A vertex
      */
-    Vertice parseVertice(int key);
+    Vertex parseVertex(int key);
 
     /**
      * Removes an edge from the graph. This will do nothing if the edge was not found.
      * </p>
      * Note: Some graphs are order-sensistve.
-     * @param a The key of the starting vertice
-     * @param b The key of the ending vertice
+     * @param a The key of the starting vertex
+     * @param b The key of the ending vertex
      */
     void removeEdge(int a, int b);
 
     /**
      * Adds a weighted edge. All rules of {@link #addEdge(int, int)} apply.
      * Additionally unweighted graphs will ignore the weight.
-     * @param a The key of the starting vertice
-     * @param b The key of the ending vertice
+     * @param a The key of the starting vertex
+     * @param b The key of the ending vertex
      * @param value The weight of the edge
      * @return True on successful call
      */
     boolean addEdge(int a, int b, int value);
 
     /**
-     * Returns the value of the vertice associated with the key.
-     * @param key The key of the corresponding vertice
-     * @return The value of the vertice
-     * @see Vertice
+     * Returns the value of the vertex associated with the key.
+     * @param key The key of the corresponding vertex
+     * @return The value of the vertex
+     * @see Vertex
      */
     int getValue(int key);
 
     /**
-     * Sets the value of a vertice in the graph.
-     * @param key The key of the corresponding vertice
+     * Sets the value of a vertex in the graph.
+     * @param key The key of the corresponding vertex
      * @param value The value to be set
      */
     void setValue(int key, int value);
@@ -109,8 +109,8 @@ public interface Graph {
      * In unweighted graphs this will default to {@code 1}.
      * </p>
      * Note: Directed graphs are order-sensitive.
-     * @param a The starting vertice
-     * @param b The ending vertice
+     * @param a The starting vertex
+     * @param b The ending vertex
      * @return The weight of the edge
      */
     int weightOf(int a, int b);
@@ -127,8 +127,8 @@ public interface Graph {
      * the input is invalid or the edge does not exist.
      * </p>
      * Note: Directed graphs are order-sensitive.
-     * @param a The starting vertice
-     * @param b The ending vertice
+     * @param a The starting vertex
+     * @param b The ending vertex
      * @return The found edge, {@code null} otherwise
      */
     Edge parseEdge(int a, int b);

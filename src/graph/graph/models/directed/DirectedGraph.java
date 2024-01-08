@@ -1,6 +1,6 @@
 package src.graph.graph.models.directed;
 
-import src.graph.vertices.interfaces.Vertice;
+import src.graph.vertices.interfaces.Vertex;
 
 public class DirectedGraph extends DirectedWeightedGraph {
 
@@ -14,8 +14,8 @@ public class DirectedGraph extends DirectedWeightedGraph {
 
     @Override
     public boolean addEdge(int a, int b) {
-        Vertice v = parseVertice(a);
-        Vertice w = parseVertice(b);
+        Vertex v = parseVertex(a);
+        Vertex w = parseVertex(b);
 
         return addEdge(v, w, 1);
     }

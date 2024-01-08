@@ -17,55 +17,82 @@ import src.graph.vertices.interfaces.Vertex;
 import src.util.Ansi;
 
 /**
- * NOTE: Very high bfs depth recommended
+ * WIP
+ * NOT working yet
  */
-public class PatternRuleset implements Ruleset {
+public class StrictPatternRuleset implements Ruleset {
 
     public static final String TILE_SYMBOL = "■";
 
     private final Set<Integer> numbers = new HashSet<>();
-    private final Map<Integer, DirectionalTupel<Integer>> pattern = new HashMap<>();
+    private final Set<Tile> tiles = new HashSet<>();
+    private final Map<Integer, Tile> pattern = new HashMap<>();
 
-    public PatternRuleset(int[][] input) {
-        for (int[] line : input) {
-            for (int i : line) {
-                numbers.add(i);
-            }
-        }
-
-        for (int i : numbers) {
-            pattern.put(i, new DirectionalTupel<>());
-        }
-
+    private int idCounter = 0;
+    
+    public StrictPatternRuleset(int[][] input) {
         int height = input.length;
         int width = input[0].length;
+
+        Map<Tile, Integer> map = new HashMap<>();
+        int[][] bitmap = new int[height][width];
+
+        // Remap input map to bitmap
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                neighboursOf(i, j, input, pattern.get(input[i][j]));
+                DirectionalTupel<Integer> tupel = new DirectionalTupel<>();
+                tupel = neighboursOf(i, j, input, tupel);
+                Tile tile = new Tile(0, input[i][j], tupel);
+                if (!map.keySet().contains(tile)) {
+                    map.put(tile, idCounter);
+                    numbers.add(idCounter);
+                    idCounter++;
+                }
+                bitmap[i][j] = map.get(tile);
             }
         }
-        
+
+        for (int n : numbers) {
+            pattern.put(n, new Tile(n, -1, new DirectionalTupel<>()));
+        }
+
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                int group = input[i][j];
+                int identifier = bitmap[i][j];
+                Tile tile = pattern.get(identifier);
+                neighboursOf(i, j, input, tile.getNeighbours());
+                tile.setGroup(group);
+            }
+        }
+
+        // Error Tile
         DirectionalTupel<Integer> tupel = new DirectionalTupel<>();
         for (Direction direction : Direction.values()) {
             tupel.addAll(direction, numbers);
         }
-        pattern.put(-1, tupel);
+        pattern.put(-1, new Tile(idCounter + 1, -1, tupel));
+        pattern.put(0, new Tile(idCounter + 1, -1, tupel));
+
     }
 
-    private void neighboursOf(int x, int y, int[][] input, DirectionalTupel<Integer> neighbours) {
+    private DirectionalTupel<Integer> neighboursOf(int x, int y, int[][] input, DirectionalTupel<Integer> neighbours) {
+
 
         if (y < input[0].length - 1) {
             neighbours.add(Direction.RIGHT, input[x][y + 1]);
         }
         if (y > 0) {
             neighbours.add(Direction.LEFT, input[x][y - 1]);
-        }
+        } 
         if (x < input.length - 1) {
             neighbours.add(Direction.DOWN, input[x + 1][y]);
         }
         if (x > 0) {
             neighbours.add(Direction.UP, input[x - 1][y]);
         }
+
+        return neighbours;
     }
 
     @Override
@@ -86,7 +113,7 @@ public class PatternRuleset implements Ruleset {
             Set<Integer> neighbourInts = possibilities.get(neighbour.getKey());
 
             for (int i : neighbourInts) {
-                ints.addAll(pattern.get(i).get(direction.opposite()));
+                ints.addAll(pattern.get(i).getNeighbours().get(direction.opposite()));
             }
         }
 
@@ -116,29 +143,12 @@ public class PatternRuleset implements Ruleset {
 
     @Override
     public String stringRepresentation(int i) {
-        return switch(i) {
-            case 1 -> " ";
-            case 0 -> Ansi.Black + TILE_SYMBOL;
-            case 2 -> Ansi.Blue + TILE_SYMBOL;
-            case 3 -> Ansi.Blue + TILE_SYMBOL;
-            case 4 -> Ansi.Blue + TILE_SYMBOL;
-            case 5 -> Ansi.Blue + TILE_SYMBOL;
-            case 6 -> Ansi.Blue + TILE_SYMBOL;
-            case 7 -> Ansi.Blue + TILE_SYMBOL;
-            case 8 -> Ansi.Blue + TILE_SYMBOL;
-            case 9 -> Ansi.Blue + TILE_SYMBOL;
-            case 10 -> Ansi.White + TILE_SYMBOL;
-            case 11 -> Ansi.Red + TILE_SYMBOL;
-            case 12 -> Ansi.Red + TILE_SYMBOL;
-            case 13 -> Ansi.Red + TILE_SYMBOL;
-            case 14 -> Ansi.Red + TILE_SYMBOL;
-            case 15 -> Ansi.Red + TILE_SYMBOL;
-            case 16 -> Ansi.Red + TILE_SYMBOL;
-            case 17 -> Ansi.Red + TILE_SYMBOL;
-            case 18 -> Ansi.Red + TILE_SYMBOL;
-            case 19 -> Ansi.Red + TILE_SYMBOL;
-            case 20 -> Ansi.White + TILE_SYMBOL;
-            case 21 -> Ansi.Blue + TILE_SYMBOL;
+        // return String.valueOf(i);
+        int group = pattern.get(i).getGroup();
+        return switch(group) {
+            case 0 -> TILE_SYMBOL;
+            case 1 -> Ansi.Blue + TILE_SYMBOL;
+            case 2 -> Ansi.Red + TILE_SYMBOL;
             default -> " ";
         };
     }
@@ -215,7 +225,7 @@ public class PatternRuleset implements Ruleset {
 
     private class Tile {
 
-        private final int group;
+        private int group;
         private final int identifier;
         private final DirectionalTupel<Integer> neighbours;
 
@@ -231,6 +241,10 @@ public class PatternRuleset implements Ruleset {
 
         public int getIdentifier() {
             return this.identifier;
+        }
+
+        public void setGroup(int i) {
+            this.group = i;
         }
 
         public DirectionalTupel<Integer> getNeighbours() {

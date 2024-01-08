@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Objects;
 
 import src.graph.edge.interfaces.Edge;
-import src.graph.vertices.interfaces.Vertice;
+import src.graph.vertices.interfaces.Vertex;
 
-public class Node implements Vertice {
+public class Node implements Vertex {
     
     protected final List<Edge> edges;
 
@@ -22,16 +22,17 @@ public class Node implements Vertice {
     }
 
     @Override
-    public List<Vertice> neighbours() {
-        List<Vertice> neighbours = new LinkedList<>();
+    public List<Vertex> neighbours() {
+        List<Vertex> neighbours = new LinkedList<>();
         for (Edge edge : this.edges) {
             neighbours.add(edge.getOther(this));
         }
         return Collections.unmodifiableList(neighbours);
     }
+    
     @Override
-    public Iterator<Vertice> neighboursIterator() {
-        Vertice thisVertice = this;
+    public Iterator<Vertex> neighboursIterator() {
+        Vertex thisVertex = this;
         return new Iterator<>() {
             Iterator<Edge> edgeIterator = edges.iterator();
             @Override
@@ -40,8 +41,8 @@ public class Node implements Vertice {
             }
 
             @Override
-            public Vertice next() {
-                return edgeIterator.next().getOther(thisVertice);
+            public Vertex next() {
+                return edgeIterator.next().getOther(thisVertex);
             }
         };
     }

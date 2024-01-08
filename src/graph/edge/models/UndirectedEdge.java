@@ -4,20 +4,20 @@ import java.util.Objects;
 
 import src.graph.edge.abstracts.AbstractEdge;
 import src.graph.edge.interfaces.Edge;
-import src.graph.vertices.interfaces.Vertice;
+import src.graph.vertices.interfaces.Vertex;
 import src.util.Tuple;
 
 public class UndirectedEdge extends AbstractEdge {
     
-    protected Tuple<Vertice> vertices;
+    protected Tuple<Vertex> vertices;
 
     /**
      * Creates a new non-directional edge. In undirected edges the connected 
      * vertices are not required to be in order.
-     * @param v The first vertice
-     * @param w The second vertice
+     * @param v The first vertex
+     * @param w The second vertex
      */
-    public UndirectedEdge(Vertice v, Vertice w) {
+    public UndirectedEdge(Vertex v, Vertex w) {
         Objects.requireNonNull(v);
         Objects.requireNonNull(w);
         
@@ -25,18 +25,18 @@ public class UndirectedEdge extends AbstractEdge {
         this.value = 1;
     }
 
-    public UndirectedEdge(Vertice v, Vertice w, int i) {
+    public UndirectedEdge(Vertex v, Vertex w, int i) {
         this(v, w);
         this.value = i;
     }
 
     @Override
-    public Vertice getOther(Vertice v) {
+    public Vertex getOther(Vertex v) {
         if (!vertices.contains(v)) {
             return null;
         }
 
-        for (Vertice w : this.vertices) {
+        for (Vertex w : this.vertices) {
             if (!v.equals(w)) {
                 return w;
             }
@@ -78,17 +78,17 @@ public class UndirectedEdge extends AbstractEdge {
     }
 
     @Override
-    public Tuple<Vertice> getVertices() {
+    public Tuple<Vertex> getVertices() {
         return this.vertices;
     }
 
     @Override
-    public Vertice start() {
+    public Vertex start() {
         return vertices.a();
     }
 
     @Override
-    public Vertice end() {
+    public Vertex end() {
         return vertices.b();
     }
 }

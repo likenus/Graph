@@ -2,7 +2,7 @@ package src.graph.graph.models.directed;
 
 import src.graph.edge.interfaces.Edge;
 import src.graph.edge.models.DirectedEdge;
-import src.graph.vertices.interfaces.Vertice;
+import src.graph.vertices.interfaces.Vertex;
 import src.graph.vertices.models.Node;
 
 /**
@@ -17,12 +17,12 @@ public class LazyDirectedGraph extends DirectedGraph {
 
     @Override
     public boolean addEdge(int a, int b) {
-        Vertice v = parseVertice(a);
+        Vertex v = parseVertex(a);
         if (v == null) {
             v = new Node(a);
             add(v);
         }
-        Vertice w = parseVertice(b);
+        Vertex w = parseVertex(b);
         if (w == null) {
             w = new Node(b);
             add(w);
@@ -32,7 +32,7 @@ public class LazyDirectedGraph extends DirectedGraph {
     }
 
     @Override
-    protected boolean addEdge(Vertice v, Vertice w, int value) {
+    protected boolean addEdge(Vertex v, Vertex w, int value) {
         if (v == null || w == null) {
             return false;
         }

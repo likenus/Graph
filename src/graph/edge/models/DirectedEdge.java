@@ -4,21 +4,21 @@ import java.util.Objects;
 
 import src.graph.edge.abstracts.AbstractEdge;
 import src.graph.edge.interfaces.Edge;
-import src.graph.vertices.interfaces.Vertice;
+import src.graph.vertices.interfaces.Vertex;
 import src.util.Tuple;
 
 public class DirectedEdge extends AbstractEdge {
     
-    protected Vertice start;
-    protected Vertice end;
+    protected Vertex start;
+    protected Vertex end;
 
     /**
      * Creates a new directed edge. Both vertices are required to be non-null.
      * A directed edge has an explicit start and end, thus the order of params is important.
-     * @param start The starting vertice of this edge/The vertice this edge is pointing from
-     * @param end The ending vertice of this edge/The vertice this edge is pointing towards
+     * @param start The starting vertex of this edge/The vertex this edge is pointing from
+     * @param end The ending vertex of this edge/The vertex this edge is pointing towards
      */
-    public DirectedEdge(Vertice start, Vertice end) {
+    public DirectedEdge(Vertex start, Vertex end) {
         Objects.requireNonNull(start);
         Objects.requireNonNull(end);
 
@@ -27,13 +27,13 @@ public class DirectedEdge extends AbstractEdge {
         this.value = 1;
     }
 
-    public DirectedEdge(Vertice start, Vertice end, int i) {
+    public DirectedEdge(Vertex start, Vertex end, int i) {
         this(start, end);
         this.value = i;
     }
 
     @Override
-    public Vertice getOther(Vertice v) {
+    public Vertex getOther(Vertex v) {
         Objects.requireNonNull(v);
 
         if (!(start.equals(v) || end.equals(v))) {
@@ -47,17 +47,17 @@ public class DirectedEdge extends AbstractEdge {
     }
 
     @Override
-    public Tuple<Vertice> getVertices() {
+    public Tuple<Vertex> getVertices() {
         return new Tuple<>(start, end);
     }
 
     @Override
-    public Vertice start() {
+    public Vertex start() {
         return this.start;
     }
 
     @Override
-    public Vertice end() {
+    public Vertex end() {
         return this.end;
     }
 
