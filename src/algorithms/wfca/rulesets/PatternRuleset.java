@@ -217,45 +217,4 @@ public class PatternRuleset implements Ruleset {
             };
         }
     }
-
-    private class Tile {
-
-        private final int group;
-        private final int identifier;
-        private final DirectionalTupel<Integer> neighbours;
-
-        public Tile(int identifier, int group, DirectionalTupel<Integer> neighbours) {
-            this.identifier = identifier;
-            this.group = group;
-            this.neighbours = neighbours;
-        }
-
-        public int getGroup() {
-            return this.group;
-        }
-
-        public int getIdentifier() {
-            return this.identifier;
-        }
-
-        public DirectionalTupel<Integer> getNeighbours() {
-            return this.neighbours;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (o == null) return false;
-            if (o == this) return true;
-            if (!(o instanceof Tile)) return false;
-            Tile other = (Tile) o;
-
-            return other.identifier == this.identifier && other.group == this.group 
-                && other.neighbours.equals(this.neighbours);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(group, neighbours, identifier);
-        }
-    }
 }
