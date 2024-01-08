@@ -97,6 +97,11 @@ public class PipesRuleset implements Ruleset {
         return NUMBERS;
     }
 
+    @Override
+    public int maxBFSDepth() {
+        return 8;
+    }
+
     private enum Tile {
     
         TOP(1, "╦", new int[][] {

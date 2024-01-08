@@ -49,4 +49,10 @@ public interface Ruleset {
 
         return possibleInts;
     }
+
+    /**
+     * Returns the maximum BFS depth the WCA Algorithm should use to update tiles when using this ruleset
+     * @return max BFS depth for this ruleset
+     */
+    int maxBFSDepth();
 } 
