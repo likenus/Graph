@@ -179,9 +179,10 @@ public class WaveFunctionCollapse implements Runnable {
 
         DirectedGraph tree = new LazyDirectedGraph(s);
         Vertex start = g.parseVertex(s);
+        int maxBFSDepth = ruleset.maxBFSDepth();
 
         if (start == null) {
-            throw new IllegalArgumentException("Start does not exist");
+            throw new IllegalArgumentException("Start does not exist"); // Should never be thrown here
         }
 
         Queue<Vertex> queue = new ConcurrentLinkedQueue<>();
@@ -192,7 +193,7 @@ public class WaveFunctionCollapse implements Runnable {
         // BFS
         while (!queue.isEmpty()) {
             Vertex u = queue.poll();
-            if (distances[u.getKey()] > ruleset.maxBFSDepth()) {
+            if (distances[u.getKey()] > maxBFSDepth) {
                 continue;
             }
             Iterator<Vertex> neighborIt = u.neighboursIterator();
