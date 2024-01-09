@@ -44,7 +44,7 @@ public class Runner {
             Mesh2D graph = graphLoader.mesh2D(500, 400); // <-- Meshes are generated here+
             Ruleset ruleset = new LandscapeRuleset();
             System.out.println("%s: Width: %d Height: %d | %d total Nodes".formatted(graph.getMeshType(), graph.getWidth(), graph.getHeight(), graph.getWidth() * graph.getHeight()));
-            WaveFunctionCollapse wfc = new WaveFunctionCollapse(graph, ruleset);
+            WaveFunctionCollapse wfc = new WaveFunctionCollapse(graph, ruleset, SEED);
             algorithms.add(wfc);
             threads.add(new Thread(wfc));
         }

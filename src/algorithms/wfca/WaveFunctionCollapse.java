@@ -127,8 +127,8 @@ public class WaveFunctionCollapse implements Runnable {
         }
     }
 
-    private void collapse(Vertex v) {
-        Set<Integer> possibleInts = possibilities.get(v.getKey());
+    private void collapse(Vertex vertex) {
+        Set<Integer> possibleInts = possibilities.get(vertex.getKey());
 
         if (possibleInts.isEmpty()) {
             possibleInts = Set.of(-1); // This can crash the algorithm, depending on the ruleset
@@ -136,26 +136,45 @@ public class WaveFunctionCollapse implements Runnable {
         }
 
         int value = possibleInts.stream().toList().get(rnd.nextInt(possibleInts.size()));
-        v.setValue(value);
-        int key = v.getKey();
+        vertex.setValue(value);
+        int key = vertex.getKey();
 
         possibilities.set(key, Set.of(value));
         isCollapsed.set(key, true);
 
+        Vertex start = graph.parseVertex(key);
+        int maxBFSDepth = ruleset.maxBFSDepth();
+
         boolean[] exploredNodes = new boolean[graph.sizeVertices()];
         int[] distances = new int[graph.sizeVertices()];
+
         Queue<Vertex> queue = new ConcurrentLinkedQueue<>();
-        exploredNodes[v.getKey()] = true;
-        distances[v.getKey()] = 0;
-        for (Vertex w: v.neighbours()) {
-            queue.add(w);
-            exploredNodes[w.getKey()] = true;
-            distances[w.getKey()] = 1;
+        queue.add(start);
+        exploredNodes[key] = true;
+        distances[key] = 0;
+
+        while (!queue.isEmpty()) {
+            Vertex u = queue.poll();
+            if (distances[u.getKey()] > maxBFSDepth) {
+                continue;
+            }
+            Iterator<Vertex> neighbourIterator = u.neighboursIterator();
+            while (neighbourIterator.hasNext()) {
+                Vertex v = neighbourIterator.next();
+                if (isCollapsed.get(v.getKey()).booleanValue()) {
+                    exploredNodes[v.getKey()] = true;
+                    continue;
+                }
+                if (!exploredNodes[v.getKey()] && update(v)) {
+                    queue.add(v);
+                    distances[v.getKey()] = distances[u.getKey()] + 1;
+                    exploredNodes[v.getKey()] = true;
+                }
+            }
         }
-        update(queue, exploredNodes, distances);
 
         if (Runner.GUI_OUTPUT && Runner.ANIMATED_OUTPUT) {
-            updatedSinceRender[renderCounter++] = v;
+            updatedSinceRender[renderCounter++] = vertex;
             if (renderCounter >= UPDATES_PER_RENDER) {
                 renderer.renderDiff();
                 renderCounter = 0;
@@ -163,39 +182,18 @@ public class WaveFunctionCollapse implements Runnable {
         }
     }
 
-    private void update(Queue<Vertex> queue, boolean[] exploredNodes, int[] distances) {
-        while (!queue.isEmpty()) {
-            Vertex v = queue.poll();
-            if (distances[v.getKey()] > ruleset.maxBFSDepth()) {
-                continue;
-            }
-            if (isCollapsed.get(v.getKey())) {
-                exploredNodes[v.getKey()] = true;
-                continue;
-            }
+    private boolean update(Vertex v) {
 
-            boolean changed = false;
+        boolean changed = false;
+        Set<Integer> possibleInts = ruleset.ruleset(this.graph, v, possibilities); // Magic happens in here
 
-            Set<Integer> possibleInts = ruleset.ruleset(this.graph, v, possibilities); // Magic happens in here
-
-            if (!possibilities.get(v.getKey()).equals(possibleInts)) {
-                possibilities.set(v.getKey(), possibleInts);
-                changed = true;
-                notCollapsed.decPrio(v, possibleInts.size());
-            }
-
-            if (changed) {
-                Iterator<Vertex> neighborIt = v.neighboursIterator();
-                while (neighborIt.hasNext()) {
-                    Vertex w = neighborIt.next();
-                    if (!exploredNodes[w.getKey()]) {
-                        queue.add(w);
-                        distances[w.getKey()] = distances[v.getKey()] + 1;
-                        exploredNodes[v.getKey()] = true;
-                    }
-                }
-            }
+        if (!possibilities.get(v.getKey()).equals(possibleInts)) {
+            possibilities.set(v.getKey(), possibleInts);
+            notCollapsed.decPrio(v, possibleInts.size());
+            changed = true;
         }
+
+        return changed;
     }
 
     public int getErrorCount() {
@@ -211,46 +209,7 @@ public class WaveFunctionCollapse implements Runnable {
      * @return The search tree
      */
     private DirectedGraph bfsTree(Graph g, int s) {
-
-        boolean[] exploredNodes = new boolean[g.sizeVertices()];
-        int[] distances = new int[g.sizeVertices()];
-
-        DirectedGraph tree = new LazyDirectedGraph(s);
-        Vertex start = g.parseVertex(s);
-        int maxBFSDepth = ruleset.maxBFSDepth();
-
-        if (start == null) {
-            throw new IllegalArgumentException("Start does not exist"); // Should never be thrown here
-        }
-
-        Queue<Vertex> queue = new ConcurrentLinkedQueue<>();
-        queue.add(start);
-        exploredNodes[s] = true;
-        distances[s] = 0;
-
-        // BFS
-        while (!queue.isEmpty()) {
-            Vertex u = queue.poll();
-            if (distances[u.getKey()] > maxBFSDepth) {
-                continue;
-            }
-            Iterator<Vertex> neighborIt = u.neighboursIterator();
-            while (neighborIt.hasNext()) {
-                Vertex v = neighborIt.next();
-                if (isCollapsed.get(v.getKey()).booleanValue()) {
-                    exploredNodes[v.getKey()] = true;
-                    continue;
-                }
-                if (!exploredNodes[v.getKey()]) {
-                    queue.add(v);
-                    distances[v.getKey()] = distances[u.getKey()] + 1;
-                    tree.addEdge(u.getKey(), v.getKey());
-                    exploredNodes[v.getKey()] = true;
-                }
-            }
-        }
-
-        return tree;
+        throw new UnsupportedOperationException();
     }
 
     /**
