@@ -1,5 +1,6 @@
 package src.algorithms.wfca.rulesets;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumMap;
@@ -271,5 +272,10 @@ public class StrictPatternRuleset implements Ruleset {
         public int hashCode() {
             return Objects.hash(group, neighbours, identifier);
         }
+    }
+
+    @Override
+    public Color getTileColor(int tileValue) {
+        return new Color(0,0,0,255);
     }
 }

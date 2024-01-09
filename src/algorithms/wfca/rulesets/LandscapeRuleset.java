@@ -1,5 +1,6 @@
 package src.algorithms.wfca.rulesets;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -120,5 +121,17 @@ public class LandscapeRuleset implements Ruleset {
         public String toString() {
             return this.ansiConfig + TILE_SYMBOL;
         }
+    }
+
+    @Override
+    public Color getTileColor(int tileValue) {
+        return switch (tileValue) {
+            case 1 -> new Color(20, 100, 255, 255);
+            case 2 -> new Color(20, 150, 255, 255);
+            case 3 -> new Color(200, 200, 50, 255);
+            case 4 -> new Color(50, 150, 50, 255);
+            case 5 -> new Color(80, 80, 90, 255);
+            default -> new Color(0, 0, 0, 0);
+        };
     }
 }
