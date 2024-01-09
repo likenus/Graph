@@ -142,13 +142,17 @@ public class WaveFunctionCollapse implements Runnable {
         possibilities.set(key, Set.of(value));
         isCollapsed.set(key, true);
 
-        DirectedGraph searchTree = bfsTree(graph, key);
-        for (Vertex w : searchTree.neighbours(key)) {
-            if (isCollapsed.get(w.getKey()).booleanValue()) {
-                continue;
-            }
-            update(w, searchTree);
+        boolean[] exploredNodes = new boolean[graph.sizeVertices()];
+        int[] distances = new int[graph.sizeVertices()];
+        Queue<Vertex> queue = new ConcurrentLinkedQueue<>();
+        exploredNodes[v.getKey()] = true;
+        distances[v.getKey()] = 0;
+        for (Vertex w: v.neighbours()) {
+            queue.add(w);
+            exploredNodes[w.getKey()] = true;
+            distances[w.getKey()] = 1;
         }
+        update(queue, exploredNodes, distances);
 
         if (Runner.GUI_OUTPUT && Runner.ANIMATED_OUTPUT) {
             updatedSinceRender[renderCounter++] = v;
@@ -159,23 +163,37 @@ public class WaveFunctionCollapse implements Runnable {
         }
     }
 
-    private void update(Vertex v, DirectedGraph searchTree) {
-        boolean changed = false;
+    private void update(Queue<Vertex> queue, boolean[] exploredNodes, int[] distances) {
+        while (!queue.isEmpty()) {
+            Vertex v = queue.poll();
+            if (distances[v.getKey()] > ruleset.maxBFSDepth()) {
+                continue;
+            }
+            if (isCollapsed.get(v.getKey())) {
+                exploredNodes[v.getKey()] = true;
+                continue;
+            }
 
-        Set<Integer> possibleInts = ruleset.ruleset(this.graph, v, possibilities); // Magic happens in here
+            boolean changed = false;
 
-        if (!possibilities.get(v.getKey()).equals(possibleInts)) {
-            possibilities.set(v.getKey(), possibleInts);
-            changed = true;
-            notCollapsed.decPrio(v, possibleInts.size());
-        }
+            Set<Integer> possibleInts = ruleset.ruleset(this.graph, v, possibilities); // Magic happens in here
 
-        if (changed) {
-            for (Vertex w : searchTree.neighbours(v.getKey())) {
-                if (isCollapsed.get(w.getKey()).booleanValue()) {
-                    continue;
+            if (!possibilities.get(v.getKey()).equals(possibleInts)) {
+                possibilities.set(v.getKey(), possibleInts);
+                changed = true;
+                notCollapsed.decPrio(v, possibleInts.size());
+            }
+
+            if (changed) {
+                Iterator<Vertex> neighborIt = v.neighboursIterator();
+                while (neighborIt.hasNext()) {
+                    Vertex w = neighborIt.next();
+                    if (!exploredNodes[w.getKey()]) {
+                        queue.add(w);
+                        distances[w.getKey()] = distances[v.getKey()] + 1;
+                        exploredNodes[v.getKey()] = true;
+                    }
                 }
-                update(w, searchTree);
             }
         }
     }
@@ -187,7 +205,7 @@ public class WaveFunctionCollapse implements Runnable {
     /**
      * This bfs tree is modified, for a full version see
      * {@link src.util.Graphs#bfsTree()}
-     * 
+     *
      * @param g a graph
      * @param s the starting vertex
      * @return The search tree
