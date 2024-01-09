@@ -1,5 +1,6 @@
 package src.algorithms.wfca.rulesets;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -63,5 +64,10 @@ public class NumbersRuleset implements Ruleset {
     @Override
     public int maxBFSDepth() {
         return 8;
+    }
+
+    @Override
+    public Color getTileColor(int tileValue) {
+        return new Color(0,0,0,255);
     }
 }

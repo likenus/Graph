@@ -1,5 +1,6 @@
 package src.algorithms.wfca.rulesets;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumMap;
@@ -216,5 +217,10 @@ public class PatternRuleset implements Ruleset {
                 case RIGHT -> LEFT;
             };
         }
+    }
+
+    @Override
+    public Color getTileColor(int tileValue) {
+        return new Color(0,0,0,255);
     }
 }

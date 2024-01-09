@@ -11,15 +11,19 @@ import src.graph.edge.Edge;
 import src.graph.graph.interfaces.Graph;
 import src.graph.graph.models.undirected.Mesh2D;
 import src.graph.vertices.Vertex;
+import src.rendering.GraphRenderer;
+import src.rendering.RenderResultFrame;
 import src.util.Graphs;
 
 public class Runner {
 
     public static final long SEED = 1;
 
-    private static final boolean ANIMATED_OUTPUT = false;
+    private static final boolean ANIMATED_OUTPUT = true;
+    private static final boolean GUI_OUTPUT = true;
+    private static RenderResultFrame outputFrame;
     private static final boolean PRINT_RESULT = true;
-    private static final int SLEEP_TIMER = 500;
+    private static final int SLEEP_TIMER = 200;
 
     private final Random random = new Random();
     private int[] numbers = {1};
@@ -37,8 +41,8 @@ public class Runner {
         long t1 = System.currentTimeMillis();
 
         for (int n : numbers) {
-            Mesh2D graph = graphLoader.mesh2D(30, 10); // <-- Meshes are generated here+
-            Ruleset ruleset = new StrictPatternRuleset(loadPattern());
+            Mesh2D graph = graphLoader.mesh2D(1000, 800); // <-- Meshes are generated here+
+            Ruleset ruleset = new BiomedLandscapeRuleset(graph);
             System.out.println("%s: Width: %d Height: %d | %d total Nodes".formatted(graph.getMeshType(), graph.getWidth(), graph.getHeight(), graph.getWidth() * graph.getHeight()));
             WaveFunctionCollapse wfc = new WaveFunctionCollapse(graph, ruleset);
             algorithms.add(wfc);
@@ -108,6 +112,14 @@ public class Runner {
     }
 
     public static void printGraph(WaveFunctionCollapse wfc) {
+        if (GUI_OUTPUT) {
+            if (outputFrame == null) {
+                outputFrame = new RenderResultFrame(GraphRenderer.render(wfc));
+            } else {
+                outputFrame.updateImage(GraphRenderer.render(wfc));
+            }
+            return;
+        }
 
         Mesh2D mesh = (Mesh2D) wfc.getGraph();
         Ruleset ruleset = wfc.getRuleset();

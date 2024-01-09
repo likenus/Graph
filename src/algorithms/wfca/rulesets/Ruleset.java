@@ -1,5 +1,6 @@
 package src.algorithms.wfca.rulesets;
 
+import java.awt.*;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -55,4 +56,11 @@ public interface Ruleset {
      * @return max BFS depth for this ruleset
      */
     int maxBFSDepth();
+
+    /**
+     * Gets the color associated with a tile type value for image rendering
+     * @param tileValue a tile type value
+     * @return some color
+     */
+    Color getTileColor(int tileValue);
 } 
