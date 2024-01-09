@@ -15,8 +15,6 @@ import src.rendering.GraphRenderer;
 import src.rendering.RenderResultFrame;
 import src.util.Graphs;
 
-import javax.swing.*;
-
 public class Runner {
 
     public static final long SEED = 1;
@@ -170,7 +168,7 @@ public class Runner {
         List<String> lines = new ArrayList<>();
         try {
             fileLoader = new FileLoader("files/WaveFunction_Patterns");
-            lines = fileLoader.loadSimulationFile("Pattern.pat");
+            lines = fileLoader.loadSimulationFile("Pattern4.pat");
         } catch (IOException exception) {
             exception.printStackTrace();
         }

@@ -20,6 +20,7 @@ import src.util.Ansi;
 /**
  * WIP
  * NOT working yet
+ * Update It's still not working but starting to take shape
  */
 public class StrictPatternRuleset implements Ruleset {
 
@@ -62,7 +63,7 @@ public class StrictPatternRuleset implements Ruleset {
                 int group = input[i][j];
                 int identifier = bitmap[i][j];
                 Tile tile = pattern.get(identifier);
-                neighboursOf(i, j, input, tile.getNeighbours());
+                neighboursOf(i, j, bitmap, tile.getNeighbours());
                 tile.setGroup(group);
             }
         }
@@ -85,7 +86,7 @@ public class StrictPatternRuleset implements Ruleset {
         }
         if (y > 0) {
             neighbours.add(Direction.LEFT, input[x][y - 1]);
-        } 
+        }
         if (x < input.length - 1) {
             neighbours.add(Direction.DOWN, input[x + 1][y]);
         }
@@ -147,7 +148,7 @@ public class StrictPatternRuleset implements Ruleset {
         // return String.valueOf(i);
         int group = pattern.get(i).getGroup();
         return switch(group) {
-            case 0 -> TILE_SYMBOL;
+            case 0 -> Ansi.White + TILE_SYMBOL;
             case 1 -> Ansi.Blue + TILE_SYMBOL;
             case 2 -> Ansi.Red + TILE_SYMBOL;
             default -> " ";
@@ -161,7 +162,7 @@ public class StrictPatternRuleset implements Ruleset {
 
     @Override
     public int maxBFSDepth() {
-        return 16;
+        return 32;
     }
 
     private class DirectionalTupel<T> {
