@@ -11,6 +11,7 @@ import src.graph.edge.Edge;
 import src.graph.graph.interfaces.Graph;
 import src.graph.graph.models.undirected.Mesh2D;
 import src.graph.vertices.Vertex;
+import src.rendering.GraphRenderer;
 import src.rendering.RenderResultFrame;
 import src.util.Graphs;
 
@@ -21,11 +22,12 @@ public class Runner {
     public static final boolean ANIMATED_OUTPUT = true;
     public static final boolean GUI_OUTPUT = true;
     private static final boolean PRINT_RESULT = false;
-    private static final int SLEEP_TIMER = 1000;
+    private static final int SLEEP_TIMER = 100; // lower than 100 reintroduces race conditions
     
     private final Random random = new Random();
-
-    private static RenderResultFrame outputFrame;
+    
+    private RenderResultFrame outputFrame;
+    private GraphRenderer graphRenderer;
 
     private int threadCount = 1;
     private int width = 500;
@@ -35,20 +37,22 @@ public class Runner {
     public void run() {
 
         GraphLoader graphLoader = new GraphLoader();
-
+        
         List<Thread> threads = new ArrayList<>();
         List<WaveFunctionCollapse> algorithms = new ArrayList<>();
-
+        
         System.out.println("Initializing...");
-
+        
         long t1 = System.currentTimeMillis();
-
+        
         for (int i = 0; i < threadCount; i++) {
             Mesh2D graph = graphLoader.mesh2D(width, height); // <-- Meshes are generated here (Width, Height)
             Ruleset ruleset = new LandscapeRuleset();
             System.out.println("%s: Width: %d Height: %d | %d total Nodes".formatted(graph.getMeshType(), graph.getWidth(), graph.getHeight(), graph.getWidth() * graph.getHeight()));
-            WaveFunctionCollapse wfc = new WaveFunctionCollapse(graph, ruleset, SEED);
+            WaveFunctionCollapse wfc = new WaveFunctionCollapse(graph, ruleset);
+            graphRenderer = new GraphRenderer(wfc);
             algorithms.add(wfc);
+            wfc.setRenderer(graphRenderer);
             threads.add(new Thread(wfc));
         }
 
@@ -89,55 +93,57 @@ public class Runner {
                 rTime = "%.2fs".formatted(remainingTime);
             }
                 System.out.println(" %s elapsed | Estimated time remaining: %s.".formatted(eTime, rTime));
-            
+
             try {
                 Thread.sleep(SLEEP_TIMER);
             } catch (InterruptedException exception) {
                 exception.printStackTrace();
             }
             if (ANIMATED_OUTPUT) {
-                printGraph(algorithms.get(0));
+                drawGraph();
             }
         }
 
         t2 = System.currentTimeMillis();
         System.out.println("%.3fs elapsed.".formatted((t2 - t1) / 1000f));
 
-        if (!PRINT_RESULT) {
-            return;
+        if (GUI_OUTPUT) {
+            drawGraph();
+        }
+        
+        if (PRINT_RESULT) {
+            for (WaveFunctionCollapse wfc : algorithms) {
+                printGraph(wfc);
+            }
         }
 
-        for (WaveFunctionCollapse wfc : algorithms) {
-            printGraph(wfc);
-        }
-
-        // printRandomPath(algorithms.get(0));
     }
 
-    public static void printGraph(WaveFunctionCollapse wfc) {
+    private void drawGraph() {
         if (GUI_OUTPUT) {
             if (outputFrame == null) {
-                outputFrame = new RenderResultFrame(wfc.getRenderer().getImage());
+                outputFrame = new RenderResultFrame(graphRenderer.getImage());
             } else {
-                outputFrame.updateImage(wfc.getRenderer().getImage());
+                outputFrame.updateImage(graphRenderer.getImage());
             }
-            return;
         }
+    }
 
+    private void printGraph(WaveFunctionCollapse wfc) {
         Mesh2D mesh = (Mesh2D) wfc.getGraph();
         Ruleset ruleset = wfc.getRuleset();
 
-        int width = mesh.getWidth();
-        int height = mesh.getHeight();
+        int widthMesh = mesh.getWidth();
+        int heightMesh = mesh.getHeight();
 
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                int x = mesh.getValue(width * i + j);
+        for (int i = 0; i < heightMesh; i++) {
+            for (int j = 0; j < widthMesh; j++) {
+                int x = mesh.getValue(widthMesh * i + j);
 
                 sb.append(ruleset.stringRepresentation(x) + " ");
             }
-            if (i < height - 1) {
+            if (i < heightMesh - 1) {
                 sb.append(System.lineSeparator());
             }
         }
@@ -163,7 +169,7 @@ public class Runner {
             vertex.setValue(-1);
         }
 
-        printGraph(wfc);
+        drawGraph();
     }
 
     private int[][] loadPattern() {
@@ -171,7 +177,7 @@ public class Runner {
         List<String> lines = new ArrayList<>();
         try {
             fileLoader = new FileLoader("files/WaveFunction_Patterns");
-            lines = fileLoader.loadSimulationFile("Pattern4.pat");
+            lines = fileLoader.loadFile("Pattern4.pat");
         } catch (IOException exception) {
             exception.printStackTrace();
         }

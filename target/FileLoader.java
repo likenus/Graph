@@ -25,14 +25,14 @@ public final class FileLoader {
     }
 
     public List<String> loadGraph() throws IOException {
-        return loadSimulationFile(GRAPH_FILE_NAME);
+        return loadFile(GRAPH_FILE_NAME);
     }
 
     public List<String> loadGraph(String fileName) throws IOException {
-        return loadSimulationFile(fileName);
+        return loadFile(fileName);
     }
 
-    public List<String> loadSimulationFile(String fileName) throws IOException {
+    public List<String> loadFile(String fileName) throws IOException {
         final Path filePath = this.folderPath.resolve(Path.of(fileName));
         final File file = filePath.toFile();
 
