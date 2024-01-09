@@ -193,7 +193,6 @@ public class WaveFunctionCollapse implements Runnable {
      * @return The search tree
      */
     private DirectedGraph bfsTree(Graph g, int s) {
-        Objects.requireNonNull(g);
 
         boolean[] exploredNodes = new boolean[g.sizeVertices()];
         int[] distances = new int[g.sizeVertices()];

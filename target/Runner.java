@@ -41,8 +41,8 @@ public class Runner {
         long t1 = System.currentTimeMillis();
 
         for (int n : numbers) {
-            Mesh2D graph = graphLoader.mesh2D(1000, 800); // <-- Meshes are generated here+
-            Ruleset ruleset = new BiomedLandscapeRuleset(graph);
+            Mesh2D graph = graphLoader.mesh2D(500, 400); // <-- Meshes are generated here+
+            Ruleset ruleset = new LandscapeRuleset();
             System.out.println("%s: Width: %d Height: %d | %d total Nodes".formatted(graph.getMeshType(), graph.getWidth(), graph.getHeight(), graph.getWidth() * graph.getHeight()));
             WaveFunctionCollapse wfc = new WaveFunctionCollapse(graph, ruleset);
             algorithms.add(wfc);
