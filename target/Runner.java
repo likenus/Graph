@@ -11,7 +11,6 @@ import src.graph.edge.Edge;
 import src.graph.graph.interfaces.Graph;
 import src.graph.graph.models.undirected.Mesh2D;
 import src.graph.vertices.Vertex;
-import src.rendering.GraphRenderer;
 import src.rendering.RenderResultFrame;
 import src.util.Graphs;
 
@@ -19,14 +18,18 @@ public class Runner {
 
     public static final long SEED = 1;
 
-    public static final boolean ANIMATED_OUTPUT = false;
-    public static final boolean GUI_OUTPUT = false;
-    private static RenderResultFrame outputFrame;
+    public static final boolean ANIMATED_OUTPUT = true;
+    public static final boolean GUI_OUTPUT = true;
     private static final boolean PRINT_RESULT = false;
     private static final int SLEEP_TIMER = 1000;
-
+    
     private final Random random = new Random();
-    private int[] numbers = {1};
+
+    private static RenderResultFrame outputFrame;
+
+    private int threadCount = 1;
+    private int width = 500;
+    private int height = 400;
 
     @SuppressWarnings("all")
     public void run() {
@@ -40,8 +43,8 @@ public class Runner {
 
         long t1 = System.currentTimeMillis();
 
-        for (int n : numbers) {
-            Mesh2D graph = graphLoader.mesh2D(500, 400); // <-- Meshes are generated here+
+        for (int i = 0; i < threadCount; i++) {
+            Mesh2D graph = graphLoader.mesh2D(width, height); // <-- Meshes are generated here (Width, Height)
             Ruleset ruleset = new LandscapeRuleset();
             System.out.println("%s: Width: %d Height: %d | %d total Nodes".formatted(graph.getMeshType(), graph.getWidth(), graph.getHeight(), graph.getWidth() * graph.getHeight()));
             WaveFunctionCollapse wfc = new WaveFunctionCollapse(graph, ruleset, SEED);
@@ -175,13 +178,13 @@ public class Runner {
 
         String[] parts = lines.get(0).split("x");
         lines.remove(0);
-        int height = Integer.parseInt(parts[0]);
-        int width = Integer.parseInt(parts[1]);
-        int[][] arr = new int[height][width];
-        for (int i = 0; i < height; i++) {
+        int h = Integer.parseInt(parts[0]);
+        int w = Integer.parseInt(parts[1]);
+        int[][] arr = new int[h][w];
+        for (int i = 0; i < h; i++) {
             String line = lines.get(i);
             String[] chars = line.split(" ");
-            for (int j = 0; j < width; j++) {
+            for (int j = 0; j < w; j++) {
                 arr[i][j] = Integer.parseInt(chars[j]);
             }
         }

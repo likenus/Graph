@@ -5,15 +5,12 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Objects;
 import java.util.Queue;
 import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import src.algorithms.wfca.rulesets.Ruleset;
-import src.graph.graph.models.directed.DirectedGraph;
-import src.graph.graph.models.directed.LazyDirectedGraph;
 import src.graph.vertices.Vertex;
 import src.graph.graph.interfaces.Graph;
 import src.rendering.GraphRenderer;
@@ -173,6 +170,10 @@ public class WaveFunctionCollapse implements Runnable {
             }
         }
 
+        updateGui(vertex);
+    }
+
+    private void updateGui(Vertex vertex) {
         if (Runner.GUI_OUTPUT && Runner.ANIMATED_OUTPUT) {
             updatedSinceRender[renderCounter++] = vertex;
             if (renderCounter >= UPDATES_PER_RENDER) {
@@ -198,18 +199,6 @@ public class WaveFunctionCollapse implements Runnable {
 
     public int getErrorCount() {
         return errorCounter;
-    }
-
-    /**
-     * This bfs tree is modified, for a full version see
-     * {@link src.util.Graphs#bfsTree()}
-     *
-     * @param g a graph
-     * @param s the starting vertex
-     * @return The search tree
-     */
-    private DirectedGraph bfsTree(Graph g, int s) {
-        throw new UnsupportedOperationException();
     }
 
     /**

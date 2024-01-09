@@ -27,7 +27,7 @@ public class StrictPatternRuleset implements Ruleset {
     public static final String TILE_SYMBOL = "■";
 
     private final Set<Integer> numbers = new HashSet<>();
-    private final Set<Tile> tiles = new HashSet<>();
+    // private final Set<Tile> tiles = new HashSet<>();
     private final Map<Integer, Tile> pattern = new HashMap<>();
 
     private int idCounter = 0;
@@ -246,9 +246,9 @@ public class StrictPatternRuleset implements Ruleset {
             return this.group;
         }
 
-        public int getIdentifier() {
-            return this.identifier;
-        }
+        // public int getIdentifier() {
+        //     return this.identifier;
+        // }
 
         public void setGroup(int i) {
             this.group = i;
