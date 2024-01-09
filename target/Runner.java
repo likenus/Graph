@@ -22,7 +22,7 @@ public class Runner {
     private static final int SLEEP_TIMER = 500;
 
     private final Random random = new Random();
-    private int[] numbers = {1, 2, 3, 4};
+    private int[] numbers = {1};
 
     @SuppressWarnings("all")
     public void run() {
@@ -37,8 +37,8 @@ public class Runner {
         long t1 = System.currentTimeMillis();
 
         for (int n : numbers) {
-            Mesh2D graph = graphLoader.mesh2D(100, 50); // <-- Meshes are generated here+
-            Ruleset ruleset = new LandscapeRuleset();
+            Mesh2D graph = graphLoader.mesh2D(30, 10); // <-- Meshes are generated here+
+            Ruleset ruleset = new StrictPatternRuleset(loadPattern());
             System.out.println("%s: Width: %d Height: %d | %d total Nodes".formatted(graph.getMeshType(), graph.getWidth(), graph.getHeight(), graph.getWidth() * graph.getHeight()));
             WaveFunctionCollapse wfc = new WaveFunctionCollapse(graph, ruleset);
             algorithms.add(wfc);
@@ -156,7 +156,7 @@ public class Runner {
         List<String> lines = new ArrayList<>();
         try {
             fileLoader = new FileLoader("files/WaveFunction_Patterns");
-            lines = fileLoader.loadSimulationFile("Pattern.pat");
+            lines = fileLoader.loadSimulationFile("Pattern4.pat");
         } catch (IOException exception) {
             exception.printStackTrace();
         }
