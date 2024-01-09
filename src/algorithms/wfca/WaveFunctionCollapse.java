@@ -117,7 +117,7 @@ public class WaveFunctionCollapse implements Runnable {
             Vertex v = notCollapsed.pop();
             collapse(v);
         }
-        if (Runner.GUI_OUTPUT) {
+        if (renderer != null && Runner.GUI_OUTPUT) {
             renderer.renderFull();
         }
     }
@@ -172,7 +172,7 @@ public class WaveFunctionCollapse implements Runnable {
     }
 
     private void updateGui(Vertex vertex) {
-        if (Runner.GUI_OUTPUT && Runner.ANIMATED_OUTPUT) {
+        if (renderer != null && Runner.GUI_OUTPUT && Runner.ANIMATED_OUTPUT) {
             updatedSinceRender[renderCounter++] = vertex;
             if (renderCounter >= UPDATES_PER_RENDER) {
                 renderer.renderDiff();
