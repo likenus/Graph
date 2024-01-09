@@ -19,11 +19,11 @@ public class Runner {
 
     public static final long SEED = 1;
 
-    public static final boolean ANIMATED_OUTPUT = true;
-    public static final boolean GUI_OUTPUT = true;
+    public static final boolean ANIMATED_OUTPUT = false;
+    public static final boolean GUI_OUTPUT = false;
     private static RenderResultFrame outputFrame;
-    private static final boolean PRINT_RESULT = true;
-    private static final int SLEEP_TIMER = 300;
+    private static final boolean PRINT_RESULT = false;
+    private static final int SLEEP_TIMER = 1000;
 
     private final Random random = new Random();
     private int[] numbers = {1};
