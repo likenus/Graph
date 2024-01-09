@@ -127,8 +127,8 @@ public class WaveFunctionCollapse implements Runnable {
         }
     }
 
-    private void collapse(Vertex v) {
-        Set<Integer> possibleInts = possibilities.get(v.getKey());
+    private void collapse(Vertex vertex) {
+        Set<Integer> possibleInts = possibilities.get(vertex.getKey());
 
         if (possibleInts.isEmpty()) {
             possibleInts = Set.of(-1); // This can crash the algorithm, depending on the ruleset
@@ -136,22 +136,45 @@ public class WaveFunctionCollapse implements Runnable {
         }
 
         int value = possibleInts.stream().toList().get(rnd.nextInt(possibleInts.size()));
-        v.setValue(value);
-        int key = v.getKey();
+        vertex.setValue(value);
+        int key = vertex.getKey();
 
         possibilities.set(key, Set.of(value));
         isCollapsed.set(key, true);
 
-        DirectedGraph searchTree = bfsTree(graph, key);
-        for (Vertex w : searchTree.neighbours(key)) {
-            if (isCollapsed.get(w.getKey()).booleanValue()) {
+        Vertex start = graph.parseVertex(key);
+        int maxBFSDepth = ruleset.maxBFSDepth();
+
+        boolean[] exploredNodes = new boolean[graph.sizeVertices()];
+        int[] distances = new int[graph.sizeVertices()];
+
+        Queue<Vertex> queue = new ConcurrentLinkedQueue<>();
+        queue.add(start);
+        exploredNodes[key] = true;
+        distances[key] = 0;
+
+        while (!queue.isEmpty()) {
+            Vertex u = queue.poll();
+            if (distances[u.getKey()] > maxBFSDepth) {
                 continue;
             }
-            update(w, searchTree);
+            Iterator<Vertex> neighbourIterator = u.neighboursIterator();
+            while (neighbourIterator.hasNext()) {
+                Vertex v = neighbourIterator.next();
+                if (isCollapsed.get(v.getKey()).booleanValue()) {
+                    exploredNodes[v.getKey()] = true;
+                    continue;
+                }
+                if (!exploredNodes[v.getKey()] && update(v)) {
+                    queue.add(v);
+                    distances[v.getKey()] = distances[u.getKey()] + 1;
+                    exploredNodes[v.getKey()] = true;
+                }
+            }
         }
 
         if (Runner.GUI_OUTPUT && Runner.ANIMATED_OUTPUT) {
-            updatedSinceRender[renderCounter++] = v;
+            updatedSinceRender[renderCounter++] = vertex;
             if (renderCounter >= UPDATES_PER_RENDER) {
                 renderer.renderDiff();
                 renderCounter = 0;
@@ -159,25 +182,18 @@ public class WaveFunctionCollapse implements Runnable {
         }
     }
 
-    private void update(Vertex v, DirectedGraph searchTree) {
-        boolean changed = false;
+    private boolean update(Vertex v) {
 
+        boolean changed = false;
         Set<Integer> possibleInts = ruleset.ruleset(this.graph, v, possibilities); // Magic happens in here
 
         if (!possibilities.get(v.getKey()).equals(possibleInts)) {
             possibilities.set(v.getKey(), possibleInts);
-            changed = true;
             notCollapsed.decPrio(v, possibleInts.size());
+            changed = true;
         }
 
-        if (changed) {
-            for (Vertex w : searchTree.neighbours(v.getKey())) {
-                if (isCollapsed.get(w.getKey()).booleanValue()) {
-                    continue;
-                }
-                update(w, searchTree);
-            }
-        }
+        return changed;
     }
 
     public int getErrorCount() {
@@ -193,46 +209,7 @@ public class WaveFunctionCollapse implements Runnable {
      * @return The search tree
      */
     private DirectedGraph bfsTree(Graph g, int s) {
-
-        boolean[] exploredNodes = new boolean[g.sizeVertices()];
-        int[] distances = new int[g.sizeVertices()];
-
-        DirectedGraph tree = new LazyDirectedGraph(s);
-        Vertex start = g.parseVertex(s);
-        int maxBFSDepth = ruleset.maxBFSDepth();
-
-        if (start == null) {
-            throw new IllegalArgumentException("Start does not exist"); // Should never be thrown here
-        }
-
-        Queue<Vertex> queue = new ConcurrentLinkedQueue<>();
-        queue.add(start);
-        exploredNodes[s] = true;
-        distances[s] = 0;
-
-        // BFS
-        while (!queue.isEmpty()) {
-            Vertex u = queue.poll();
-            if (distances[u.getKey()] > maxBFSDepth) {
-                continue;
-            }
-            Iterator<Vertex> neighborIt = u.neighboursIterator();
-            while (neighborIt.hasNext()) {
-                Vertex v = neighborIt.next();
-                if (isCollapsed.get(v.getKey()).booleanValue()) {
-                    exploredNodes[v.getKey()] = true;
-                    continue;
-                }
-                if (!exploredNodes[v.getKey()]) {
-                    queue.add(v);
-                    distances[v.getKey()] = distances[u.getKey()] + 1;
-                    tree.addEdge(u.getKey(), v.getKey());
-                    exploredNodes[v.getKey()] = true;
-                }
-            }
-        }
-
-        return tree;
+        throw new UnsupportedOperationException();
     }
 
     /**

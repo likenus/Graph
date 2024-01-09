@@ -19,11 +19,11 @@ public class Runner {
 
     public static final long SEED = 1;
 
-    public static final boolean ANIMATED_OUTPUT = true;
-    public static final boolean GUI_OUTPUT = true;
+    public static final boolean ANIMATED_OUTPUT = false;
+    public static final boolean GUI_OUTPUT = false;
     private static RenderResultFrame outputFrame;
-    private static final boolean PRINT_RESULT = true;
-    private static final int SLEEP_TIMER = 300;
+    private static final boolean PRINT_RESULT = false;
+    private static final int SLEEP_TIMER = 1000;
 
     private final Random random = new Random();
     private int[] numbers = {1};
@@ -44,7 +44,7 @@ public class Runner {
             Mesh2D graph = graphLoader.mesh2D(500, 400); // <-- Meshes are generated here+
             Ruleset ruleset = new LandscapeRuleset();
             System.out.println("%s: Width: %d Height: %d | %d total Nodes".formatted(graph.getMeshType(), graph.getWidth(), graph.getHeight(), graph.getWidth() * graph.getHeight()));
-            WaveFunctionCollapse wfc = new WaveFunctionCollapse(graph, ruleset);
+            WaveFunctionCollapse wfc = new WaveFunctionCollapse(graph, ruleset, SEED);
             algorithms.add(wfc);
             threads.add(new Thread(wfc));
         }
