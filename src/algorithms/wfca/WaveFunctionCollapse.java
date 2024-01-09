@@ -85,8 +85,6 @@ public class WaveFunctionCollapse implements Runnable {
             isCollapsed.add(false);
             possibilities.set(v.getKey(), initialPossibilities);
         }
-
-        this.renderer = new GraphRenderer(this);
     }
 
     /**
@@ -252,5 +250,9 @@ public class WaveFunctionCollapse implements Runnable {
 
     public GraphRenderer getRenderer() {
         return renderer;
+    }
+
+    public void setRenderer(GraphRenderer graphRenderer) {
+        this.renderer = graphRenderer;
     }
 }
