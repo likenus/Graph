@@ -10,7 +10,7 @@ import java.util.Set;
 import src.algorithms.wfca.WaveFunctionCollapse;
 import src.graph.graph.interfaces.Graph;
 import src.graph.graph.models.undirected.Mesh2D;
-import src.graph.vertices.interfaces.Vertex;
+import src.graph.vertices.Vertex;
 import src.util.Ansi;
 import target.GraphLoader;
 

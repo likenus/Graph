@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import src.graph.graph.interfaces.Graph;
-import src.graph.vertices.interfaces.Vertex;
+import src.graph.vertices.Vertex;
 
 /**
  * Rulesets use numbers and a set of rules to give the numbers meaning. 

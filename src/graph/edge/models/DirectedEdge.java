@@ -2,9 +2,9 @@ package src.graph.edge.models;
 
 import java.util.Objects;
 
-import src.graph.edge.abstracts.AbstractEdge;
-import src.graph.edge.interfaces.Edge;
-import src.graph.vertices.interfaces.Vertex;
+import src.graph.edge.AbstractEdge;
+import src.graph.edge.Edge;
+import src.graph.vertices.Vertex;
 import src.util.Tuple;
 
 public class DirectedEdge extends AbstractEdge {

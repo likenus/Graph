@@ -11,7 +11,7 @@ import java.util.Set;
 public class BinaryHeap<T> implements Iterable<T> {
 
     private final List<HeapNode> content = new ArrayList<>();
-    private final Map<T, Integer> index = new HashMap<>();
+    private final Map<T, Integer> index = new HashMap<>(); // This cant be changed due to decPrio
 
     /**
      * Adds an element to the heap.

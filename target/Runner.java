@@ -7,11 +7,11 @@ import java.util.Random;
 
 import src.algorithms.wfca.WaveFunctionCollapse;
 import src.algorithms.wfca.rulesets.*;
-import src.graph.edge.interfaces.Edge;
+import src.graph.edge.Edge;
 import src.graph.graph.interfaces.Graph;
 import src.graph.graph.models.undirected.Mesh2D;
-import src.graph.util.Graphs;
-import src.graph.vertices.interfaces.Vertex;
+import src.graph.vertices.Vertex;
+import src.util.Graphs;
 
 public class Runner {
 
@@ -19,10 +19,10 @@ public class Runner {
 
     private static final boolean ANIMATED_OUTPUT = false;
     private static final boolean PRINT_RESULT = true;
-    private static final int SLEEP_TIMER = 1000;
+    private static final int SLEEP_TIMER = 500;
 
     private final Random random = new Random();
-    private int[] numbers = {300};
+    private int[] numbers = {1, 2, 3, 4};
 
     @SuppressWarnings("all")
     public void run() {
@@ -37,7 +37,7 @@ public class Runner {
         long t1 = System.currentTimeMillis();
 
         for (int n : numbers) {
-            Mesh2D graph = graphLoader.mesh2D(n); // <-- Meshes are generated here
+            Mesh2D graph = graphLoader.mesh2D(100, 50); // <-- Meshes are generated here+
             Ruleset ruleset = new LandscapeRuleset();
             System.out.println("%s: Width: %d Height: %d | %d total Nodes".formatted(graph.getMeshType(), graph.getWidth(), graph.getHeight(), graph.getWidth() * graph.getHeight()));
             WaveFunctionCollapse wfc = new WaveFunctionCollapse(graph, ruleset);
@@ -101,10 +101,10 @@ public class Runner {
         }
 
         for (WaveFunctionCollapse wfc : algorithms) {
-            //printGraph(wfc);
+            printGraph(wfc);
         }
 
-        printRandomPath(algorithms.get(0));
+        // printRandomPath(algorithms.get(0));
     }
 
     public static void printGraph(WaveFunctionCollapse wfc) {

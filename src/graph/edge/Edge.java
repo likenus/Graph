@@ -1,6 +1,6 @@
-package src.graph.edge.interfaces;
+package src.graph.edge;
 
-import src.graph.vertices.interfaces.Vertex;
+import src.graph.vertices.Vertex;
 import src.util.Tuple;
 
 /**

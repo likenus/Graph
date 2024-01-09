@@ -2,8 +2,8 @@ package src.graph.graph.interfaces;
 
 import java.util.List;
 
-import src.graph.edge.interfaces.Edge;
-import src.graph.vertices.interfaces.Vertex;
+import src.graph.edge.Edge;
+import src.graph.vertices.Vertex;
 
 /**
  * A graph is simply put a set of vertices that may or may not be connecd by edges.

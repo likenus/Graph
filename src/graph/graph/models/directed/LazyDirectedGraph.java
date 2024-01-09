@@ -1,8 +1,8 @@
 package src.graph.graph.models.directed;
 
-import src.graph.edge.interfaces.Edge;
+import src.graph.edge.Edge;
 import src.graph.edge.models.DirectedEdge;
-import src.graph.vertices.interfaces.Vertex;
+import src.graph.vertices.Vertex;
 import src.graph.vertices.models.Node;
 
 /**

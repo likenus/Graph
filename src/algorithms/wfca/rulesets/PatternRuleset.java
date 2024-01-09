@@ -13,7 +13,7 @@ import java.util.Set;
 
 import src.graph.graph.interfaces.Graph;
 import src.graph.graph.models.undirected.Mesh2D;
-import src.graph.vertices.interfaces.Vertex;
+import src.graph.vertices.Vertex;
 import src.util.Ansi;
 
 /**

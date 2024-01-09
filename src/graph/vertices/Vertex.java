@@ -1,9 +1,9 @@
-package src.graph.vertices.interfaces;
+package src.graph.vertices;
 
 import java.util.Iterator;
 import java.util.List;
 
-import src.graph.edge.interfaces.Edge;
+import src.graph.edge.Edge;
 
 /**
  * A vertex in a graph is mainly an abstact object used to connect edges.

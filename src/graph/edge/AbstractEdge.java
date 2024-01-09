@@ -1,6 +1,4 @@
-package src.graph.edge.abstracts;
-
-import src.graph.edge.interfaces.Edge;
+package src.graph.edge;
 
 public abstract class AbstractEdge implements Edge {
     

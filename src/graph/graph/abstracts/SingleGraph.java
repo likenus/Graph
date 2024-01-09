@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import src.graph.edge.interfaces.Edge;
+import src.graph.edge.Edge;
 import src.graph.graph.interfaces.Graph;
-import src.graph.vertices.interfaces.Vertex;
+import src.graph.vertices.Vertex;
 import src.graph.vertices.models.Node;
 
 public abstract class SingleGraph implements Graph {

@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import src.graph.graph.interfaces.Graph;
-import src.graph.vertices.interfaces.Vertex;
+import src.graph.vertices.Vertex;
 
 /**
  * In this ruleset integers in adjacent tiles may only have a difference of exaclty 1.

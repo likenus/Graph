@@ -2,13 +2,13 @@ package src.graph.graph.models.undirected;
 
 import java.util.List;
 
-import src.graph.edge.interfaces.Edge;
+import src.graph.edge.Edge;
 import src.graph.edge.models.UndirectedEdge;
 import src.graph.graph.interfaces.Tree;
 import src.graph.graph.interfaces.UnionFind;
 import src.graph.graph.models.directed.ComponentSet;
-import src.graph.util.Graphs;
-import src.graph.vertices.interfaces.Vertex;
+import src.graph.vertices.Vertex;
+import src.util.Graphs;
 
 public class UndirectedWeightedTree extends UndirectedWeightedGraph implements Tree {
 

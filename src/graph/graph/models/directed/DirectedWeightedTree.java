@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import src.graph.edge.interfaces.Edge;
+import src.graph.edge.Edge;
 import src.graph.edge.models.DirectedEdge;
 import src.graph.graph.interfaces.Tree;
-import src.graph.vertices.interfaces.Vertex;
+import src.graph.vertices.Vertex;
 
 public class DirectedWeightedTree extends DirectedWeightedGraph implements Tree {
     

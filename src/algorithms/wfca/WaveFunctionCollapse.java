@@ -14,7 +14,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import src.algorithms.wfca.rulesets.Ruleset;
 import src.graph.graph.models.directed.DirectedGraph;
 import src.graph.graph.models.directed.LazyDirectedGraph;
-import src.graph.vertices.interfaces.Vertex;
+import src.graph.vertices.Vertex;
 import src.graph.graph.interfaces.Graph;
 import src.util.BinaryHeap;
 
@@ -44,7 +44,7 @@ import src.util.BinaryHeap;
  * 
  * @author likenus
  * 
- * @see src.graph.util.Graphs#dijkstra()
+ * @see src.util.Graphs#dijkstra()
  */
 public class WaveFunctionCollapse implements Runnable {
     private final List<Boolean> isCollapsed = new ArrayList<>();
@@ -165,7 +165,7 @@ public class WaveFunctionCollapse implements Runnable {
 
     /**
      * This bfs tree is modified, for a full version see
-     * {@link src.graph.util.Graphs#bfsTree()}
+     * {@link src.util.Graphs#bfsTree()}
      * 
      * @param g a graph
      * @param s the starting vertex

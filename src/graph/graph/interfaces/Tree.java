@@ -2,7 +2,7 @@ package src.graph.graph.interfaces;
 
 import java.util.List;
 
-import src.graph.vertices.interfaces.Vertex;
+import src.graph.vertices.Vertex;
 
 /**
  * A tree is specified as a graph where all vertices have exactly one path to a specified root.

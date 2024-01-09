@@ -1,6 +1,6 @@
 package src.graph.graph.models.directed;
 
-import src.graph.vertices.interfaces.Vertex;
+import src.graph.vertices.Vertex;
 
 public class DirectedGraph extends DirectedWeightedGraph {
 

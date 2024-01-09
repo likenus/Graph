@@ -1,4 +1,4 @@
-package src.graph.util;
+package src.util;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -8,7 +8,7 @@ import java.util.Objects;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import src.graph.edge.interfaces.Edge;
+import src.graph.edge.Edge;
 import src.graph.edge.models.UndirectedEdge;
 import src.graph.graph.interfaces.Graph;
 import src.graph.graph.interfaces.Tree;
@@ -18,8 +18,7 @@ import src.graph.graph.models.directed.DirectedGraph;
 import src.graph.graph.models.directed.DirectedWeightedGraph;
 import src.graph.graph.models.undirected.UndirectedGraph;
 import src.graph.graph.models.undirected.UndirectedWeightedTree;
-import src.graph.vertices.interfaces.Vertex;
-import src.util.BinaryHeap;
+import src.graph.vertices.Vertex;
 
 /**
  * This class consists of static utility methods operating on graphs.

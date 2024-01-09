@@ -1,9 +1,9 @@
 package src.graph.graph.models.undirected;
 
-import src.graph.edge.interfaces.Edge;
+import src.graph.edge.Edge;
 import src.graph.edge.models.UndirectedEdge;
 import src.graph.graph.abstracts.SingleGraph;
-import src.graph.vertices.interfaces.Vertex;
+import src.graph.vertices.Vertex;
 
 public class UndirectedWeightedGraph extends SingleGraph {
 
