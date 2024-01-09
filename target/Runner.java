@@ -21,11 +21,11 @@ public class Runner {
 
     public static final long SEED = 1;
 
-    private static final boolean ANIMATED_OUTPUT = true;
-    private static final boolean GUI_OUTPUT = true;
+    public static final boolean ANIMATED_OUTPUT = true;
+    public static final boolean GUI_OUTPUT = true;
     private static RenderResultFrame outputFrame;
     private static final boolean PRINT_RESULT = true;
-    private static final int SLEEP_TIMER = 200;
+    private static final int SLEEP_TIMER = 300;
 
     private final Random random = new Random();
     private int[] numbers = {1};
@@ -116,9 +116,9 @@ public class Runner {
     public static void printGraph(WaveFunctionCollapse wfc) {
         if (GUI_OUTPUT) {
             if (outputFrame == null) {
-                outputFrame = new RenderResultFrame(GraphRenderer.render(wfc));
+                outputFrame = new RenderResultFrame(wfc.getRenderer().getImage());
             } else {
-                outputFrame.updateImage(GraphRenderer.render(wfc));
+                outputFrame.updateImage(wfc.getRenderer().getImage());
             }
             return;
         }

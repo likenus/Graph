@@ -16,7 +16,9 @@ import src.graph.graph.models.directed.DirectedGraph;
 import src.graph.graph.models.directed.LazyDirectedGraph;
 import src.graph.vertices.Vertex;
 import src.graph.graph.interfaces.Graph;
+import src.rendering.GraphRenderer;
 import src.util.BinaryHeap;
+import target.Runner;
 
 /**
  * The Wave Function Collapse Algorithm, is an algorithm for procedual
@@ -47,9 +49,15 @@ import src.util.BinaryHeap;
  * @see src.util.Graphs#dijkstra()
  */
 public class WaveFunctionCollapse implements Runnable {
+    private static final int UPDATES_PER_RENDER = 2000;
+
     private final List<Boolean> isCollapsed = new ArrayList<>();
     private final BinaryHeap<Vertex> notCollapsed = new BinaryHeap<>();
     private final List<Set<Integer>> possibilities = new ArrayList<>();
+
+    GraphRenderer renderer;
+    private Vertex[] updatedSinceRender = new Vertex[UPDATES_PER_RENDER];
+    private int renderCounter = 0;
 
     private final Ruleset ruleset;
     private final Vertex startVertex;
@@ -80,6 +88,8 @@ public class WaveFunctionCollapse implements Runnable {
             isCollapsed.add(false);
             possibilities.set(v.getKey(), initialPossibilities);
         }
+
+        this.renderer = new GraphRenderer(this);
     }
 
     /**
@@ -112,6 +122,9 @@ public class WaveFunctionCollapse implements Runnable {
             Vertex v = notCollapsed.pop();
             collapse(v);
         }
+        if (Runner.GUI_OUTPUT) {
+            renderer.renderFull();
+        }
     }
 
     private void collapse(Vertex v) {
@@ -135,6 +148,14 @@ public class WaveFunctionCollapse implements Runnable {
                 continue;
             }
             update(w, searchTree);
+        }
+
+        if (Runner.GUI_OUTPUT && Runner.ANIMATED_OUTPUT) {
+            updatedSinceRender[renderCounter++] = v;
+            if (renderCounter >= UPDATES_PER_RENDER) {
+                renderer.renderDiff();
+                renderCounter = 0;
+            }
         }
     }
 
@@ -258,5 +279,13 @@ public class WaveFunctionCollapse implements Runnable {
      */
     public Ruleset getRuleset() {
         return ruleset;
+    }
+
+    public Vertex[] getUpdatedSinceRender() {
+        return updatedSinceRender;
+    }
+
+    public GraphRenderer getRenderer() {
+        return renderer;
     }
 }
