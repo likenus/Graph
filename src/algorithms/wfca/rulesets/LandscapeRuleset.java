@@ -49,8 +49,8 @@ public class LandscapeRuleset implements Ruleset {
                 possibleInts.add(Tile.DEEP_WATER.getIdentifier());
                 return possibleInts;
             }
-            if (allPossibleInts.stream().allMatch(set -> set.contains(Tile.FOREST.getIdentifier()))) {
-                possibleInts.add(Tile.FOREST.getIdentifier());
+            if (allPossibleInts.stream().allMatch(set -> set.contains(Tile.MOUNTAIN.getIdentifier()))) {
+                possibleInts.add(Tile.MOUNTAIN.getIdentifier());
                 return possibleInts;
             }
         }
@@ -74,7 +74,7 @@ public class LandscapeRuleset implements Ruleset {
 
     @Override
     public int maxBFSDepth() {
-        return 8;
+        return Integer.MAX_VALUE - 1;
     }
 
     private enum Tile {

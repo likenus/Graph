@@ -22,7 +22,7 @@ public class Runner {
     public static final boolean ANIMATED_OUTPUT = true;
     public static final boolean GUI_OUTPUT = true;
     private static final boolean PRINT_RESULT = false;
-    private static final int SLEEP_TIMER = 100; // lower than 100 reintroduces race conditions
+    private static final int SLEEP_TIMER = 1000; // lower than 100 reintroduces too many race conditions
     
     private final Random random = new Random();
     
@@ -30,8 +30,8 @@ public class Runner {
     private GraphRenderer graphRenderer;
 
     private int threadCount = 1;
-    private int width = 500;
-    private int height = 400;
+    private int width = 1920;
+    private int height = 1080;
 
     @SuppressWarnings("all")
     public void run() {
@@ -90,10 +90,9 @@ public class Runner {
             if (remainingTime > 120) {
                 rTime = "%.0fmin".formatted(remainingTime / 60);
             } else {
-                rTime = "%.2fs".formatted(remainingTime);
+                rTime = "%.2fs".formatted((remainingTime));
             }
                 System.out.println(" %s elapsed | Estimated time remaining: %s.".formatted(eTime, rTime));
-
             try {
                 Thread.sleep(SLEEP_TIMER);
             } catch (InterruptedException exception) {
@@ -173,11 +172,15 @@ public class Runner {
     }
 
     private int[][] loadPattern() {
+        PNGLoader pngLoader = null;
         FileLoader fileLoader = null;
         List<String> lines = new ArrayList<>();
+        int[][] png = null;
         try {
+            pngLoader = new PNGLoader("files/WaveFunction_Patterns");
             fileLoader = new FileLoader("files/WaveFunction_Patterns");
-            lines = fileLoader.loadFile("Pattern4.pat");
+            lines = fileLoader.loadFile("Pattern5.pat");
+            png = pngLoader.loadPng("Flowers.png");
         } catch (IOException exception) {
             exception.printStackTrace();
         }

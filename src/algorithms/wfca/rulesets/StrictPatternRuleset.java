@@ -27,7 +27,6 @@ public class StrictPatternRuleset implements Ruleset {
     public static final String TILE_SYMBOL = "■";
 
     private final Set<Integer> numbers = new HashSet<>();
-    // private final Set<Tile> tiles = new HashSet<>();
     private final Map<Integer, Tile> pattern = new HashMap<>();
 
     private int idCounter = 0;
@@ -74,24 +73,28 @@ public class StrictPatternRuleset implements Ruleset {
             tupel.addAll(direction, numbers);
         }
         pattern.put(-1, new Tile(idCounter + 1, -1, tupel));
-        pattern.put(0, new Tile(idCounter + 1, -1, tupel));
 
     }
 
     private DirectionalTupel<Integer> neighboursOf(int x, int y, int[][] input, DirectionalTupel<Integer> neighbours) {
+        int height = input.length;
+        int width = input[0].length;
 
-
-        if (y < input[0].length - 1) {
-            neighbours.add(Direction.RIGHT, input[x][y + 1]);
+        if (y < width) {
+            neighbours.add(Direction.RIGHT, input[x][(y + 1) % width]);
         }
         if (y > 0) {
             neighbours.add(Direction.LEFT, input[x][y - 1]);
+        } else {
+            neighbours.add(Direction.LEFT, input[x][width - 1]);
         }
-        if (x < input.length - 1) {
-            neighbours.add(Direction.DOWN, input[x + 1][y]);
+        if (x < height) {
+            neighbours.add(Direction.DOWN, input[(x + 1) % height][y]);
         }
         if (x > 0) {
             neighbours.add(Direction.UP, input[x - 1][y]);
+        } else {
+            neighbours.add(Direction.UP, input[height - 1][y]);
         }
 
         return neighbours;
@@ -148,7 +151,7 @@ public class StrictPatternRuleset implements Ruleset {
         // return String.valueOf(i);
         int group = pattern.get(i).getGroup();
         return switch(group) {
-            case 0 -> Ansi.White + TILE_SYMBOL;
+            case 3 -> Ansi.White + TILE_SYMBOL;
             case 1 -> Ansi.Blue + TILE_SYMBOL;
             case 2 -> Ansi.Red + TILE_SYMBOL;
             default -> " ";
@@ -162,7 +165,7 @@ public class StrictPatternRuleset implements Ruleset {
 
     @Override
     public int maxBFSDepth() {
-        return 32;
+        return Integer.MAX_VALUE - 1;
     }
 
     private class DirectionalTupel<T> {
