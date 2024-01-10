@@ -32,6 +32,7 @@ public class Runner {
     private int threadCount = 1;
     private int width = 1920;
     private int height = 1080;
+    private long startTime;
 
     @SuppressWarnings("all")
     public void run() {
@@ -43,7 +44,7 @@ public class Runner {
         
         System.out.println("Initializing...");
         
-        long t1 = System.currentTimeMillis();
+        this.startTime = System.currentTimeMillis();
         
         for (int i = 0; i < threadCount; i++) {
             Mesh2D graph = graphLoader.mesh2D(width, height); // <-- Meshes are generated here (Width, Height)
@@ -56,43 +57,17 @@ public class Runner {
             threads.add(new Thread(wfc));
         }
 
-        long t2 = System.currentTimeMillis();
-
-        System.out.println("Took %.3fs.".formatted((t2 - t1) / 1000f));
-
+        System.out.println("Took %.3fs.".formatted(deltaTime() / 1000f));
         System.out.println("Starting Threads...");
 
-        t1 = System.currentTimeMillis();
 
         for (Thread thread : threads) {
             thread.start();
         }
 
         while (threads.stream().anyMatch(Thread::isAlive)) {
-            t2 = System.currentTimeMillis();
-            System.out.print("Calculating... ");
-            double progressAvg = 1e-20;
-            for (WaveFunctionCollapse wfc : algorithms) {
-                double progress = wfc.getProgress();
-                System.out.print("| %.2f%% |".formatted(progress * 100));
-                progressAvg += progress;
-            }
-            progressAvg /= algorithms.size();
-            double elapsedTime = (t2 - t1) / 1000f;
-            double remainingTime = ((t2 - t1) / 1000f) / progressAvg - (t2 - t1) / 1000f;
-            String eTime;
-            String rTime;
-            if (elapsedTime > 120) {
-                eTime = "%.0fmin".formatted(elapsedTime / 60);
-            } else {
-                eTime = "%.2fs".formatted(elapsedTime);
-            }
-            if (remainingTime > 120) {
-                rTime = "%.0fmin".formatted(remainingTime / 60);
-            } else {
-                rTime = "%.2fs".formatted((remainingTime));
-            }
-                System.out.println(" %s elapsed | Estimated time remaining: %s.".formatted(eTime, rTime));
+            printInformation(algorithms);
+
             try {
                 Thread.sleep(SLEEP_TIMER);
             } catch (InterruptedException exception) {
@@ -103,19 +78,50 @@ public class Runner {
             }
         }
 
-        t2 = System.currentTimeMillis();
-        System.out.println("%.3fs elapsed.".formatted((t2 - t1) / 1000f));
+        System.out.println("%.3fs elapsed.".formatted(deltaTime() / 1000f));
 
         if (GUI_OUTPUT) {
             drawGraph();
         }
-        
+
         if (PRINT_RESULT) {
             for (WaveFunctionCollapse wfc : algorithms) {
                 printGraph(wfc);
             }
         }
 
+    }
+
+    private void printInformation(List<WaveFunctionCollapse> algorithms) {
+        double progressAvg = 1e-20;
+        StringBuilder waveInformation = new StringBuilder();
+        for (WaveFunctionCollapse wfc : algorithms) {
+            double progress = wfc.getProgress();
+            waveInformation.append("| %.2f%% |".formatted(progress * 100));
+            progressAvg += progress;
+        }
+        progressAvg /= algorithms.size();
+        double elapsedTime = deltaTime() / 1000f;
+        double remainingTime = (deltaTime() / 1000f) / progressAvg - deltaTime() / 1000f;
+
+        String eTime = timeFormatted(elapsedTime);
+        String rTime = timeFormatted(remainingTime);
+        String timeInformation = " %s elapsed | Estimated time remaining: %s.".formatted(eTime, rTime);
+        String informationString = "Calculating... " + waveInformation.toString() + timeInformation;
+
+        if (this.outputFrame != null) this.outputFrame.setTitle(informationString);
+        System.out.println(informationString);
+    }
+
+    private static String timeFormatted(double elapsedTime) {
+        String formattedTime;
+        if (elapsedTime > 120) formattedTime = "%.0fmin".formatted(elapsedTime / 60);
+        else formattedTime = "%.2fs".formatted(elapsedTime);
+        return formattedTime;
+    }
+
+    private long deltaTime(){
+        return System.currentTimeMillis() - this.startTime;
     }
 
     private void drawGraph() {
@@ -140,7 +146,7 @@ public class Runner {
             for (int j = 0; j < widthMesh; j++) {
                 int x = mesh.getValue(widthMesh * i + j);
 
-                sb.append(ruleset.stringRepresentation(x) + " ");
+                sb.append(ruleset.stringRepresentation(x)).append(" ");
             }
             if (i < heightMesh - 1) {
                 sb.append(System.lineSeparator());
