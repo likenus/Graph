@@ -19,6 +19,7 @@ import src.graph.graph.models.directed.DirectedWeightedGraph;
 import src.graph.graph.models.undirected.UndirectedGraph;
 import src.graph.graph.models.undirected.UndirectedWeightedTree;
 import src.graph.vertices.Vertex;
+import src.util.queues.BinaryHeap;
 
 /**
  * This class consists of static utility methods operating on graphs.
@@ -186,7 +187,7 @@ public final class Graphs {
         }
 
         while(!heap.isEmpty()) {
-            Vertex u = heap.pop();
+            Vertex u = heap.popMin();
             int j = u.getKey();
             exploredNodes[j] = true;
             for (Vertex v : u.neighbours()) {

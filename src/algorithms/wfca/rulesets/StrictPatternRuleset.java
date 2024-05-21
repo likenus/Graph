@@ -249,10 +249,6 @@ public class StrictPatternRuleset implements Ruleset {
             return this.group;
         }
 
-        // public int getIdentifier() {
-        //     return this.identifier;
-        // }
-
         public void setGroup(int i) {
             this.group = i;
         }

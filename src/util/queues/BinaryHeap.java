@@ -1,4 +1,4 @@
-package src.util;
+package src.util.queues;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,31 +8,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class BinaryHeap<T> implements Iterable<T> {
+public class BinaryHeap<T> implements PriorityQueue<T>, Iterable<T> {
 
     private final List<HeapNode> content = new ArrayList<>();
     private final Map<T, Integer> index = new HashMap<>(); // This cant be changed due to decPrio
 
-    /**
-     * Adds an element to the heap.
-     * </p>
-     * This runs in log(n) time.
-     * @param x The element to be added
-     * @param priority The priority of the element
-     */
-    public void push(T x, int priority) {
+    @Override
+    public boolean push(T x, int priority) {
         content.add(new HeapNode(x, priority));
         index.put(x, size() - 1);
         bubbleUp(size() - 1);
+		return true;
     }
 
-    /**
-     * Removes and retrieves the head of the heap.
-     * </p>
-     * This runs in log(n) time.
-     * @return The elements with the smalles priority from this queue.
-     */
-    public T pop() {
+    @Override
+    public T popMin() {
         T tmp = content.get(0).getValue();
 
         swap(0, size() - 1);
@@ -43,36 +33,22 @@ public class BinaryHeap<T> implements Iterable<T> {
         return tmp;
     }
 
-    /**
-     * Returns whether the heap is empty.
-     * @return True if heap is empty
-     */
+    @Override
     public boolean isEmpty() {
         return content.isEmpty();
     }
 
-    /**
-     * Returns the head of the queue without removing it. This will not affect
-     * the internal order of the heap.
-     * @return The element with the lowest priority
-     */
+    @Override
     public T peek() {
         return content.get(0).getValue();
     }
 
-    /**
-     * Returns a view of the contents of the heap.
-     * Changes made to this List will be reflected in the Heap.
-     * @return A unmodifiable view of the contents.
-     */
+    @Override
     public Set<T> contents() {
         return Collections.unmodifiableSet(index.keySet());
     }
 
-    /**
-     * Returns the current amount of elements inside the heap.
-     * @return the size of the heap
-     */
+    @Override
     public int size() {
         return content.size();
     }
@@ -122,13 +98,7 @@ public class BinaryHeap<T> implements Iterable<T> {
         }
     }
 
-    /**
-     * Decreases the priority of the given element in the queue.
-     * </p>
-     * This runs in expected log(n) time.
-     * @param v The element to reduce the priority of.
-     * @param prio The priority
-     */
+    @Override
     public void decPrio(T v, int prio) {
         Integer i = index.get(v);
         if (i == null) {

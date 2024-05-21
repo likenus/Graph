@@ -49,8 +49,8 @@ public class LandscapeRuleset implements Ruleset {
                 possibleInts.add(Tile.DEEP_WATER.getIdentifier());
                 return possibleInts;
             }
-            if (allPossibleInts.stream().allMatch(set -> set.contains(Tile.MOUNTAIN.getIdentifier()))) {
-                possibleInts.add(Tile.MOUNTAIN.getIdentifier());
+            if (allPossibleInts.stream().allMatch(set -> set.contains(Tile.FOREST.getIdentifier()))) {
+                possibleInts.add(Tile.FOREST.getIdentifier());
                 return possibleInts;
             }
         }

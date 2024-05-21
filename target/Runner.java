@@ -30,10 +30,9 @@ public class Runner {
     private GraphRenderer graphRenderer;
 
     private int threadCount = 1;
-    private int width = 1920;
-    private int height = 1080;
+    private int width = 500;
+    private int height = 400;
     private long startTime;
-
     @SuppressWarnings("all")
     public void run() {
 
@@ -50,7 +49,7 @@ public class Runner {
             Mesh2D graph = graphLoader.mesh2D(width, height); // <-- Meshes are generated here (Width, Height)
             Ruleset ruleset = new LandscapeRuleset();
             System.out.println("%s: Width: %d Height: %d | %d total Nodes".formatted(graph.getMeshType(), graph.getWidth(), graph.getHeight(), graph.getWidth() * graph.getHeight()));
-            WaveFunctionCollapse wfc = new WaveFunctionCollapse(graph, ruleset);
+            WaveFunctionCollapse wfc = new WaveFunctionCollapse(graph, ruleset, SEED);
             graphRenderer = new GraphRenderer(wfc);
             algorithms.add(wfc);
             wfc.setRenderer(graphRenderer);
