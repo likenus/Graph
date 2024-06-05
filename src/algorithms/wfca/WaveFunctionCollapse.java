@@ -191,12 +191,8 @@ public class WaveFunctionCollapse implements Runnable {
     private boolean update(Vertex v) {
 
         boolean changed = false;
-        DirectionalTupel<Set<Integer>> neighbours = initNeighbours(v, v.neighbours());
-        Set<Integer> possibleInts = computedNeighbours.get(neighbours);
-        if (possibleInts == null) {
-            possibleInts = ruleset.ruleset(this.graph, v, possibilities); // Magic happens in here
-            computedNeighbours.put(neighbours, possibleInts);
-        }
+    
+        Set<Integer> possibleInts = ruleset.ruleset(this.graph, v, possibilities); // Magic happens in here
 
         if (!possibilities.get(v.getKey()).equals(possibleInts)) {
             possibilities.set(v.getKey(), possibleInts);

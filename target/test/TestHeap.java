@@ -17,8 +17,10 @@ public class TestHeap {
 		fh.push(4, 1);
 		fh.push(5, 2);
 
+		fh.decPrio(3, 3);
+
 		Assert.assertEquals(4, fh.popMin().intValue());
 		Assert.assertEquals(5, fh.popMin().intValue());
-		Assert.assertEquals(1, fh.popMin().intValue());
+		Assert.assertEquals(3, fh.popMin().intValue());
 	}
 }

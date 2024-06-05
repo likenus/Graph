@@ -106,7 +106,7 @@ public class BinaryHeap<T> implements PriorityQueue<T>, Iterable<T> {
         }
         HeapNode n = content.get(i);
 
-        int oldPrio = n.getPrio();
+        long oldPrio = n.getPrio();
         n.setPrio(prio);
 
         if (prio < oldPrio) {
@@ -119,7 +119,7 @@ public class BinaryHeap<T> implements PriorityQueue<T>, Iterable<T> {
     private class HeapNode {
 
         private final T value;
-        private int priority;
+        private long priority;
 
         public HeapNode(T value, int priority) {
             this.value = value;
@@ -130,7 +130,7 @@ public class BinaryHeap<T> implements PriorityQueue<T>, Iterable<T> {
             return value;
         }
 
-        public int getPrio() {
+        public long getPrio() {
             return priority;
         }
 

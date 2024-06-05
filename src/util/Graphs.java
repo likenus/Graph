@@ -20,6 +20,8 @@ import src.graph.graph.models.undirected.UndirectedGraph;
 import src.graph.graph.models.undirected.UndirectedWeightedTree;
 import src.graph.vertices.Vertex;
 import src.util.queues.BinaryHeap;
+import src.util.queues.FibonacciHeap;
+import src.util.queues.PriorityQueue;
 
 /**
  * This class consists of static utility methods operating on graphs.
@@ -178,10 +180,10 @@ public final class Graphs {
             return new LinkedList<>();
         }
 
-        double[] distances = infinityArray(g.sizeVertices());
+        long[] distances = infinityArray(g.sizeVertices());
         distances[s] = 0;
 
-        BinaryHeap<Vertex> heap = new BinaryHeap<>();
+        PriorityQueue<Vertex> heap = new FibonacciHeap<>();
         for (Vertex v : g.vertices()) {
             heap.push(v, (int) distances[v.getKey()]);
         }
@@ -272,10 +274,10 @@ public final class Graphs {
         return copy;
     }
 
-    private static double[] infinityArray(int size) {
-        double[] array = new double[size];
+    private static long[] infinityArray(int size) {
+        long[] array = new long[size];
         for (int i = 0; i < array.length; i++) {
-            array[i] = Double.POSITIVE_INFINITY;
+            array[i] = Integer.MAX_VALUE;
         }
 
         return array;
