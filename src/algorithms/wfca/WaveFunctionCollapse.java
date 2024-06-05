@@ -2,22 +2,15 @@ package src.algorithms.wfca;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Queue;
 import java.util.Random;
 import java.util.Set;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 import src.algorithms.wfca.rulesets.Ruleset;
-import src.algorithms.wfca.rulesets.util.Direction;
-import src.algorithms.wfca.rulesets.util.DirectionalTupel;
 import src.graph.vertices.Vertex;
 import src.graph.graph.interfaces.Graph;
-import src.graph.graph.models.undirected.Mesh2D;
 import src.rendering.GraphRenderer;
 import src.util.queues.BinaryHeap;
 import target.Runner;
@@ -56,7 +49,6 @@ public class WaveFunctionCollapse implements Runnable {
     private final List<Boolean> isCollapsed = new ArrayList<>();
     private final BinaryHeap<Vertex> notCollapsed = new BinaryHeap<>();
     private final List<Set<Integer>> possibilities = new ArrayList<>();
-    private final Map<DirectionalTupel<Set<Integer>>, Set<Integer>> computedNeighbours = new HashMap<>();
 
 
     GraphRenderer renderer;
@@ -223,28 +215,6 @@ public class WaveFunctionCollapse implements Runnable {
         }
 
         return changed;
-    }
-
-    private DirectionalTupel<Set<Integer>> initNeighbours(Vertex v, List<Vertex> neighbours) {
-        Mesh2D mesh = (Mesh2D) this.graph;
-        DirectionalTupel<Set<Integer>> tupel = new DirectionalTupel<>();
-
-        for (Vertex neighbour : neighbours) {
-            if (neighbour.getKey() == v.getKey() - 1 || neighbour.getKey() == v.getKey() + mesh.getWidth() - 1) {
-                tupel.add(Direction.LEFT, possibilities.get(neighbour.getKey()));
-            }
-            if (neighbour.getKey() == v.getKey() + 1 || neighbour.getKey() == v.getKey() - mesh.getWidth() + 1) {
-                tupel.add(Direction.RIGHT, possibilities.get(neighbour.getKey()));
-            }
-            if (neighbour.getKey() == v.getKey() - mesh.getWidth()) {
-                tupel.add(Direction.UP, possibilities.get(neighbour.getKey()));
-            }
-            if (neighbour.getKey() == v.getKey() + mesh.getWidth()) {
-                tupel.add(Direction.DOWN, possibilities.get(neighbour.getKey()));
-            }
-        }
-
-        return tupel;
     }
 
     public int getErrorCount() {

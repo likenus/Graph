@@ -126,6 +126,7 @@ public class LandscapeRuleset implements Ruleset {
     @Override
     public Color getTileColor(int tileValue) {
         return switch (tileValue) {
+            case -1 -> new Color(255, 0, 0, 255);
             case 1 -> new Color(20, 100, 255, 255);
             case 2 -> new Color(20, 150, 255, 255);
             case 3 -> new Color(200, 200, 50, 255);

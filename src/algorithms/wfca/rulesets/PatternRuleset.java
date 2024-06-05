@@ -221,6 +221,54 @@ public class PatternRuleset implements Ruleset {
 
     @Override
     public Color getTileColor(int tileValue) {
-        return new Color(0,0,0,255);
+        return switch (tileValue) {
+            case 1 -> new Color(255, 255, 255, 255);
+            case 0 -> new Color(255, 255, 255, 255);
+            case 2 -> new Color(0, 0, 255, 255);
+            case 3 -> new Color(0, 0, 255, 255);
+            case 4 -> new Color(0, 0, 255, 255);
+            case 5 -> new Color(0, 0, 255, 255);
+            case 6 -> new Color(0, 0, 255, 255);
+            case 7 -> new Color(0, 0, 255, 255);
+            case 8 -> new Color(0, 0, 255, 255);
+            case 9 -> new Color(0, 0, 255, 255);
+            case 10 -> new Color(0, 0, 0, 255);
+            case 11 -> new Color(255, 0, 0, 255);
+            case 12 -> new Color(255, 0, 0, 255);
+            case 13 -> new Color(255, 0, 0, 255);
+            case 14 -> new Color(255, 0, 0, 255);
+            case 15 -> new Color(255, 0, 0, 255);
+            case 16 -> new Color(255, 0, 0, 255);
+            case 17 -> new Color(255, 0, 0, 255);
+            case 18 -> new Color(255, 0, 0, 255);
+            case 19 -> new Color(255, 0, 0, 255);
+            case 20 -> new Color(0, 0, 0, 255);
+            case 21 -> new Color(0, 0, 255, 255);
+            default -> new Color(255, 255, 255, 255);
+        };
+
+        // case 1 -> " ";
+        //     case 0 -> Ansi.Black + TILE_SYMBOL;
+        //     case 2 -> Ansi.Blue + TILE_SYMBOL;
+        //     case 3 -> Ansi.Blue + TILE_SYMBOL;
+        //     case 4 -> Ansi.Blue + TILE_SYMBOL;
+        //     case 5 -> Ansi.Blue + TILE_SYMBOL;
+        //     case 6 -> Ansi.Blue + TILE_SYMBOL;
+        //     case 7 -> Ansi.Blue + TILE_SYMBOL;
+        //     case 8 -> Ansi.Blue + TILE_SYMBOL;
+        //     case 9 -> Ansi.Blue + TILE_SYMBOL;
+        //     case 10 -> Ansi.White + TILE_SYMBOL;
+        //     case 11 -> Ansi.Red + TILE_SYMBOL;
+        //     case 12 -> Ansi.Red + TILE_SYMBOL;
+        //     case 13 -> Ansi.Red + TILE_SYMBOL;
+        //     case 14 -> Ansi.Red + TILE_SYMBOL;
+        //     case 15 -> Ansi.Red + TILE_SYMBOL;
+        //     case 16 -> Ansi.Red + TILE_SYMBOL;
+        //     case 17 -> Ansi.Red + TILE_SYMBOL;
+        //     case 18 -> Ansi.Red + TILE_SYMBOL;
+        //     case 19 -> Ansi.Red + TILE_SYMBOL;
+        //     case 20 -> Ansi.White + TILE_SYMBOL;
+        //     case 21 -> Ansi.Blue + TILE_SYMBOL;
+        //     default -> " ";
     }
 }

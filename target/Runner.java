@@ -17,7 +17,7 @@ import src.util.Graphs;
 
 public class Runner {
 
-    public static final long SEED = 1;
+    public static final long SEED = 69420;
 
     public static final boolean ANIMATED_OUTPUT = true;
     public static final boolean GUI_OUTPUT = true;
@@ -30,8 +30,8 @@ public class Runner {
     private GraphRenderer graphRenderer;
 
     private int threadCount = 1;
-    private int width = 1920;
-    private int height = 1080;
+    private int width = 1000;
+    private int height = 800;
     private long startTime;
     @SuppressWarnings("all")
     public void run() {
@@ -47,7 +47,7 @@ public class Runner {
         
         for (int i = 0; i < threadCount; i++) {
             Mesh2D graph = graphLoader.mesh2D(width, height); // <-- Meshes are generated here (Width, Height)
-            Ruleset ruleset = new BiomedLandscapeRuleset(graph);
+            Ruleset ruleset = new LandscapeRuleset();
             System.out.println("%s: Width: %d Height: %d | %d total Nodes".formatted(graph.getMeshType(), graph.getWidth(), graph.getHeight(), graph.getWidth() * graph.getHeight()));
             WaveFunctionCollapse wfc = new WaveFunctionCollapse(graph, ruleset, SEED);
             graphRenderer = new GraphRenderer(wfc);
@@ -81,6 +81,10 @@ public class Runner {
 
         if (GUI_OUTPUT) {
             drawGraph();
+        }
+
+        if (true) {
+            printRandomPath(algorithms.get(0));
         }
 
         if (PRINT_RESULT) {
@@ -168,11 +172,12 @@ public class Runner {
 
         System.out.println("Starting dijkstra");
         List<Vertex> path = Graphs.dijkstra(g, start.getKey(), end.getKey());
-
+        System.out.println("Finished Dijkstra");
         for (Vertex vertex : path) {
             vertex.setValue(-1);
         }
 
+        graphRenderer.renderFull();
         drawGraph();
     }
 

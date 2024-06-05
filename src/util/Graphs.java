@@ -20,7 +20,6 @@ import src.graph.graph.models.undirected.UndirectedGraph;
 import src.graph.graph.models.undirected.UndirectedWeightedTree;
 import src.graph.vertices.Vertex;
 import src.util.queues.BinaryHeap;
-import src.util.queues.FibonacciHeap;
 import src.util.queues.PriorityQueue;
 
 /**
@@ -183,7 +182,7 @@ public final class Graphs {
         long[] distances = infinityArray(g.sizeVertices());
         distances[s] = 0;
 
-        PriorityQueue<Vertex> heap = new FibonacciHeap<>();
+        PriorityQueue<Vertex> heap = new BinaryHeap<>();
         for (Vertex v : g.vertices()) {
             heap.push(v, (int) distances[v.getKey()]);
         }
