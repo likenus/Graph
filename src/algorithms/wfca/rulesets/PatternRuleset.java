@@ -222,8 +222,9 @@ public class PatternRuleset implements Ruleset {
     @Override
     public Color getTileColor(int tileValue) {
         return switch (tileValue) {
-            case 1 -> new Color(255, 255, 255, 255);
-            case 0 -> new Color(255, 255, 255, 255);
+            case -1 -> new Color(0, 255, 0, 255);
+            case 0 -> new Color(0, 0, 0, 255);
+            case 1 -> new Color(0, 0, 0, 255);
             case 2 -> new Color(0, 0, 255, 255);
             case 3 -> new Color(0, 0, 255, 255);
             case 4 -> new Color(0, 0, 255, 255);
@@ -232,7 +233,7 @@ public class PatternRuleset implements Ruleset {
             case 7 -> new Color(0, 0, 255, 255);
             case 8 -> new Color(0, 0, 255, 255);
             case 9 -> new Color(0, 0, 255, 255);
-            case 10 -> new Color(0, 0, 0, 255);
+            case 10 -> new Color(255, 255, 255, 255);
             case 11 -> new Color(255, 0, 0, 255);
             case 12 -> new Color(255, 0, 0, 255);
             case 13 -> new Color(255, 0, 0, 255);
@@ -242,7 +243,7 @@ public class PatternRuleset implements Ruleset {
             case 17 -> new Color(255, 0, 0, 255);
             case 18 -> new Color(255, 0, 0, 255);
             case 19 -> new Color(255, 0, 0, 255);
-            case 20 -> new Color(0, 0, 0, 255);
+            case 20 -> new Color(255, 255, 255, 255);
             case 21 -> new Color(0, 0, 255, 255);
             default -> new Color(255, 255, 255, 255);
         };

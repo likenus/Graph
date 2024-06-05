@@ -3,10 +3,8 @@ package src.util.queues;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Set;
 
 
@@ -47,34 +45,32 @@ public class FibonacciHeap<T> implements PriorityQueue<T> {
 
     @Override
     public T popMin() {
-        Node z = min;
+        Node p = min;
 
-        if (z == null) {
+        if (p == null) {
             return null;
         }
 
-        if (z.hasChild()) {
-            Iterator<Node> children = z.children();
-            while (children.hasNext()) {
-                Node c = children.next();
+        if (p.hasChild()) {
+            for (Node c : p.children()) {
                 c.parent = null;
-                mergeToRoot(c);
+                cut(c, p);
             }
         }
 
-        removeFromRoot(z);
+        removeFromRoot(p);
 
-        if (z.right == z) {
+        if (p.right.key == p.key) {
             min = null;
             root = null;
         } else {
-            min = z.right;
+            min = p.right;
             consolidate();
         }
         
         size--;
-        contents.remove(z.value);
-        return z.value;
+        contents.remove(p.value);
+        return p.value;
     }
 
     @Override
@@ -85,48 +81,56 @@ public class FibonacciHeap<T> implements PriorityQueue<T> {
             return;
         }
         node.prio = prio;
-        Node p = node.parent;
-        if (p != null && node.prio < p.prio) {
-            cut(node, p);
-            cascadingCut(p);
+        Node parent = node.parent;
+        if (parent != null && node.prio < parent.prio) {
+            cut(node, parent);
+            cascadingCut(parent);
         }
         if (node.prio < min.prio) {
             min = node;
         }
     }
 
-    private void cut(Node x, Node y) {
-        unlinkChild(x, y);
-        y.degree--;
-        mergeToRoot(x);
-        x.parent = null;
-        x.mark = false;
+    /**
+     * Cuts the child off of the tree into the root list, the child will carry all its children
+     * @param child The child to be cut from its parent
+     * @param parent The parent
+     */
+    private void cut(Node child, Node parent) {
+        unlinkChild(child, parent);
+        parent.degree--;
+        mergeToRoot(child);
+        child.mark = false;
     }
 
-    private void unlinkChild(Node c, Node p) {
-        if (c.right == c) {
-            p.child = null;
-        } else if (c.key == p.child.key) {
-            p.child = c.right;
+    private void unlinkChild(Node child, Node parent) {
+        if (child.right.key == child.key) { // Last child left
+            parent.child = null;
+        } else if (child.key == parent.child.key) { // If first child
+            parent.child = child.right;
         }
-        c.left.right = c.right;
-        c.right.left = c.left;
-
+        child.left.right = child.right;
+        child.right.left = child.left;
+        child.left = child;
+        child.right = child;
+        child.parent = null;
     }
 
     private void cascadingCut(Node node) {
-        Node p = node.parent;
-        if (p != null) {
-            if (!node.mark) {
-                node.mark = true;
-            } else {
-                cut(node, p);
-                cascadingCut(p);
-            }
+        Node parent = node.parent;
+        if (parent == null) {
+            return;
+        }
+        if (!node.mark) {
+            node.mark = true;
+        } else {
+            cut(node, parent);
+            cascadingCut(parent);
         }
     }
 
     private void mergeToRoot(Node node) {
+        node.left = node.right = node;
         if (root == null) {
             root = node;
         } else {
@@ -138,16 +142,16 @@ public class FibonacciHeap<T> implements PriorityQueue<T> {
     }
 
     private void removeFromRoot(Node node) {
-        if (node == root) {
-            root = node.right;
+        if (node.key == root.key) {
+            root = node.getRight();
         }
-        node.left.right = node.right;
-        node.right.left = node.left;
+        node.getLeft().setRight(node.getRight());
+        node.getRight().setLeft(node.getLeft());
     }
 
     private void consolidate() {
         List<Node> arr = new ArrayList<>();
-        for (int i = 0; i < (int) Math.log(size) * 3; i++) {
+        for (int i = 0; i < (int) Math.log(size) * 2 + 1; i++) {
             arr.add(null);
         }
         List<Node> nodes = rootList();
@@ -157,16 +161,21 @@ public class FibonacciHeap<T> implements PriorityQueue<T> {
             while (arr.get(d) != null) {
                 Node y = arr.get(d);
                 if (x.prio > y.prio) {
-                    Node tmp = x;
-                    x = y;
-                    y = tmp;
+                    x = arr.get(d);
+                    y = nodes.get(i);
                 }
-                this.relink(y, x);
+                linkChild(y, x);
                 arr.set(d, null);
                 d++;
             }
             arr.set(d, x);
         }
+
+        // for (Node v : rootList()) {
+        //     if (v.prio < min.prio) {
+        //         min = v;
+        //     }
+        // }
         for (int i = 0; i < arr.size(); i++) {
             if (arr.get(i) != null && arr.get(i).prio < min.prio) {
                 min = arr.get(i);
@@ -174,33 +183,35 @@ public class FibonacciHeap<T> implements PriorityQueue<T> {
         }
     }
 
-    private void relink(Node p, Node c) {
-        removeFromRoot(p);
-        p.left = p.right = p;
-        mergeWithChildList(c, p);
-        c.degree++;
-        p.parent = c;
-        p.mark = false;
+    private void linkChild(Node child, Node parent) {
+        removeFromRoot(child);
+        child.left = child.right = child;
+        mergeWithChildList(parent, child);
+        parent.degree++;
+        child.parent = parent;
+        child.mark = false;
     }
 
-    private void mergeWithChildList(Node p, Node c) {
-        if (p.child == null) {
-            p.child = c;
+    private void mergeWithChildList(Node parent, Node child) {
+        if (parent.child == null) {
+            parent.child = child;
+            child.setLeft(child);
+            child.setRight(child);
         } else {
-            c.right = p.child.right;
-            c.left = p.child;
-            p.child.right.left = c;
-            p.child.right = c;
+            child.setRight(parent.child);
+            child.setLeft(parent.child.getLeft());
+            parent.child.getLeft().setRight(child);
+            parent.child.setLeft(child);
         }
     }
 
     private List<Node> rootList() {
-        Node c = root.right;
+        Node v = root.right;
         List<Node> nodes = new ArrayList<>();
         nodes.add(root);
-        while (c.key != root.key) {
-            nodes.add(c);
-            c = c.right;
+        while (v.key != root.key) {
+            nodes.add(v);
+            v = v.right;
         }
         return nodes;
     }
@@ -241,32 +252,44 @@ public class FibonacciHeap<T> implements PriorityQueue<T> {
             nextKey++;
         }
     
-        public Iterator<Node> children() {
-            Node z = this.child;
-            return new Iterator<Node>() {
-                
-                Node start = z;
-                Node curr = z;
-    
-                @Override
-                public boolean hasNext() {
-                    return curr.right != start;
-                }
-    
-                @Override
-                public Node next() {
-                    if (!hasNext()) {
-                        throw new NoSuchElementException();
-                    }
-                    Node tmp = curr;
-                    curr = curr.right;
-                    return tmp;
-                }
-            };
+        public List<Node> children() {
+            Node curr = this.child.right;
+
+            List<Node> nodes = new ArrayList<>();
+
+            nodes.add(this.child);
+            
+            while(curr.key != this.child.key) {
+                nodes.add(curr);
+                curr = curr.right;
+            }
+
+            return nodes;
+        }
+
+        public Node getLeft() {
+            return left;
+        }
+
+        public Node getRight() {
+            return right;
+        }
+
+        public void setLeft(Node v) {
+            left = v;
+        }
+
+        public void setRight(Node v) {
+            right = v;
         }
     
         public boolean hasChild() {
             return child != null;
+        }
+
+        @Override
+        public String toString() {
+            return "Key=" + key + " Val=" + value.toString();
         }
     }
 }

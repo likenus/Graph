@@ -253,6 +253,6 @@ public class PipesRuleset implements Ruleset {
 
     @Override
     public Color getTileColor(int tileValue) {
-        return new Color(0,0,0,255);
+        return new Color(0, 0, 0, 255);
     }
 }

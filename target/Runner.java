@@ -17,21 +17,21 @@ import src.util.Graphs;
 
 public class Runner {
 
-    public static final long SEED = 69420;
+    public static final long SEED = 1;
 
     public static final boolean ANIMATED_OUTPUT = true;
     public static final boolean GUI_OUTPUT = true;
     private static final boolean PRINT_RESULT = false;
     private static final int SLEEP_TIMER = 100; // lower than 100 reintroduces too many race conditions
     
-    private final Random random = new Random();
+    private final Random random = new Random(SEED);
     
     private RenderResultFrame outputFrame;
     private GraphRenderer graphRenderer;
 
     private int threadCount = 1;
-    private int width = 1000;
-    private int height = 800;
+    private int width = 100;
+    private int height = 100;
     private long startTime;
     @SuppressWarnings("all")
     public void run() {
@@ -40,7 +40,8 @@ public class Runner {
         
         List<Thread> threads = new ArrayList<>();
         List<WaveFunctionCollapse> algorithms = new ArrayList<>();
-        
+        long seed = SEED > 0 ? SEED : random.nextInt();
+
         System.out.println("Initializing...");
         
         this.startTime = System.currentTimeMillis();
@@ -48,6 +49,7 @@ public class Runner {
         for (int i = 0; i < threadCount; i++) {
             Mesh2D graph = graphLoader.mesh2D(width, height); // <-- Meshes are generated here (Width, Height)
             Ruleset ruleset = new LandscapeRuleset();
+            System.out.println("Seed: %d".formatted(seed));
             System.out.println("%s: Width: %d Height: %d | %d total Nodes".formatted(graph.getMeshType(), graph.getWidth(), graph.getHeight(), graph.getWidth() * graph.getHeight()));
             WaveFunctionCollapse wfc = new WaveFunctionCollapse(graph, ruleset, SEED);
             graphRenderer = new GraphRenderer(wfc);
@@ -92,7 +94,8 @@ public class Runner {
                 printGraph(wfc);
             }
         }
-
+        String eTime = timeFormatted(deltaTime() / 1000f);
+        if (this.outputFrame != null) this.outputFrame.setTitle("Done | Seed=%s | %s elapsed | %s Errors".formatted(seed, eTime, algorithms.get(0).getErrorCount()));
     }
 
     private void printInformation(List<WaveFunctionCollapse> algorithms) {
@@ -157,6 +160,7 @@ public class Runner {
         }
         System.out.println(sb.toString() + "\u001B[0m");
         System.out.println(wfc.getErrorCount() + " Errors");
+
     }
 
     private void printRandomPath(WaveFunctionCollapse wfc) {
@@ -189,7 +193,7 @@ public class Runner {
         try {
             pngLoader = new PNGLoader("files/WaveFunction_Patterns");
             fileLoader = new FileLoader("files/WaveFunction_Patterns");
-            lines = fileLoader.loadFile("Pattern.pat");
+            lines = fileLoader.loadFile("Pattern2.pat");
             png = pngLoader.loadPng("Flowers.png");
         } catch (IOException exception) {
             exception.printStackTrace();

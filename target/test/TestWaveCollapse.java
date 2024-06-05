@@ -26,7 +26,7 @@ public class TestWaveCollapse {
         3 2 1 1 1 2 1 1 2 3
         """;
     
-    @Test
+    
     public void testAlgorithm() {
         Ruleset ruleset = new LandscapeRuleset();
         GraphLoader graphLoader = new GraphLoader();

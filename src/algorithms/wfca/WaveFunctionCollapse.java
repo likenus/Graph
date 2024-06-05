@@ -35,15 +35,16 @@ import target.Runner;
  * evaluation or retrieved via {@link #getGraph()}. To start the algorithm
  * simply use {@link #run()} implemented via the {@code Runnable} interface.
  * </p>
- * This algorithm runs in quasi-linear time.
+ * This algorithm runs in estimated O(n log n) time.
  * 
- * @version 2.2
+ * @version 3.0
  * 
  * @author likenus
  * 
  * @see src.util.Graphs#dijkstra()
  */
 public class WaveFunctionCollapse implements Runnable {
+    
     private static final int UPDATES_PER_RENDER = 2000;
 
     private final List<Boolean> isCollapsed = new ArrayList<>();
@@ -63,6 +64,7 @@ public class WaveFunctionCollapse implements Runnable {
 
     private int errorCounter = 0;
 
+    //#region - constructor -
     private WaveFunctionCollapse(Graph graph, Ruleset ruleset, Random rnd) {
 
         for (int i = 0; i < graph.sizeVertices(); i++) {
@@ -104,6 +106,7 @@ public class WaveFunctionCollapse implements Runnable {
     public WaveFunctionCollapse(Graph graph, Ruleset ruleset, long seed) {
         this(graph, ruleset, new Random(seed));
     }
+    //#endregion
 
     @Override
     public void run() {
@@ -129,6 +132,7 @@ public class WaveFunctionCollapse implements Runnable {
             errorCounter++;
         }
 
+        // Collapse
         int value = possibleInts.stream().toList().get(rnd.nextInt(possibleInts.size()));
         vertex.setValue(value);
         int key = vertex.getKey();
@@ -136,17 +140,10 @@ public class WaveFunctionCollapse implements Runnable {
         possibilities.set(key, Set.of(value));
         isCollapsed.set(key, true);
 
-        Vertex start = graph.parseVertex(key);
-        int maxBFSDepth = ruleset.maxBFSDepth();
-
-        Iterator<Vertex> neighbourIterator = start.neighboursIterator();
-        while (neighbourIterator.hasNext()) {
-            Vertex v = neighbourIterator.next();
-            if (!isCollapsed.get(v.getKey()).booleanValue() && update(v))
-                propagate(start, v, maxBFSDepth);
-        }
-
         // Propagate
+        propagate(vertex, null); // Hope that this doesnt reach too much recusrion depth
+
+        //#region - old code -
         // boolean[] exploredNodes = new boolean[graph.sizeVertices()];
         // int[] distances = new int[graph.sizeVertices()];
 
@@ -174,20 +171,21 @@ public class WaveFunctionCollapse implements Runnable {
         //         }
         //     }
         // }
+        //#endregion
 
         updateGui(vertex);
     }
 
-    private void propagate(Vertex vertex, Vertex parent, int depth) {
-        if (depth <= 0) {
-            return;
-        }
+    private void propagate(Vertex vertex, Vertex parent) {
         Iterator<Vertex> neighbourIterator = vertex.neighboursIterator();
+
         while (neighbourIterator.hasNext()) {
             Vertex v = neighbourIterator.next();
+
             if (v.equals(parent)) { continue; }
+
             if (!isCollapsed.get(v.getKey()).booleanValue() && update(v)) {
-                propagate(vertex, v, depth - 1);
+                propagate(vertex, v);
             }
         }
     }

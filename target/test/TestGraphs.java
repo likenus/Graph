@@ -1,5 +1,6 @@
 package target.test;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -14,8 +15,11 @@ import src.graph.graph.models.undirected.UndirectedTree;
 import src.graph.graph.models.undirected.UndirectedWeightedGraph;
 import src.graph.vertices.Vertex;
 import src.util.Graphs;
+import target.GraphLoader;
 
 public class TestGraphs {
+
+    private GraphLoader graphLoader = new GraphLoader();
 
     private static Graph exampleGraph() {
         Graph graph = new UndirectedGraph(10);
@@ -65,6 +69,25 @@ public class TestGraphs {
         path.add(graph.parseVertex(9));
 
         Assert.assertEquals(path, Graphs.dijkstra(graph, 0, 9));
+    }
+
+    @Test
+    public void testDijkstra2() throws IOException {
+        Graph g = graphLoader.loadFromFile("Graph2.dat");
+
+        List<Vertex> path = new LinkedList<>();
+        path.add(g.parseVertex(0));
+        path.add(g.parseVertex(429));
+        path.add(g.parseVertex(92));
+        path.add(g.parseVertex(99));
+        path.add(g.parseVertex(282));
+        path.add(g.parseVertex(71));
+        path.add(g.parseVertex(140));
+        path.add(g.parseVertex(69));
+        path.add(g.parseVertex(424));
+
+
+        Assert.assertEquals(path, Graphs.dijkstra(g, 0, 424));
     }
 
     @Test
