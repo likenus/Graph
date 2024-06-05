@@ -100,7 +100,7 @@ public class PipesRuleset implements Ruleset {
 
     @Override
     public int maxBFSDepth() {
-        return 8;
+        return Integer.MAX_VALUE - 1;
     }
 
     private enum Tile {

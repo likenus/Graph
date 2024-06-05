@@ -151,7 +151,7 @@ public class PatternRuleset implements Ruleset {
 
     @Override
     public int maxBFSDepth() {
-        return 16;
+        return Integer.MAX_VALUE - 1;
     }
 
     private class DirectionalTupel<T> {

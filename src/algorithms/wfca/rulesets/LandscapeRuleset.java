@@ -44,16 +44,16 @@ public class LandscapeRuleset implements Ruleset {
 
         Set<Integer> possibleInts = new HashSet<>();
 
-        if (allPossibleInts.stream().filter(set -> set.size() == 2).count() >= 2) {
-            if (allPossibleInts.stream().allMatch(set -> set.contains(Tile.DEEP_WATER.getIdentifier()))) {
-                possibleInts.add(Tile.DEEP_WATER.getIdentifier());
-                return possibleInts;
-            }
-            if (allPossibleInts.stream().allMatch(set -> set.contains(Tile.FOREST.getIdentifier()))) {
-                possibleInts.add(Tile.FOREST.getIdentifier());
-                return possibleInts;
-            }
-        }
+        // if (allPossibleInts.stream().filter(set -> set.size() == 2).count() >= 2) {
+        //     if (allPossibleInts.stream().allMatch(set -> set.contains(Tile.DEEP_WATER.getIdentifier()))) {
+        //         possibleInts.add(Tile.DEEP_WATER.getIdentifier());
+        //         return possibleInts;
+        //     }
+        //     if (allPossibleInts.stream().allMatch(set -> set.contains(Tile.FOREST.getIdentifier()))) {
+        //         possibleInts.add(Tile.FOREST.getIdentifier());
+        //         return possibleInts;
+        //     }
+        // }
 
         return Ruleset.intersect(allPossibleInts, NUMBERS);
     }

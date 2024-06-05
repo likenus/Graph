@@ -22,7 +22,7 @@ public class Runner {
     public static final boolean ANIMATED_OUTPUT = true;
     public static final boolean GUI_OUTPUT = true;
     private static final boolean PRINT_RESULT = false;
-    private static final int SLEEP_TIMER = 1000; // lower than 100 reintroduces too many race conditions
+    private static final int SLEEP_TIMER = 100; // lower than 100 reintroduces too many race conditions
     
     private final Random random = new Random();
     
@@ -30,8 +30,8 @@ public class Runner {
     private GraphRenderer graphRenderer;
 
     private int threadCount = 1;
-    private int width = 500;
-    private int height = 400;
+    private int width = 1920;
+    private int height = 1080;
     private long startTime;
     @SuppressWarnings("all")
     public void run() {
@@ -47,7 +47,7 @@ public class Runner {
         
         for (int i = 0; i < threadCount; i++) {
             Mesh2D graph = graphLoader.mesh2D(width, height); // <-- Meshes are generated here (Width, Height)
-            Ruleset ruleset = new LandscapeRuleset();
+            Ruleset ruleset = new BiomedLandscapeRuleset(graph);
             System.out.println("%s: Width: %d Height: %d | %d total Nodes".formatted(graph.getMeshType(), graph.getWidth(), graph.getHeight(), graph.getWidth() * graph.getHeight()));
             WaveFunctionCollapse wfc = new WaveFunctionCollapse(graph, ruleset, SEED);
             graphRenderer = new GraphRenderer(wfc);
@@ -184,7 +184,7 @@ public class Runner {
         try {
             pngLoader = new PNGLoader("files/WaveFunction_Patterns");
             fileLoader = new FileLoader("files/WaveFunction_Patterns");
-            lines = fileLoader.loadFile("Pattern5.pat");
+            lines = fileLoader.loadFile("Pattern.pat");
             png = pngLoader.loadPng("Flowers.png");
         } catch (IOException exception) {
             exception.printStackTrace();

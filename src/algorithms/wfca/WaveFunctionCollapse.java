@@ -147,35 +147,57 @@ public class WaveFunctionCollapse implements Runnable {
         Vertex start = graph.parseVertex(key);
         int maxBFSDepth = ruleset.maxBFSDepth();
 
-        boolean[] exploredNodes = new boolean[graph.sizeVertices()];
-        int[] distances = new int[graph.sizeVertices()];
-
-        Queue<Vertex> queue = new ConcurrentLinkedQueue<>();
-        queue.add(start);
-        exploredNodes[key] = true;
-        distances[key] = 0;
-
-        while (!queue.isEmpty()) {
-            Vertex u = queue.poll();
-            if (distances[u.getKey()] > maxBFSDepth) {
-                continue;
-            }
-            Iterator<Vertex> neighbourIterator = u.neighboursIterator();
-            while (neighbourIterator.hasNext()) {
-                Vertex v = neighbourIterator.next();
-                if (isCollapsed.get(v.getKey()).booleanValue()) {
-                    exploredNodes[v.getKey()] = true;
-                    continue;
-                }
-                if (!exploredNodes[v.getKey()] && update(v)) {
-                    queue.add(v);
-                    distances[v.getKey()] = distances[u.getKey()] + 1;
-                    exploredNodes[v.getKey()] = true;
-                }
-            }
+        Iterator<Vertex> neighbourIterator = start.neighboursIterator();
+        while (neighbourIterator.hasNext()) {
+            Vertex v = neighbourIterator.next();
+            if (!isCollapsed.get(v.getKey()).booleanValue() && update(v))
+                propagate(start, v, maxBFSDepth);
         }
 
+        // Propagate
+        // boolean[] exploredNodes = new boolean[graph.sizeVertices()];
+        // int[] distances = new int[graph.sizeVertices()];
+
+        // Queue<Vertex> queue = new ConcurrentLinkedQueue<>();
+        // queue.add(start);
+        // exploredNodes[key] = true;
+        // distances[key] = 0;
+
+        // while (!queue.isEmpty()) {
+        //     Vertex u = queue.poll();
+        //     if (distances[u.getKey()] > maxBFSDepth) {
+        //         continue;
+        //     }
+        //     Iterator<Vertex> neighbourIterator = u.neighboursIterator();
+        //     while (neighbourIterator.hasNext()) {
+        //         Vertex v = neighbourIterator.next();
+        //         if (isCollapsed.get(v.getKey()).booleanValue()) {
+        //             exploredNodes[v.getKey()] = true;
+        //             continue;
+        //         }
+        //         if (!exploredNodes[v.getKey()] && update(v)) {
+        //             queue.add(v);
+        //             distances[v.getKey()] = distances[u.getKey()] + 1;
+        //             exploredNodes[v.getKey()] = true;
+        //         }
+        //     }
+        // }
+
         updateGui(vertex);
+    }
+
+    private void propagate(Vertex vertex, Vertex parent, int depth) {
+        if (depth <= 0) {
+            return;
+        }
+        Iterator<Vertex> neighbourIterator = vertex.neighboursIterator();
+        while (neighbourIterator.hasNext()) {
+            Vertex v = neighbourIterator.next();
+            if (v.equals(parent)) { continue; }
+            if (!isCollapsed.get(v.getKey()).booleanValue() && update(v)) {
+                propagate(vertex, v, depth - 1);
+            }
+        }
     }
 
     private void updateGui(Vertex vertex) {
