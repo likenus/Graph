@@ -7,7 +7,7 @@ import src.algorithms.wfca.WaveFunctionCollapse;
 import src.algorithms.wfca.rulesets.LandscapeRuleset;
 import src.algorithms.wfca.rulesets.Ruleset;
 import src.graph.graph.interfaces.Graph;
-import src.graph.graph.models.undirected.Mesh2D;
+import src.graph.graph.models.undirected.ArrayMesh2D;
 import target.GraphLoader;
 
 public class TestWaveCollapse {
@@ -26,7 +26,7 @@ public class TestWaveCollapse {
         3 2 1 1 1 2 1 1 2 3
         """;
     
-    
+    @Test
     public void testAlgorithm() {
         Ruleset ruleset = new LandscapeRuleset();
         GraphLoader graphLoader = new GraphLoader();
@@ -41,7 +41,7 @@ public class TestWaveCollapse {
 
     public static String printGraph(WaveFunctionCollapse wca) {
 
-        Mesh2D mesh = (Mesh2D) wca.getGraph();
+        ArrayMesh2D mesh = (ArrayMesh2D) wca.getGraph();
 
         int width = mesh.getWidth();
         int height = mesh.getHeight();

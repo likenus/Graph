@@ -2,16 +2,17 @@ package src.graph.graph.models.undirected;
 
 import src.graph.edge.Edge;
 import src.graph.edge.models.UndirectedEdge;
-import src.graph.graph.abstracts.SingleGraph;
+import src.graph.graph.abstracts.LinkedGraph;
+import src.graph.graph.interfaces.UndirectedGraph;
 import src.graph.vertices.Vertex;
 
-public class UndirectedWeightedGraph extends SingleGraph {
+public class UndirectedWeightedLinkedGraph extends LinkedGraph implements UndirectedGraph {
 
-    public UndirectedWeightedGraph() {
+    public UndirectedWeightedLinkedGraph() {
         super();
     }
 
-    public UndirectedWeightedGraph(int i) {
+    public UndirectedWeightedLinkedGraph(int i) {
         super(i);
     }
 

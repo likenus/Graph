@@ -2,6 +2,7 @@ package src.rendering;
 
 import src.algorithms.wfca.WaveFunctionCollapse;
 import src.algorithms.wfca.rulesets.Ruleset;
+import src.graph.graph.models.undirected.ArrayMesh2D;
 import src.graph.graph.models.undirected.Mesh2D;
 import src.graph.vertices.Vertex;
 

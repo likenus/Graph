@@ -4,13 +4,15 @@ import java.io.IOException;
 import java.util.List;
 
 import src.graph.graph.interfaces.Graph;
-import src.graph.graph.models.directed.DirectedGraph;
-import src.graph.graph.models.directed.DirectedWeightedGraph;
+import src.graph.graph.models.directed.DirectedLinkedGraph;
+import src.graph.graph.models.directed.DirectedWeightedLinkedGraph;
 import src.graph.graph.models.directed.DirectedWeightedTree;
+import src.graph.graph.models.undirected.LinkedMesh2D;
 import src.graph.graph.models.undirected.Mesh2D;
-import src.graph.graph.models.undirected.UndirectedGraph;
+import src.graph.graph.models.undirected.ArrayMesh2D;
+import src.graph.graph.models.undirected.UndirectedLinkedGraph;
 import src.graph.graph.models.undirected.UndirectedTree;
-import src.graph.graph.models.undirected.UndirectedWeightedGraph;
+import src.graph.graph.models.undirected.UndirectedWeightedLinkedGraph;
 import src.graph.graph.models.undirected.Mesh2D.MeshType;
 
 public class GraphLoader {
@@ -43,15 +45,15 @@ public class GraphLoader {
 
         if (directed.equals("u")) {
             if (weighted.equals("u")) {
-                graph = new UndirectedGraph(size);
+                graph = new UndirectedLinkedGraph(size);
             } else {
-                graph = new UndirectedWeightedGraph(size);
+                graph = new UndirectedWeightedLinkedGraph(size);
             }
         } else if (directed.equals("d")) {
             if (weighted.equals("u")) {
-                graph = new DirectedGraph(size);
+                graph = new DirectedLinkedGraph(size);
             } else {
-                graph = new DirectedWeightedGraph(size);
+                graph = new DirectedWeightedLinkedGraph(size);
             }
         } else {
             if (weighted.equals("u")) {
@@ -78,16 +80,20 @@ public class GraphLoader {
      * @param size The length of one side of the quadrat
      * @return An undirected graph
      */
-    public Mesh2D mesh2D(int width, int height) {
-        return new Mesh2D(width, height);
+    public ArrayMesh2D arrayMesh2D(int width, int height) {
+        return new ArrayMesh2D(width, height);
     }
 
     public Mesh2D mesh2D(int size) {
-        return mesh2D(size, size);
+        return arrayMesh2D(size, size);
     }
 
-    public Mesh2D zylinder(int width, int height) {
-        Mesh2D graph = mesh2D(width, height);
+    public Mesh2D linkedMesh2D(int width, int height) {
+        return new LinkedMesh2D(width, height);
+    }
+
+    public ArrayMesh2D zylinder(int width, int height) {
+        ArrayMesh2D graph = arrayMesh2D(width, height);
 
         graph.setMeshType(MeshType.ZYLINDER);
 
@@ -98,12 +104,12 @@ public class GraphLoader {
         return graph;
     }
 
-    public Mesh2D zylinder(int size) {
+    public ArrayMesh2D zylinder(int size) {
         return zylinder(size, size);
     }
 
-    public Mesh2D donut(int width, int height) {
-        Mesh2D graph = zylinder(width, height);
+    public ArrayMesh2D donut(int width, int height) {
+        ArrayMesh2D graph = zylinder(width, height);
         graph.setMeshType(MeshType.DONUT);
 
         for (int i = 0; i < width; i++) {
@@ -113,12 +119,12 @@ public class GraphLoader {
         return graph;
     }
 
-    public Mesh2D donut(int size) {
+    public ArrayMesh2D donut(int size) {
         return donut(size, size);
     }
 
-    public UndirectedGraph rnd(int size) {
-        UndirectedGraph graph = new UndirectedGraph(size * size);
+    public UndirectedLinkedGraph rnd(int size) {
+        UndirectedLinkedGraph graph = new UndirectedLinkedGraph(size * size);
 
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size - 2; j++) {

@@ -10,9 +10,9 @@ import org.junit.Test;
 import src.graph.edge.Edge;
 import src.graph.graph.interfaces.Graph;
 import src.graph.graph.interfaces.Tree;
-import src.graph.graph.models.undirected.UndirectedGraph;
+import src.graph.graph.models.undirected.UndirectedLinkedGraph;
 import src.graph.graph.models.undirected.UndirectedTree;
-import src.graph.graph.models.undirected.UndirectedWeightedGraph;
+import src.graph.graph.models.undirected.UndirectedWeightedLinkedGraph;
 import src.graph.vertices.Vertex;
 import src.util.Graphs;
 import target.GraphLoader;
@@ -22,7 +22,7 @@ public class TestGraphs {
     private GraphLoader graphLoader = new GraphLoader();
 
     private static Graph exampleGraph() {
-        Graph graph = new UndirectedGraph(10);
+        Graph graph = new UndirectedLinkedGraph(10);
 
         for (int i = 0; i < 8; i++) {
             graph.addEdge(i, i + 1);
@@ -39,7 +39,7 @@ public class TestGraphs {
     }
     
     public static Graph weightedExampleGraph() {
-        Graph graph = new UndirectedWeightedGraph(10);
+        Graph graph = new UndirectedWeightedLinkedGraph(10);
 
         graph.addEdge(0, 1, 7);
         graph.addEdge(1, 2, 1);

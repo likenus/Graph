@@ -10,7 +10,7 @@ import src.graph.graph.models.directed.ComponentSet;
 import src.graph.vertices.Vertex;
 import src.util.Graphs;
 
-public class UndirectedWeightedTree extends UndirectedWeightedGraph implements Tree {
+public class UndirectedWeightedTree extends UndirectedWeightedLinkedGraph implements Tree {
 
     private Vertex root;
     private UnionFind uf = new ComponentSet();

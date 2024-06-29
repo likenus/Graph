@@ -2,16 +2,17 @@ package src.graph.graph.models.directed;
 
 import src.graph.edge.Edge;
 import src.graph.edge.models.DirectedEdge;
-import src.graph.graph.abstracts.SingleGraph;
+import src.graph.graph.abstracts.LinkedGraph;
+import src.graph.graph.interfaces.DirectedGraph;
 import src.graph.vertices.Vertex;
 
-public class DirectedWeightedGraph extends SingleGraph {
+public class DirectedWeightedLinkedGraph extends LinkedGraph implements DirectedGraph {
 
-    public DirectedWeightedGraph() {
+    public DirectedWeightedLinkedGraph() {
         super();
     }
 
-    public DirectedWeightedGraph(int i) {
+    public DirectedWeightedLinkedGraph(int i) {
         super(i);
     }
 

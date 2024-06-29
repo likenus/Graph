@@ -11,7 +11,7 @@ import java.util.Set;
 import java.util.Map.Entry;
 
 import src.graph.graph.interfaces.Graph;
-import src.graph.graph.models.undirected.Mesh2D;
+import src.graph.graph.models.undirected.ArrayMesh2D;
 import src.graph.vertices.Vertex;
 
 /**
@@ -24,7 +24,7 @@ public class PipesRuleset implements Ruleset {
 
     @Override
     public Set<Integer> ruleset(Graph graph, Vertex v, List<Set<Integer>> possibilities) {
-        Mesh2D mesh = (Mesh2D) graph;
+        ArrayMesh2D mesh = (ArrayMesh2D) graph;
 
         List<Set<Integer>> allPossibleInts = new ArrayList<>();
 
@@ -57,7 +57,7 @@ public class PipesRuleset implements Ruleset {
         return Ruleset.intersect(allPossibleInts, NUMBERS);
     }
 
-    private static Map<Direction, Vertex> initNeighbours(Vertex v, List<Vertex> neighbours, Mesh2D mesh) {
+    private static Map<Direction, Vertex> initNeighbours(Vertex v, List<Vertex> neighbours, ArrayMesh2D mesh) {
         Map<Direction, Vertex> map = new EnumMap<>(Direction.class);
 
         for (Vertex neighbour : neighbours) {

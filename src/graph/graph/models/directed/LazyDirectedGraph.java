@@ -9,7 +9,7 @@ import src.graph.vertices.models.Node;
  * Lazy Graph for performance optimization of BFS. WARNING: This graph does not keep track if its edges, these are only
  * accessible through the vertices.
  */
-public class LazyDirectedGraph extends DirectedGraph {
+public class LazyDirectedGraph extends DirectedLinkedGraph {
 
     public LazyDirectedGraph(int startNode) {
         add(new Node(startNode));

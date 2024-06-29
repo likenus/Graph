@@ -9,7 +9,9 @@ import src.algorithms.wfca.WaveFunctionCollapse;
 import src.algorithms.wfca.rulesets.*;
 import src.graph.edge.Edge;
 import src.graph.graph.interfaces.Graph;
+import src.graph.graph.models.undirected.LinkedMesh2D;
 import src.graph.graph.models.undirected.Mesh2D;
+import src.graph.graph.models.undirected.ArrayMesh2D;
 import src.graph.vertices.Vertex;
 import src.rendering.GraphRenderer;
 import src.rendering.RenderResultFrame;
@@ -30,8 +32,8 @@ public class Runner {
     private GraphRenderer graphRenderer;
 
     private int threadCount = 1;
-    private int width = 100;
-    private int height = 100;
+    private int width = 1000;
+    private int height = 1000;
     private long startTime;
     @SuppressWarnings("all")
     public void run() {
@@ -47,7 +49,7 @@ public class Runner {
         this.startTime = System.currentTimeMillis();
         
         for (int i = 0; i < threadCount; i++) {
-            Mesh2D graph = graphLoader.mesh2D(width, height); // <-- Meshes are generated here (Width, Height)
+            Mesh2D graph = graphLoader.arrayMesh2D(width, height); // <-- Meshes are generated here (Width, Height)
             Ruleset ruleset = new LandscapeRuleset();
             System.out.println("Seed: %d".formatted(seed));
             System.out.println("%s: Width: %d Height: %d | %d total Nodes".formatted(graph.getMeshType(), graph.getWidth(), graph.getHeight(), graph.getWidth() * graph.getHeight()));
@@ -141,7 +143,7 @@ public class Runner {
     }
 
     private void printGraph(WaveFunctionCollapse wfc) {
-        Mesh2D mesh = (Mesh2D) wfc.getGraph();
+        ArrayMesh2D mesh = (ArrayMesh2D) wfc.getGraph();
         Ruleset ruleset = wfc.getRuleset();
 
         int widthMesh = mesh.getWidth();

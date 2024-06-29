@@ -12,11 +12,12 @@ import src.graph.edge.Edge;
 import src.graph.edge.models.UndirectedEdge;
 import src.graph.graph.interfaces.Graph;
 import src.graph.graph.interfaces.Tree;
+import src.graph.graph.interfaces.UndirectedGraph;
 import src.graph.graph.interfaces.UnionFind;
 import src.graph.graph.models.directed.ComponentSet;
-import src.graph.graph.models.directed.DirectedGraph;
-import src.graph.graph.models.directed.DirectedWeightedGraph;
-import src.graph.graph.models.undirected.UndirectedGraph;
+import src.graph.graph.models.directed.DirectedLinkedGraph;
+import src.graph.graph.models.directed.DirectedWeightedLinkedGraph;
+import src.graph.graph.models.undirected.UndirectedLinkedGraph;
 import src.graph.graph.models.undirected.UndirectedWeightedTree;
 import src.graph.vertices.Vertex;
 import src.util.queues.BinaryHeap;
@@ -102,7 +103,7 @@ public final class Graphs {
      * @return The cloned graph
      */
     public static Graph clone(Graph graph) {
-        Graph clone = new UndirectedGraph(graph.sizeVertices());
+        Graph clone = new UndirectedLinkedGraph(graph.sizeVertices());
         for (Vertex vertex : graph.vertices()) {
             clone.setValue(vertex.getKey(), vertex.getValue());
         }
@@ -119,12 +120,12 @@ public final class Graphs {
      * @param s The starting vertex, the root of the search tree
      * @return A bfs search tree
      */
-    public static DirectedGraph bfsTree(Graph g, int s) {
+    public static DirectedLinkedGraph bfsTree(Graph g, int s) {
         Objects.requireNonNull(g);
 
         boolean[] exploredNodes = new boolean[g.sizeVertices()];
         
-        DirectedGraph tree = new DirectedGraph(g.sizeVertices());
+        DirectedLinkedGraph tree = new DirectedLinkedGraph(g.sizeVertices());
         Vertex start = g.parseVertex(s);
 
         if (start == null) {
@@ -184,7 +185,7 @@ public final class Graphs {
         long[] distances = infinityArray(g.sizeVertices());
         distances[s] = 0;
 
-        PriorityQueue<Vertex> heap = new FibonacciHeap<>();
+        PriorityQueue<Vertex> heap = new BinaryHeap<>();
         for (Vertex v : g.vertices()) {
             heap.push(v, (int) distances[v.getKey()]);
         }
@@ -245,7 +246,7 @@ public final class Graphs {
     public static Tree mst(Graph g) {
         Objects.requireNonNull(g);
 
-        if (g instanceof DirectedWeightedGraph) {
+        if (g instanceof DirectedWeightedLinkedGraph) {
             throw new ClassCastException();
         }
 

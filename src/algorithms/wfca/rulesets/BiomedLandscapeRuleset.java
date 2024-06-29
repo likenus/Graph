@@ -10,7 +10,7 @@ import java.util.Set;
 
 import src.algorithms.wfca.WaveFunctionCollapse;
 import src.graph.graph.interfaces.Graph;
-import src.graph.graph.models.undirected.Mesh2D;
+import src.graph.graph.models.undirected.ArrayMesh2D;
 import src.graph.vertices.Vertex;
 import src.util.Ansi;
 import target.GraphLoader;
@@ -24,7 +24,7 @@ public class BiomedLandscapeRuleset implements Ruleset {
     private static final Set<Integer> NUMBERS = new HashSet<>(Arrays.asList(Tile.values()).stream().map(Tile::getIdentifier).toList());
     private List<Set<Biome>> vertexBiomes;
 
-    public BiomedLandscapeRuleset(Mesh2D targetGraph) {
+    public BiomedLandscapeRuleset(ArrayMesh2D targetGraph) {
         if (targetGraph.getWidth() < 100 || targetGraph.getHeight() < 100) {
             throw new IllegalArgumentException("Biomed Landscape Generation needs at least 100x100 tiles");
         }
@@ -34,10 +34,10 @@ public class BiomedLandscapeRuleset implements Ruleset {
         }
 
         GraphLoader loader = new GraphLoader();
-        Mesh2D biomeMapBlank = loader.zylinder(targetGraph.getWidth() / 3, targetGraph.getHeight() / 3);
+        ArrayMesh2D biomeMapBlank = loader.zylinder(targetGraph.getWidth() / 3, targetGraph.getHeight() / 3);
         WaveFunctionCollapse biomeGenerator = new WaveFunctionCollapse(biomeMapBlank, new LandscapeRuleset());
         biomeGenerator.run();
-        Mesh2D biomeMap = (Mesh2D) biomeGenerator.getGraph();
+        ArrayMesh2D biomeMap = (ArrayMesh2D) biomeGenerator.getGraph();
 
         for (Vertex v: biomeMap.vertices()) {
             Biome biome = selectBiome(v);

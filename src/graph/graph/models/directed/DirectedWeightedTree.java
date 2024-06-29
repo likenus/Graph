@@ -9,7 +9,7 @@ import src.graph.edge.models.DirectedEdge;
 import src.graph.graph.interfaces.Tree;
 import src.graph.vertices.Vertex;
 
-public class DirectedWeightedTree extends DirectedWeightedGraph implements Tree {
+public class DirectedWeightedTree extends DirectedWeightedLinkedGraph implements Tree {
     
     protected final List<Vertex> parents = new ArrayList<>();
     

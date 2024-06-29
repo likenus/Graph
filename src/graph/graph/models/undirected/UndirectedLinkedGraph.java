@@ -1,14 +1,14 @@
-package src.graph.graph.models.directed;
+package src.graph.graph.models.undirected;
 
 import src.graph.vertices.Vertex;
 
-public class DirectedGraph extends DirectedWeightedGraph {
+public class UndirectedLinkedGraph extends UndirectedWeightedLinkedGraph {
 
-    public DirectedGraph() {
+    public UndirectedLinkedGraph() {
         super();
     }
 
-    public DirectedGraph(int i) {
+    public UndirectedLinkedGraph(int i) {
         super(i);
     }
 

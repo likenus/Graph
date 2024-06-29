@@ -13,17 +13,17 @@ import src.graph.graph.interfaces.Graph;
 import src.graph.vertices.Vertex;
 import src.graph.vertices.models.Node;
 
-public abstract class SingleGraph implements Graph {
+public abstract class LinkedGraph implements Graph {
 
     protected final Map<Integer, Vertex> vertices = new HashMap<>();
     protected final Set<Edge> edges = new HashSet<>();
     protected int id;
 
-    protected SingleGraph() {
+    protected LinkedGraph() {
 
     }
 
-    protected SingleGraph(int i) {
+    protected LinkedGraph(int i) {
         if (i < 0) {
             throw new IllegalArgumentException();
         }
